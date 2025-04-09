@@ -1,0 +1,70 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #49b9ed;
+    color: #fff;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+form {
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    width: 300px;
+    margin-bottom: 20px; 
+}
+
+h2 {
+    color: #333;
+}
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"] {
+    background-color: #0991cf;
+    color: #fff;
+    border: none;
+    padding: 14px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+input[type="submit"]:hover {
+    background-color: #077bb5; /* Cambio de color al pasar el ratón */
+}
+
+/* Estilos para el botón de regreso */
+a {
+    text-decoration: none; /* Elimina el subrayado del enlace */
+    display: block; /* Convierte el enlace en un bloque para aplicar estilos */
+    margin-top: 20px; /* Espacio entre el formulario y el botón de regreso */
+}
+
+button {
+    background-color: #0991cf;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #49b9ed; /* Cambio de color al pasar el ratón */
+}

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TLAXICOM Ayuda</title>
+    <meta name="description" content="Ayuda">    
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/1b7ca3b13f.js" crossorigin="anonymous"></script>
+    <script defer src="js/ayuda.js"></script>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Sans:wght@400;700&display=swap"  crossorigin="crossorigin" as="font">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">    
+    <link rel="preload" href="css/style.css" as="style">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav no-margin">
+            <a href="https://www.tlaxicom.com/index.html"><div class="logoTlaxi" href="https://www.tlaxicom.com/index.html"></div></a>            
+            <button class="nav-toggle" aria-label="Abrir menú">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <ul class="nav-menu no-margin">
+                <li class="nav-menu-item">
+                    <a href="index.html" class="nav-menu-linik nav-link">Inicio</a></li>
+                <li class="nav-menu-item">
+                    <a href="nosotros.html" class="nav-menu-linik nav-link">Nosotros</a></li>
+                <!--li class="nav-menu-item">
+                    <a href="tarifas.html" class="nav-menu-linik nav-link">Tarifas</a></li-->
+                <li class="nav-menu-item">
+                    <a href="contacto.html" class="nav-menu-linik nav-link">Contacto</a></li>
+                <li class="nav-menu-item">
+                    <a href="ayuda.html" class="nav-menu-linik nav-link nav-menu-link_active">Ayuda</a></li>
+            </ul>            
+        </nav>
+    </header>
+
+    <main class="container_ayuda padding_top">
+        <div class="ayuda_contenido">
+            <div class="ayuda_sidebar">                                
+                <ul class="ayuda_sidebar-menu">
+                    <li class="ayuda_menu_item">
+                        <p>Menú de ayuda Tlaxicom</p>
+                    </li>
+                    <li class="ayuda_menu_item" id="btn_problemasConex">
+                        <a href="#" class="nav-link">Problemas de conexión</a><i class="fa-solid fa-wifi" id="icon"></i></li>
+                    <li class="ayuda_menu_item" id="btn_manuales">
+                        <a href="#" class="nav-link">Manuales</a><i class="fa-solid fa-book" id="icon"></i></li>
+                    <li class="ayuda_menu_item" id="btn_conexLenta">
+                        <a href="#" class="nav-link">Conexión lenta</a><i class="fa-solid fa-gauge" id="icon"></i></li>
+                    <li class="ayuda_menu_item" id="btn_atencionPersonal">
+                        <a href="#" class="nav-link">Atención personalizada</a><i class="fa-solid fa-headset" id="icon"></i></li>
+                </ul> 
+            </div>
+              
+            <div class="contenidoLateral_ayuda">
+                <div class="contenedor no-padding">
+                    <iframe class="iframeAyuda" src="ui/problemasConex.html" id="frame_ui"></iframe>        	        
+                </div>
+            </div>        
+            
+        </div>
+                       
+    </main>
+    <footer class="footer">        
+        <div class="contenedor">
+            <div class="footer-image-center">
+                <a href="https://www.tlaxicom.com/index.html"><div class="logoTlaxi" href="https://www.tlaxicom.com/index.html"></div></a>    
+            </div>
+        </div>
+        <div class="contenedor">
+            <div class="contenedor">
+                <!--Aqui abajo va el texto de politicas de privacidad-->
+                <div class="footer-center">
+                    <div>
+                        <a href="#" class="navegacion__enlace">   </a> 
+                    </div>
+                    <div>                    
+                        <a href="aviso_priv.html" class="navegacion__enlace">   </a>
+                    </div>                                        
+                </div>                                
+            </div>
+                           
+        </div>
+        <div class="contenedor">
+            <div class="footer-llamanos">   
+                <p class="o">Llámenos: <a href="tel:2411195233" class="llamar_enlace">2411195233</a></p>                                     
+                <!--a href="tel:2411195233" class="llamar_enlace"><span class="o">Llámenos: </span>018005425498</a-->
+            </div> 
+        </div>                                    
+    </footer> 
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TLAXICOM</title>
+    <meta name="description" content="Cotrate el mejor servicio de internet en la zona norte de Tlaxcala, contamos con servicio en más de 6 localidades del estado y zonas remotas. ¡Contrate ahora!"/>
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/1b7ca3b13f.js" crossorigin="anonymous"></script>
+    <script defer src="/js/index.js"></script>
+    <!-- Prefetch -->
+    <link rel="prefetch" href="/nosotros.html" as="document">
+
+    <!-- Preload -->
+    <link rel="preload" href="/css/normalize.css" as="style">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Sans:wght@400;700&display=swap"  crossorigin="crossorigin" as="font">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500&display=swap" rel="stylesheet"> 
+    <link rel="preload" href="/css/style.css" as="style">
+    <link rel="stylesheet" href="/css/style.css">
+    
+</head>
+<body onload="initialize()">
+    <header class="header">
+        <nav class="nav no-margin">
+            <!--a href="index.html" class="logo nav-link">Logo</a-->
+            <div class="logoTlaxi" href="https://www.tlaxicom.com/index.html" alt="Logo"></div>            
+            <button class="nav-toggle" aria-label="Abrir menú">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <ul class="nav-menu no-margin">
+                <li class="nav-menu-item">
+                    <a href="index.html" class="nav-menu-linik nav-link nav-menu-link_active">Inicio</a></li>
+                <li class="nav-menu-item">
+                    <a href="/nosotros.html" class="nav-menu-linik nav-link">Nosotros</a></li>                
+                <li class="nav-menu-item">
+                    <a href="/contacto.html" class="nav-menu-linik nav-link">Contacto</a></li>
+                <li class="nav-menu-item">
+                    <a href="/ayuda.html" class="nav-menu-linik nav-link">Ayuda</a></li>
+            </ul>            
+        </nav>
+    </header>
+    <div class="separador"></div> 
+    <div class="slider">
+       <ul class="no-margin no-padding">
+           <li>
+               <img src="/img/slider/1.webp" alt="img1">
+           </li>
+           <li>
+            <img src="/img/slider/2.webp" alt="img2">
+           </li>
+           <li>
+            <img src="/img/slider/3.webp" alt="img3">
+           </li>
+           <li>
+            <img src="/img/slider/4.webp" alt="img4">
+           </li>
+       </ul>  
+       <div class="contenedor cajaContrata cajaContrata_mostrar" >
+        <a href="#contrata">
+            <div class="centrar_contenido">                    
+                <h3 class="texto">Contrate ahora y se lleva</h3>
+                <h3 class="texto">1 Mes de servicio</h3>
+                <h1 class="texto">¡GRATIS!</h1>
+                <p>El equipo es suyo.</p>
+            </div> 
+        </a>                       
+    </div>       
+    </div>    
+    <a name="contrata"></a>
+    <h1 class="title">Paquetes ideales para sus necesidades</h1>      
+    <input type="checkbox" class="checkbox" id="check">     
+    <div id="ventana-lateral" class="ventana-lateral" style="top: 40%">
+        <label class="menu" for="check"></label>
+        <!--a-->
+            <img class="oferta-lateral" src="/img/tarjeta_lateral1.webp" alt="Ayuda" style="right: 0px;">
+        <!--/a-->
+        <div class="ventana-lateral-etiqueta no-margin">
+            <a class="no-margin">¿Ya tiene equipo?</a>
+        </div>
+    </div>   
+    <div class="right-panel">        
+        <div class="contenedor">
+            <div>
+                <h1>¡Ahorrese la instalación!</h1>
+                <h4>¿Ya cuenta con antena y router?</h4> 
+                <h4>Llene este formulario para que le contactemos.</h4>        
+            </div>
+            <!--9b1c702f5c03e106361da4471723546d-->
+            <form action="https://formsubmit.co/df8aa2bfc0227ab1f1ac316419ec1ac7" method="POST">
+                <div class="hidden">
+                    <input type="text"
+                    name="Paquete"
+                    value="Hola, ya cuento con equipo y antena, me gustaría concer sus precios especiales.">
+                </div>
+                <input type="text" 
+                    required="required"
+                    class="contactoPopUp_campo" 
+                    name="nombre" 
+                    id="nombre_pnl_Lateral" 
+                    placeholder="Nombre"
+                >
+                <input type="phone" 
+                    required="required"
+                    class="contactoPopUp_campo" 
+                    name="telefono" 
+                    id="telefono_pnl_Lateral" 
+                    placeholder="Número telefónico"
+                >                
+                <input type="email" 
+                    required="required"
+                    class="contactoPopUp_campo" 
+                    name="correo" 
+                    id="correo_pnl_Lateral" 
+                    placeholder="Correo electrónico"
+                >
+                <!--div class="boton-slider"> 
+                    <p>Acepto <a href="aviso_priv.html">términos y condiciones</a></p>
+                    <input type="checkbox" 
+                    value="Si" Descomentar cuando esten listos los terminos y condiciones
+                    required="required"
+                    name="Acepto políticas de privacidad" 
+                    id="checkSwitch_banner">                            
+                    <label for="checkSwitch_banner" class="lbl-switch"></label>                            
+                </div-->                        
+                <button class="subs-send no-margin" type="submit">Contactenos</button>                        
+            </form>
+        </div>
+    </div>    
+    <div class="container no-margin">
+        <div class="card">                       
+            <img src="/img/basico.webp">            
+            <div class="contenedor">
+                <div class="posicion">
+                    <h3 class="mb">BÁSICO</h3>
+                    <h2 class="mb">4 Mb</h2>
+                </div> 
+                <div class="posicion">                    
+                    <h1 class="precio">$300<span>.00</span></h1>
+                </div> 
+                <input type="button" id="btn_basico" class="botonContratar boton--blanco" value="Contratar" aria-label="Contratar" onclick="showPopup()">
+            </div>
+        </div>
+        <div class="card">
+            <img src="/img/estandar.webp">            
+            <div class="contenedor">    
+                <div class="posicion">
+                    <h3 class="mb">ESTANDAR</h3>
+                    <h2 class="mb">5 Mb</h2>
+                </div>   
+                <div class="posicion">                    
+                    <h1 class="precio">$400<span>.00</span></h1>
+                </div>           
+                <input type="button" id="btn_estandar" class="botonContratar boton--blanco" value="Contratar" aria-label="Contratar" onclick="showPopup()">
+            </div>
+        </div>
+        <div class="card">
+            <img src="/img/premium.webp">
+            <div class="contenedor">
+                <div class="posicion">
+                    <h3 class="mb">PREMIUM</h3>
+                    <h2 class="mb">6 Mb</h2>
+                </div> 
+                <div class="posicion">                    
+                    <h1 class="precio">$500<span>.00</span></h1>
+                </div> 
+                <input type="button" id="btn_premium" class="botonContratar boton--blanco" value="Contratar" aria-label="Contratar" onclick="showPopup()">
+            </div>
+        </div>
+        <div class="card">
+            <img src="/img/turbo.webp">
+            <div class="contenedor">
+                <div class="posicion">
+                    <h3 class="mb">TURBO</h3>
+                    <h2 class="mb">10 Mb</h2>
+                </div> 
+                <div class="posicion">                    
+                    <h1 class="precio">$900<span>.00</span></h1>
+                </div> 
+                <input type="button" id="btn_turbo" class="botonContratar boton--blanco" value="Contratar" aria-label="Contratar" onclick="showPopup()">
+            </div>
+        </div>
+
+        <div class="contenedor contenido-principal">
+            <aside class="sidebar">
+                <h3>¿Necesita todavía más velocidad?</h3>
+    
+                <ul class="calcular no-padding">
+                    <li class="widget-calcular">
+                        <h4 class="no-margin">COTIZADOR</h4>
+                        <p class="widget-calcular__label">Velocidad: 
+                            <span class="widget-calcular__info" id="velocidad">11 Mb</span>
+                        </p>
+                        <p class="widget-calcular__label">Paga:  
+                            <span class="widget-calcular__info" id="pagas">$1000</span>
+                        </p>
+                        <div class="range">
+                            <div class="sliderValue">
+                              <span id="costo">100</span>
+                            </div>
+                            <div class="field"> 
+                              <div class="value left">11 Mb</div>
+                            <input id="slider" class="slide" type="range" min="11" max="100" value="11" steps="1">
+                              <div class="value right">100 Mb</div>
+                            </div>
+                            <script>
+                                const pagas = document.getElementById("pagas");
+                                const velocidad = document.getElementById("velocidad");
+    
+                                const slideValue = document.getElementById("costo");                            
+                                const inputSlider = document.getElementById("slider");
+                                inputSlider.oninput = (()=>{
+                                  let value = inputSlider.value;  
+                                  let precio=((value*100)-100);                            
+                                  pagas.textContent = "$"+precio+".00";
+                                  velocidad.textContent = value+"Mb";
+                                  slideValue.textContent = value+"Mb";
+                                  slideValue.style.left = (value-3) + "%";
+                                  slideValue.classList.add("show");
+                                });
+                                inputSlider.addEventListener("touchend",()=>{
+                                    slideValue.classList.remove("show");     
+                                });
+                                inputSlider.onmouseup= (()=>{
+                                  slideValue.classList.remove("show");
+                                });                                                
+                              </script>
+                        </div>                    
+                        <!--a href="tarifas.html" class="boton boton--terciario">Más Información sobre nuestros paquetes</a-->
+                    </li>                
+                </ul>
+            </aside>
+
+            <main class="blog">
+                <h3>Conozca nuestros servicios</h3>
+    
+                <article class="entrada">
+                    <div class="entrada__imagen">
+                        <picture>
+                            <source loading="lazy"  srcset="/img/por-que-contratar-tlaxi.webp" type="image/webp">
+                        </picture>
+                    </div>
+    
+                    <div class="entrada__contenido">
+                        <h4 class="no-margin">¿Por que contratar TLAXICOM?</h4>
+                        <p>Actualmente vivimos rodeados de internet el cual es la herramienta primordial en la vida laboral, 
+                            educativa y recreativa en donde contar con un servicio de internet excelente, ilimitado y de calidad es
+                            fundamental. TLAXICOM le ofrece el mejor servicio, atención especializada, personalizada e inmediata. 
+                            Donde usted es la prioridad. Disfrute de internet ilimitado a un precio accesible con pagos mensuales.</p>
+                        <a href="https://www.tlaxicom.com/aviso_priv.html" class="boton boton--terciario">Consulte nuestro aviso de privacidad</a>
+                    </div>
+                </article>            
+            </main>                       
+        </div>  
+        
+        <div class="contenedor">
+            <h1 class="title">Consulte nuestra cobertura</h1>
+        </div>
+        <div class="contenedor contenido-principal">
+            <div>
+                <h3 class="title">¿No se encuentra en la zona de cobertura TLAXICOM?</h3>
+                <div class="title">
+                    <i class="fa-brands fa-whatsapp" id="sinCobertura_contacto_wa" onclick="sinCoverturaContacto()"></i>
+                    <p class="pie_wha">Contactenos</p>
+                </div>                            
+            </div>      
+            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDoe0NgL_6gvhQfauxUWVlpVZyLDdw04oI&libraries=geometry"></script>
+            <div id="map-canvas"></div>            
+        </div> 
+        
+        <footer class="footer">        
+            <div class="contenedor">
+                <div class="footer-image-center">
+                    <div class="logoTlaxi" href="https://www.tlaxicom.com/index.html"></div>      
+                </div>
+            </div>
+            <div class="contenedor">
+                <div class="footer-center">
+                    <div>
+                        <a href="https://www.tlaxicom.com/aviso_priv.html" class="navegacion__enlace">Consulta nuestros términos y condiciones</a> 
+                    </div>
+                    <div>                    
+                        <a href="https://www.tlaxicom.com/aviso_priv.html" class="navegacion__enlace">POLÍTICA DE PRIVACIDAD</a>
+                    </div>                                        
+                </div> 
+                               
+            </div>
+            <div class="contenedor">
+                <div class="footer-llamanos">   
+                    <p class="o">Llámenos: <a href="tel:2411195233" class="llamar_enlace">2411195233</a></p>                                     
+                    <!--a href="tel:2411195233" class="llamar_enlace"><span class="o">Llámenos: </span>018005425498</a-->
+                </div> 
+            </div>                                   
+        </footer>      
+    </div>    
+    
+    <!--AQUI IBA EL CONTENEDOR CONTENIDO--PRINCIPAL-->
+    <!--
+        value="Hola, me interesa este paquete"
+    -->
+    <div class="pop-up">
+        <div class="pop-up-wrap">
+            <div class="pop-up-contratar">
+                <i class="far fa-times-circle" id="close" onclick="closePopup()"></i>
+                <div class="sub-content">
+                    <img src="/img/logo_tlaxi.webp" alt="Logo">
+                    <h4>Llamanos al</h4>
+                    <div class="tel-popup no-margin no-padding">805151515451</div>
+                    <p>:::<span class="o"> o envíenos sus datos </span>:::</p>     
+                    <!--df8aa2bfc0227ab1f1ac316419ec1ac7-->               
+                    <form name="form_pop" action="https://formsubmit.co/df8aa2bfc0227ab1f1ac316419ec1ac7" method="POST">
+                        <div class="hidden">
+                            <input type="text"
+                            name="Paquete"
+                            id="info_pqt"
+                            >
+                        </div>
+                        <input type="text" 
+                            required="required"
+                            class="contactoPopUp_campo" 
+                            name="nombre" 
+                            id="nombre_popUp" 
+                            placeholder="Nombre"
+                        >
+                        <input type="phone" 
+                            required="required"
+                            class="contactoPopUp_campo" 
+                            name="telefono" 
+                            id="telefono_popUp" 
+                            placeholder="Número telefónico"
+                        >
+                        <input type="email" 
+                            required="required"
+                            class="contactoPopUp_campo" 
+                            name="correo" 
+                            id="correo_popUp" 
+                            placeholder="Correo electrónico"
+                        >
+                        <!--div class="boton-slider"> 
+                            <p>Acepto <a>términos y condiciones</a></p>
+                            <input type="checkbox" 
+                            value="Si"
+                            required="required" descomentar cuando esten litos los términos y condiciones
+                            name="Acepto políticas de privacidad" 
+                            id="checkSwitch">                            
+                            <label for="checkSwitch" class="lbl-switch"></label>                            
+                        </div-->                        
+                        <button class="subs-send no-margin" type="submit">Enviar</button>                        
+                    </form>
+                </div>                                
+            </div>
+        </div>
+    </div>            
+    <script src="/js/modernizr.js"></script>
+</body>
+</html>

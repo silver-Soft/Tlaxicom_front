@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atencion a cliente</title>
+    <meta name="description" content="Atencion a cliente">
+    <meta name='robots' content='noindex, follow'/>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="https://kit.fontawesome.com/1b7ca3b13f.js" crossorigin="anonymous"></script>
+    <script defer src="js/atencionCliente.js"></script>
+    <!-- Prefetch -->
+    <link rel="prefetch" href="index.html" as="document">
+
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Sans:wght@400;700&display=swap"  crossorigin="crossorigin" as="font">
+    <link               href="https://fonts.googleapis.com/css2?family=Open+Sans&family=PT+Sans:wght@400;700&display=swap" rel="stylesheet">    
+    <link rel="stylesheet" href="css/style.css">
+    <script type="text/javascript">
+        function obtenerdatos()
+        {
+            var nombre_cliente = document.getElementById('nombre_cliente').value;
+            var numero_equipo= Number(document.getElementById('numero_equipo').value);
+            var email_cliente= document.getElementById('email_cliente').value;
+            var mensaje_cliente = document.getElementById('mensaje_cliente').value; 
+            var enlace;
+            if(nombre_cliente==""||email_cliente==""||mensaje_cliente==""){
+                alert("Por favor llene todos los campos");
+            }
+            else if(numero_equipo==""||!Number.isInteger(numero_equipo)){
+                alert("Por favor ingrese un número de equipo valido, P/ej si su equipo es TLAXICOM50 el numero de equipo es 50");
+            }else{  
+                const nombreregex = nombre_cliente.replaceAll(/ /g, "%20");
+                //const numero_equiporegex=numero_equipo.replaceAll(/ /g, "%20"); 
+                const email_clienteregex=email_cliente.replaceAll(/ /g, "%20")   
+                const mensaje_clienteregex=mensaje_cliente.replaceAll(/ /g, "%20")      
+                enlace="https://wa.me/+522411195233?text=Hola%20soy%20"+nombreregex+
+                "%20con%20el%20numero%20de%20equipo%20"+numero_equipo+
+                "%20y%20tengo%20el%20siguiente%20problema:%20"+mensaje_clienteregex
+                /*console.log("tag: "+nombreregex+" "+numero_equipo+" "+email_clienteregex+" "+mensaje_clienteregex+"\n"+
+                enlace);*/
+                window.open(enlace,"_blank");
+            }
+        }
+    </script>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <a href="https://www.tlaxicom.com/index.html"><div class="logoTlaxi" href="https://www.tlaxicom.com/index.html"></div></a> 
+            <button class="nav-toggle" aria-label="Abrir menú">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <ul class="nav-menu">
+                <li class="nav-menu-item">
+                    <a href="index.html" class="nav-menu-linik nav-link">Inicio</a></li>
+                <li class="nav-menu-item">
+                    <a href="nosotros.html" class="nav-menu-linik nav-link">Nosotros</a></li>            
+                <li class="nav-menu-item">
+                    <a href="contacto.html" class="nav-menu-linik nav-link">Contacto</a></li>
+                <li class="nav-menu-item">
+                    <a href="ayuda.html" class="nav-menu-linik nav-link nav-menu-link_active">Ayuda</a></li>
+            </ul>            
+        </nav>
+    </header>
+
+    <main class="contenedor padding_top">
+        <h3 class="centrar-texto">Atención personalizada</h3>
+
+        <div class="contacto-bg"></div>
+
+        <form class="formulario">
+            <div class="campo">
+                <label class="campo__label" for="nombre">Nombre</label>
+                <input 
+                    class="campo__field"
+                    type="text" 
+                    placeholder="Tu Nombre"                     
+                    id="nombre_cliente"
+                >
+            </div>
+            <div class="campo">
+                <label class="campo__label" for="nombre">Equipo</label>
+                <input 
+                    class="campo__field"
+                    type="number" 
+                    pattern="[0-9]" 
+                    maxlength="10"                    
+                    required autocomplete="off"                     
+                    min="1"
+                    placeholder="Numero de equipo. Solo caracteres Numericos*" 
+                    id="numero_equipo"
+                >
+            </div>
+            <div class="campo">
+                <label class="campo__label" for="email">E-mail</label>
+                <input 
+                    class="campo__field"
+                    type="email" 
+                    placeholder="Tu E-mail" 
+                    id="email_cliente"
+                >
+            </div>
+            <!--div class="campo">
+                <label class="campo__label" for="telefono">Teléfono</label>
+                <input 
+                    required="required"
+                    class="campo__field"
+                    type="phone" 
+                    name="Telefono"
+                    placeholder="Tu teléfono" 
+                    id="telefono"
+                >
+            </div-->
+            <div class="campo">
+                <label class="campo__label" for="mensaje">Descripción:</label>                
+            </div>
+            <div class="campo">
+                <textarea 
+                    class="campo__field campo__field--textarea"
+                    placeholder="Describe la falla del equipo"
+                    id="mensaje_cliente"
+                ></textarea>
+            </div>
+
+            <div class="contacto_boton_submit">
+                <input type="button" value="Enviar" class="subs-send no-margin boton--terciario" onclick="obtenerdatos()">
+                <!--a href="https://wa.me/+525951214378?text=Me%20interesa%20tu%20producto"  target="_blank"></a-->
+            </div>           
+        </form>        	        
+    </main>
+    <footer class="footer">        
+        <div class="contenedor">
+            <div class="footer-image-center">
+                <a href="https://www.tlaxicom.com/index.html"><div class="logoTlaxi" href="https://www.tlaxicom.com/index.html"></div></a>      
+            </div>
+        </div>
+        <div class="contenedor">
+            <div class="footer-center">
+                <div>
+                    <a href="#" class="navegacion__enlace">Consulta nuestros términos y condiciones</a> 
+                </div>
+                <div>                    
+                    <a href="aviso_priv.html" class="navegacion__enlace">POLÍTICA DE PRIVACIDAD</a>
+                </div>                                        
+            </div> 
+                           
+        </div>
+        <div class="contenedor">
+            <div class="footer-llamanos">   
+                <p class="o">Llámenos: <a href="tel:2411195233" class="llamar_enlace">2411195233</a></p>                                     
+            </div> 
+        </div>                                   
+    </footer>    
+    <script src="js/modernizr.js"></script>
+</body>
+</html>

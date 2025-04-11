@@ -1,0 +1,42 @@
+# ====================================
+**/vendor/
+**/node_modules/
+
+# ====================================
+# Ignorar archivos de log
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ====================================
+# Ignorar cachés y otros generados
+.phpunit.result.cache
+.php-cs-fixer.cache
+.cache/
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ====================================
+# Ignorar sistema operativo
+.DS_Store
+Thumbs.db
+
+# ====================================
+# Ignorar archivos de build (si los usas)
+/dist/
+/build/
+
+# ====================================
+# Ignorar coverage (tests)
+/coverage/
+
+# ====================================
+# Ignorar composer.lock o package-lock.json si no los quieres versionar (opcional)
+/composer.lock
+/package-lock.json
+/pnpm-lock.yaml
+/yarn.lock

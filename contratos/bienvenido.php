@@ -7,8 +7,6 @@ if (!isset($_SESSION['usuario'])) {
 }
 ?>
 
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -29,24 +27,13 @@ if (!isset($_SESSION['usuario'])) {
 
 </head>
 <body>
-<nav>
-      
-        <ul>
-        <h2><?php echo "¡Bienvenido al Futuro de Conexión, " . $_SESSION['usuario'] . ""; ?></h2>
-
-         
-        <li style="float: right; margin-top: -76.5px;"><img src="img/Logo_Tlaxicom.png" width="280"></li>
-
-
-          
-        </ul>
-    </nav>
+<nav>      
+    <ul>
+    <h2><?php echo "¡Bienvenido al Futuro de Conexión, " . $_SESSION['usuario'] . ""; ?></h2>        
+    <li style="float: right; margin-top: -76.5px;"><img src="img/Logo_Tlaxicom.png" width="280"></li>
+    </ul>
+</nav>
    
-
-    
-
-
-
     <form action="procesar_bienvenido.php" method="post" enctype="multipart/form-data">
     <h1> Suscriptor</h1>
         Nombre: <input type="text" name="nombre" required><br>
@@ -66,10 +53,10 @@ if (!isset($_SESSION['usuario'])) {
 
         Paquete: <input type="text" name="paquete" required><br>
       
-        <div style="display: flex; align-items: center;">
-  Tarifa:<input type="number" name="tarifa" required>
-  <span style="margin-left: 5px;">$</span>
-</div>
+    <div style="display: flex; align-items: center;">
+        Tarifa:<input type="number" name="tarifa" required>
+        <span style="margin-left: 5px;">$</span>
+    </div>
      
      <h1>Datos del equipo Compra Venta</h1>
 
@@ -85,71 +72,36 @@ if (!isset($_SESSION['usuario'])) {
  
      Fecha: <input type="date" name="fecha" required><br>
      Hora: <input type="time" name="hora" required><br>
-     
-     
-
-
-     
-
-
+               
 <h1>Metodos de Pago</h1>
-
-
-     
-
 
 <label for="opciones">Seleccione un metodo de pago:</label>
 <select id="opciones" name="opciones" require>
-<option value="">---seleccione una opcion---</option>
+    <option value="">---seleccione una opcion---</option>
     <option value="opcion1">Efectivo</option>
-    <option value="opcion2">Transferencia</option>
-  
+    <option value="opcion2">Transferencia</option>  
 </select>
 
-
 <div id="leyendas">
-
     <p id="leyenda_opcion1" style="display: none;">Carniceria "Sadot" Av. 27 de septiembre #11 Terrenate De lunes a domingo 09:00 am a 05:00 pm</p>
     <p id="leyenda_opcion2" style="display: none;">Yonatan Ugarte Juárez No. de cuenta: 0478144451 Tarjeta: 4555113012650786</p>
-
 </div>
 
-<script>
-    
+<script>    
     document.getElementById('opciones').addEventListener('change', function() {
         var seleccionado = this.value;
         var leyendas = document.getElementById('leyendas');
-
-             var leyendaOpcion1 = document.getElementById('leyenda_opcion1');
-        var leyendaOpcion2 = document.getElementById('leyenda_opcion2');
-       
+        var leyendaOpcion1 = document.getElementById('leyenda_opcion1');
+        var leyendaOpcion2 = document.getElementById('leyenda_opcion2');       
 
         leyendaOpcion1.style.display = (seleccionado === 'opcion1') ? 'block' : 'none';
         leyendaOpcion2.style.display = (seleccionado === 'opcion2') ? 'block' : 'none';
      
-
         leyendas.style.display = 'block';
     });
-</script>
+</script> 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-  
-    <label for="opciones_servicios">¿Deseas agregar servicios adicionales?</label>
+<label for="opciones_servicios">¿Deseas agregar servicios adicionales?</label>
 <select id="opciones_servicios" name="opciones_servicios" required>
     <option value="">---seleccione una opcion---</option>
     <option value="no">No</option>
@@ -176,15 +128,12 @@ if (!isset($_SESSION['usuario'])) {
 </div>
 </div>
 
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
 
         mostrarOcultarCuestionario();
-
         /
         document.getElementById('opciones_servicios').addEventListener('change', mostrarOcultarCuestionario);
-
         
         document.getElementById('btn_mostrar_cuestionario').addEventListener('click', mostrarOcultarCuestionario);
     });
@@ -192,10 +141,8 @@ if (!isset($_SESSION['usuario'])) {
     function mostrarOcultarCuestionario() {
         var seleccionado = document.getElementById('opciones_servicios').value;
         var cuestionario = document.getElementById('cuestionario_servicios');
-
      
         cuestionario.style.display = (seleccionado === 'si') ? 'block' : 'none';
-
         
         if (seleccionado === 'no') {
             document.querySelector('#cuestionario_servicios [name="servicio1"]').value = '-------';
@@ -209,12 +156,7 @@ if (!isset($_SESSION['usuario'])) {
     }
 </script>
 
-
-
-
-
 <H1>EL SUSCRIPTOR AUTORIZA SE LE ENVIE POR CORREO ELECTRÓNICO:</H1>
-
 
 <label for="tieneCorreo">¿Cuenta con correo electrónico?</label>
   <select id="tieneCorreo" name="tieneCorreo" onchange="mostrarCampoCorreo()">
@@ -230,7 +172,6 @@ if (!isset($_SESSION['usuario'])) {
     <br>
   </div>
 
-
   <script>
     function mostrarCampoCorreo() {
       var seleccion = document.getElementById("tieneCorreo").value;
@@ -245,25 +186,16 @@ if (!isset($_SESSION['usuario'])) {
 
   </script>
 
-
-
-
-
-
 <h1>Fotografias del INE</h1>
+
 <form method="post" action="procesar.php" enctype="multipart/form-data">
     <!-- Otros campos del formulario -->
     <label for="foto1">Foto 1:</label>
-    <input type="file" name="foto1" id="foto1" accept="image/*" required>
-
-    
+    <input type="file" name="foto1" id="foto1" accept="image/*" required>    
     <label for="foto2">Foto 2:</label>
     <input type="file" name="foto2" id="foto2" accept="image/*" required>
-
     
-    <style>
-      
-
+    <style>      
         form {
             max-width: 600px;
             margin: 20px auto;
@@ -311,15 +243,9 @@ if (!isset($_SESSION['usuario'])) {
         input[type="submit"]:hover {
             background-color: #0056b3;
         }
-    </style>
-    
-    
-
-
-
+    </style>    
 
 <h1>Firma del suscriptor</h1>
-
 
 <div id="firmaContainer" style="border: 1px solid #000; width: 320px; height: 200px; position: relative;">
     <canvas id="firmaCanvas" width="320" height="200" style="border: 1px solid #000; position: absolute; left: 0; top: 0;"></canvas>
@@ -328,25 +254,21 @@ if (!isset($_SESSION['usuario'])) {
 
     <input type="hidden" name="firma" id="firma" required>
 
-
     <button type="button" onclick="borrarFirma()">Borrar Firma</button><br>
     <style>
-
-  button {
-    background-color: #ff0000;
-    color: #ffffff;
-    border: 1px solid #ff0000; 
-    padding: 10px 20px; 
-    cursor: pointer; 
-    border-radius: 5px;                        
-  }
-
-  
-  button:hover {
-    color: #ff0000;
-    background-color: #ffffff;
-  }
-</style>
+        button {
+            background-color: #ff0000;
+            color: #ffffff;
+            border: 1px solid #ff0000; 
+            padding: 10px 20px; 
+            cursor: pointer; 
+            border-radius: 5px;                        
+        }        
+        button:hover {
+            color: #ff0000;
+            background-color: #ffffff;
+        }
+    </style>
 
     
     <input type="submit" value="Generar PDF">
@@ -363,8 +285,7 @@ if (!isset($_SESSION['usuario'])) {
             margin: 0 auto; 
             display: block; 
         }
-        </style>
-
+    </style>
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -394,7 +315,5 @@ if (!isset($_SESSION['usuario'])) {
         }
     </script>
         
-
-
 </body>
 </html>

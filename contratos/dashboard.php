@@ -1,6 +1,9 @@
-
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
+echo "<!-- Sesión iniciada correctamente -->";
 include("conexion.php");
 
 if (!isset($_SESSION['usuario'])) {
@@ -124,8 +127,7 @@ $usuario = $_SESSION['usuario'];
     </div>
 
     <div class="main-content">
-        <button class="toggle-sidebar-btn" onclick="toggleSidebar()">Despliega el Menú</button>
-      
+        <button class="toggle-sidebar-btn" onclick="toggleSidebar()">Despliega el Menú</button>        
     </div>
 
     <script>

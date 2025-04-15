@@ -1,3 +1,24 @@
-User-agent:*
+User-agent: *
 Disallow: /wp-admin/
 Allow: /
+
+# Directorios falsos o maliciosos
+Disallow: /5xal9aijf80/
+Disallow: /5xal9bijf81/
+Disallow: /unsubscribe/
+Disallow: /event/
+
+# Bloqueo de URLs con patrón
+Disallow: /*chino
+Disallow: /*.php$
+
+# Bloqueo de páginas con parámetros (forma correcta)
+Disallow: /search?category=50101&search_word=
+Disallow: /search?category=812&search_word=
+Disallow: /search
+
+# Bloquear archivos ocultos
+Disallow: /.git/
+Disallow: /.env
+Disallow: /.htaccess
+Disallow: /.DS_Store

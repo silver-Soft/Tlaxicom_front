@@ -295,7 +295,17 @@
                 </div>                            
             </div>      
             <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgtWkq6pB4RCHwkwUOckGmHadCzxwey00&libraries=geometry"></script>
-            <div id="map-canvas"></div>            
+            <!-- Contenedor del mapa -->
+            <div style="position: relative;">
+                <div id="map-canvas" style="height: 500px;"></div>
+
+                <!-- Leyenda superpuesta -->
+                <div id="legend">
+                    <h4>Simbología</h4>
+                    <div><span class="box" style="background-color: #70ff00;"></span> Cobertura Wireless</div>
+                    <div><span class="box" style="background-color: #006cff;"></span> Cobertura Fibra Óptica</div>
+                </div>
+            </div>           
         </div> 
         
         <footer class="footer">        

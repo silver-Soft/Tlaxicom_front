@@ -5,7 +5,7 @@ const cajaContrata = document.querySelector(".cajaContrata");
 
 /*Funcinoalidad de PAQUETES*/
 var btn_basico = document.getElementById("btn_basico");
-var btn_estandar = document.getElementById("btn_estandar");
+//var btn_estandar = document.getElementById("btn_estandar");
 var btn_premium = document.getElementById("btn_premium");
 var btn_turbo = document.getElementById("btn_turbo");
 
@@ -346,14 +346,7 @@ btn_basico.addEventListener("click", () => {
   document.form_pop.info_pqt.value =
     "Hola! me interesa el paquete básico de 4 Mb $300.00";
 });
-btn_estandar.addEventListener("click", () => {
-  txt_nombre.value = "";
-  txt_telefono.value = "";
-  txt_correo.value = "";
-  document.form_pop.info_pqt.value = "";
-  document.form_pop.info_pqt.value =
-    "Hola! me interesa el paquete estandar 5 Mb $400.00";
-});
+
 btn_premium.addEventListener("click", () => {
   txt_nombre.value = "";
   txt_telefono.value = "";

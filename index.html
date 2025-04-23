@@ -96,15 +96,13 @@
     <a name="contrata"></a>
     <h1 class="title">Paquetes ideales para sus necesidades</h1>      
     <input type="checkbox" class="checkbox" id="check">     
-    <div id="ventana-lateral" class="ventana-lateral" style="top: 40%">
-        <label class="menu" for="check"></label>
-        <!--a-->
-            <img class="oferta-lateral" src="img/tarjeta_lateral1.webp" alt="Ayuda" style="right: 0px;">
-        <!--/a-->
+    <!--div id="ventana-lateral" class="ventana-lateral" style="top: 40%">
+        <label class="menu" for="check"></label>        
+        <img class="oferta-lateral" src="img/tarjeta_lateral1.webp" alt="Ayuda" style="right: 0px;">      
         <div class="ventana-lateral-etiqueta no-margin">
             <a class="no-margin">¿Ya tiene equipo?</a>
         </div>
-    </div>   
+    </div-->   
     <div class="right-panel">        
         <div class="contenedor">
             <div>
@@ -159,25 +157,15 @@
             <div class="contenedor">
                 <div class="posicion">
                     <h3 class="mb">BÁSICO</h3>
-                    <h2 class="mb">4 Mb</h2>
+                    <h2 class="mb">5 Mb</h2>
                 </div> 
                 <div class="posicion">                    
                     <h1 class="precio">$300<span>.00</span></h1>
                 </div> 
+                <div class="position">
+                    <h3 class="folio"><span>Folio: </span>682174</h3>
+                </div>
                 <input type="button" id="btn_basico" class="botonContratar boton--blanco" value="Contratar" aria-label="Contratar" onclick="showPopup()">
-            </div>
-        </div>
-        <div class="card">
-            <img src="img/estandar.webp">            
-            <div class="contenedor">    
-                <div class="posicion">
-                    <h3 class="mb">ESTANDAR</h3>
-                    <h2 class="mb">5 Mb</h2>
-                </div>   
-                <div class="posicion">                    
-                    <h1 class="precio">$400<span>.00</span></h1>
-                </div>           
-                <input type="button" id="btn_estandar" class="botonContratar boton--blanco" value="Contratar" aria-label="Contratar" onclick="showPopup()">
             </div>
         </div>
         <div class="card">
@@ -185,11 +173,14 @@
             <div class="contenedor">
                 <div class="posicion">
                     <h3 class="mb">PREMIUM</h3>
-                    <h2 class="mb">6 Mb</h2>
+                    <h2 class="mb">10 Mb</h2>
                 </div> 
                 <div class="posicion">                    
                     <h1 class="precio">$500<span>.00</span></h1>
                 </div> 
+                <div class="position">
+                    <h3 class="folio"><span>Folio: </span>682199</h3>
+                </div>
                 <input type="button" id="btn_premium" class="botonContratar boton--blanco" value="Contratar" aria-label="Contratar" onclick="showPopup()">
             </div>
         </div>
@@ -198,102 +189,52 @@
             <div class="contenedor">
                 <div class="posicion">
                     <h3 class="mb">TURBO</h3>
-                    <h2 class="mb">10 Mb</h2>
+                    <h2 class="mb">15 Mb</h2>
                 </div> 
                 <div class="posicion">                    
-                    <h1 class="precio">$900<span>.00</span></h1>
+                    <h1 class="precio">$700<span>.00</span></h1>
                 </div> 
+                <div class="position">
+                    <h3 class="folio"><span>Folio: </span>682207</h3>
+                </div>
                 <input type="button" id="btn_turbo" class="botonContratar boton--blanco" value="Contratar" aria-label="Contratar" onclick="showPopup()">
             </div>
         </div>
 
-        <div class="contenedor contenido-principal">
-            <div>
-                <aside class="sidebar">
-                    <h3>¿Necesita todavía más velocidad?</h3>
-        
-                    <ul class="calcular no-padding">
-                        <li class="widget-calcular">
-                            <h4 class="no-margin">COTIZADOR</h4>
-                            <p class="widget-calcular__label">Velocidad: 
-                                <span class="widget-calcular__info" id="velocidad">11 Mb</span>
-                            </p>
-                            <p class="widget-calcular__label">Paga:  
-                                <span class="widget-calcular__info" id="pagas">$1000</span>
-                            </p>
-                            <div class="range">
-                                <div class="sliderValue">
-                                  <span id="costo">100</span>
-                                </div>
-                                <div class="field"> 
-                                  <div class="value left">11 Mb</div>
-                                <input id="slider" class="slide" type="range" min="11" max="100" value="11" steps="1">
-                                  <div class="value right">100 Mb</div>
-                                </div>
-                                <script>
-                                    const pagas = document.getElementById("pagas");
-                                    const velocidad = document.getElementById("velocidad");
-        
-                                    const slideValue = document.getElementById("costo");                            
-                                    const inputSlider = document.getElementById("slider");
-                                    inputSlider.oninput = (()=>{
-                                      let value = inputSlider.value;  
-                                      let precio=((value*100)-100);                            
-                                      pagas.textContent = "$"+precio+".00";
-                                      velocidad.textContent = value+"Mb";
-                                      slideValue.textContent = value+"Mb";
-                                      slideValue.style.left = (value-3) + "%";
-                                      slideValue.classList.add("show");
-                                    });
-                                    inputSlider.addEventListener("touchend",()=>{
-                                        slideValue.classList.remove("show");     
-                                    });
-                                    inputSlider.onmouseup= (()=>{
-                                      slideValue.classList.remove("show");
-                                    });                                                
-                                  </script>
-                            </div>                    
-                            <!--a href="tarifas.html" class="boton boton--terciario">Más Información sobre nuestros paquetes</a-->
-                        </li>                
-                    </ul>
-                </aside>
-                <div style="display:flex; justify-content:center; align-items:center">
+        <div style="width: 100%; text-align: center; display: flex; justify-content: center;">
+            <div style="background-color: #0991cf; color: white; text-align: center; padding: 10px; border-radius: 30px; width: 90%;">
+                <h3 style="margin: 2px;">Si necesita un plan distinto o personalizado comuníquese al <a style="color: white;" href="tel:2411195233">2411195233</a></h3>
+            </div>            
+        </div>
+        <div class="contenedor">
+            <div class="contenedor">
+                <h1 class="title">¿Por que contratar TLAXICOM?</h1>
+                <div class="entrada__imagen">
+                    <picture>
+                        <source loading="lazy"  srcset="img/por-que-contratar-tlaxi.webp" type="image/webp">
+                        <img loading="lazy" src="img/por-que-contratar-tlaxi.webp" alt="imagen blog"> 
+                    </picture>
+                </div>
+
+                <div style="text-align: justify;">                    
+                    <p>Vivimos en la era cibernética donde la  herramienta fundamental para las actividades laborales, educativas y recreativas es contar con un servicio excelente e ilimitado de internet.
+                        TLAXICOM le ofrece el mejor servicio, atención especializada, personalizada e inmediata. Donde usted es la prioridad.                             
+                        Disfrute de internet ilimitado a un precio accesible con pagos mensuales.</p>                    
+                </div>
+                
+                <div class="btn_enlaces">
+                    <a href="aviso_priv.html" style="margin-top: 3rem;" class="boton boton--terciario">Consulte nuestro aviso de privacidad</a>
                     <a id="cartaDerMin" style="margin-top: 3rem;" class="boton boton--terciario">Consulte sus derechos mínimos como usuario</a>
                 </div>
-            </div>            
-            <main class="blog">
-                <h3>Conozca nuestros servicios</h3>
-    
-                <article class="entrada">
-                    <div class="entrada__imagen">
-                        <picture>
-                            <source loading="lazy"  srcset="img/por-que-contratar-tlaxi.webp" type="image/webp">
-                            <img loading="lazy" src="img/por-que-contratar-tlaxi.webp" alt="imagen blog"> 
-                        </picture>
-                    </div>
-    
-                    <div class="entrada__contenido">
-                        <h4 class="no-margin">¿Por que contratar TLAXICOM?</h4>
-                        <p>Vivimos en la era cibernética donde la  herramienta fundamental para las actividades laborales, educativas y recreativas es contar con un servicio excelente e ilimitado de internet.
-                            TLAXICOM le ofrece el mejor servicio, atención especializada, personalizada e inmediata. Donde usted es la prioridad.                             
-                            Disfrute de internet ilimitado a un precio accesible con pagos mensuales.</p>
-                        <a href="aviso_priv.html" class="boton boton--terciario">Consulte nuestro aviso de privacidad</a>
-                    </div>
-                </article>            
-            </main>                       
+            </div>
+           
+                                 
         </div>  
         
         <div class="contenedor">
             <h1 class="title">Consulte nuestra cobertura</h1>
         </div>
-        <div class="contenedor contenido-principal">
-            <div>
-                <h3 class="title">¿No se encuentra en la zona de cobertura TLAXICOM?</h3>
-                <div class="title">
-                    <i class="fa-brands fa-whatsapp" id="sinCobertura_contacto_wa" onclick="sinCoverturaContacto()"></i>
-                    <p class="pie_wha">Contactenos</p>
-                </div>                            
-            </div>      
+        <div class="contenedor contenido-principal">                 
             <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgtWkq6pB4RCHwkwUOckGmHadCzxwey00&libraries=geometry"></script>
             <!-- Contenedor del mapa -->
             <div style="position: relative;">
@@ -302,9 +243,16 @@
                 <!-- Leyenda superpuesta -->
                 <div id="legend">
                     <h4>Simbología</h4>
-                    <div><span class="box" style="background-color: #70ff00;"></span> Cobertura Wireless</div>
+                    <div><span class="box" style="background-color: #70ff00;"></span> Cobertura Antena</div>
                     <div><span class="box" style="background-color: #006cff;"></span> Cobertura Fibra Óptica</div>
                 </div>
+            </div> 
+            <div>
+                <h3 class="title">¿No se encuentra en la zona de cobertura TLAXICOM?</h3>
+                <div class="title">
+                    <i class="fa-brands fa-whatsapp" id="sinCobertura_contacto_wa" onclick="sinCoverturaContacto()"></i>
+                    <p class="pie_wha">Contactenos</p>
+                </div>                            
             </div>           
         </div> 
         

@@ -556,6 +556,11 @@ span.o{
     margin-top: 0px;
     margin-bottom:.3rem;
 }
+.folio{
+    color: white;
+    font-size:2.5rem;    
+    margin-bottom:.3rem;
+}
 .container .card h2{
     font-size:4rem;
     margin-top: 0px;
@@ -592,7 +597,7 @@ span.o{
         /*padding-top: 65rem; antes*/
         padding-top: 1rem;
         display: grid;
-        grid-template-columns: 1fr 2fr;
+        grid-template-columns: 2fr 1fr;
         column-gap: 4rem;
     }    
 }
@@ -633,7 +638,7 @@ span.o{
     font-size: 1.8rem;
     text-transform: uppercase;
     font-weight: 700;
-    margin-top: 5rem;
+    margin-top: 1rem;
     margin-bottom: 2rem;
     border: none;
     border-radius: 3rem;
@@ -1107,8 +1112,7 @@ column-gap: 4rem;
     font-family: Arial, sans-serif;
     font-size: 14px;
     border: 1px solid #ccc;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    z-index: 1000;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);    
 }
 
 #legend h4 {
@@ -1125,6 +1129,10 @@ column-gap: 4rem;
     vertical-align: middle;
 }
 
+.btn_enlaces{
+    display:flex; 
+    justify-content:space-around;
+}
 @media(max-width: 768px){/*CUANDO EL DISPOSITIVO TENGA MENOS DE 768px*/
     body{
         padding-top: 60px;
@@ -1134,8 +1142,7 @@ column-gap: 4rem;
     }
     .header{
         height: 60px;
-    }
-    
+    }    
     .logoTlaxi{    
         background-image: url(../img/logo_tlaxi.webp);
         height: 6rem;
@@ -1147,8 +1154,7 @@ column-gap: 4rem;
         display: flex;
         height: 100;
         margin: 0 1rem 0 1rem;
-    }
-    
+    }    
     .nav-menu{
         flex-direction: column;
         align-items: center;
@@ -1270,19 +1276,11 @@ column-gap: 4rem;
         font-size:18px; 
         border-radius:2rem;       
     }
-    /*Sidebar de rango calcular costo*/
-    .sidebar{
-        margin-top: 0rem;
-        height: 38rem;
-        width: 100%;
-    }
-   
-    .range{
-        width: 330px;  
-        margin-bottom: 2rem;        
-    }
-    .slide{
-        z-index:1;
+    
+    .btn_enlaces{
+        display:flex; 
+        justify-content:center;
+        flex-direction: column;
     }
     /*FOOTER*/
     .footer {    

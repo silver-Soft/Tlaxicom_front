@@ -569,7 +569,7 @@ span.o{
 .posicion{ 
     color:var(--blanco);
     display:block;
-    margin-top:2rem;
+    margin-top:0rem;
     padding-left: 8px;
 }
 .mb{
@@ -593,7 +593,7 @@ span.o{
     font-family: var(--fuenteParrafos);
     font-size:6.5rem;
     display:grid;
-    margin-top:8rem;
+    margin-top:0rem;
     text-align: left;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 2rem;
@@ -790,15 +790,32 @@ span.o{
 .contenedor .footer-center a{                         
     color: var(--blanco);               
 }
-.footer-llamanos{
-    margin-top:4rem;
+.footer-llamanos{    
     text-align: center;
 }
 .footer-llamanos .o{
+    margin-top: 10px;
     color: #034574;
 }
 .footer-llamanos .llamar_enlace{
     color: var(--blanco);
+}
+
+.social-icons {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 3.5rem;
+}
+
+.social-icon {
+    color: var(--blanco);
+    font-size: 2rem;
+    transition: color 0.3s ease;
+}
+
+.social-icon:hover {
+    color: #034574; /* O el color que prefieras al pasar el mouse */
 }
 
 /** Sobre Nosotros **/

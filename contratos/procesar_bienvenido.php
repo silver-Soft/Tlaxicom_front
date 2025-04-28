@@ -324,9 +324,7 @@ $mensaje = '
             <td style="padding-right: 15px;" valign="inherit">
                 <img src="https://tlaxicom.com/img/logo_tlaxicom.png" width="100" style="border-radius: 50%;">
             </td>
-            <td valign="inherit">
-                <p style="margin: 0; font-size: 16px; font-weight: bold;">Yonatan Ugarte Juárez</p>
-                <p style="margin: 0; font-size: 14px;">CEO Tlaxicom</p>
+            <td valign="inherit">                
                 <p style="margin: 8px 0 0 0; font-size: 14px;">📧 
                     <a href="mailto:atencionaclientes@tlaxicom.com" style="color: #1a73e8; text-decoration: none;">
                         atencionaclientes@tlaxicom.com

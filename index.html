@@ -10,6 +10,7 @@
     <script src="js/jquery-3.6.0.min.js"></script>
     <script src="https://kit.fontawesome.com/1b7ca3b13f.js" crossorigin="anonymous"></script>
     <script defer src="js/index.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Prefetch -->
     <link rel="prefetch" href="nosotros.html" as="document">
 
@@ -77,7 +78,6 @@
                     <h3 class="texto">Contrate ahora y se lleva</h3>
                     <h3 class="texto">1 Mes de servicio</h3>
                     <h1 class="texto">¡GRATIS!</h1>
-                    <p>El equipo es suyo.</p>
                 </div>
             </a>
         </div>
@@ -161,11 +161,15 @@
                     <h3 class="mb">BÁSICO</h3>
                     <h2 class="mb">5 Mb</h2>
                 </div> 
+                <div style="margin-top: 7rem;">                    
+                    <p style="margin: 0px; font-family: PT Sans, sans-serif; font-weight: bold;">ILIMITADO</p>
+                </div> 
                 <div class="posicion">                    
                     <h1 class="precio">$300<span>.00</span></h1>
                 </div> 
-                <div class="position">
-                    <h3 class="folio"><span>Folio: </span>682174</h3>
+                <div class="position" style="margin-top: -20px;">
+                    <p style="margin: 0px; color: white; font-size: small;">Equipo a presamo</p>
+                    <h3 style="margin: 0px;" class="folio"><span>Folio: </span>682174</h3>
                 </div>
                 <input type="button" id="btn_basico" class="botonContratar boton--blanco" value="Contratar" aria-label="Contratar" onclick="showPopup()">
             </div>
@@ -177,11 +181,15 @@
                     <h3 class="mb">PREMIUM</h3>
                     <h2 class="mb">10 Mb</h2>
                 </div> 
+                <div style="margin-top: 7rem;">                    
+                    <p style="margin: 0px; font-family: PT Sans, sans-serif; font-weight: bold;">ILIMITADO</p>
+                </div> 
                 <div class="posicion">                    
                     <h1 class="precio">$500<span>.00</span></h1>
                 </div> 
-                <div class="position">
-                    <h3 class="folio"><span>Folio: </span>682199</h3>
+                <div class="position" style="margin-top: -20px;">
+                    <p style="margin: 0px; color: white; font-size: small;">Equipo a presamo</p>
+                    <h3 style="margin: 0px;" style="margin: 0px;" class="folio"><span>Folio: </span>682199</h3>
                 </div>
                 <input type="button" id="btn_premium" class="botonContratar boton--blanco" value="Contratar" aria-label="Contratar" onclick="showPopup()">
             </div>
@@ -193,11 +201,15 @@
                     <h3 class="mb">TURBO</h3>
                     <h2 class="mb">15 Mb</h2>
                 </div> 
+                <div style="margin-top: 7rem;">                    
+                    <p style="margin: 0px; font-family: PT Sans, sans-serif; font-weight: bold;">ILIMITADO</p>
+                </div> 
                 <div class="posicion">                    
                     <h1 class="precio">$700<span>.00</span></h1>
                 </div> 
-                <div class="position">
-                    <h3 class="folio"><span>Folio: </span>682207</h3>
+                <div class="position" style="margin-top: -20px;">
+                    <p style="margin: 0px; color: white; font-size: small;">Equipo a presamo</p>
+                    <h3 style="margin: 0px;" class="folio"><span>Folio: </span>682207</h3>
                 </div>
                 <input type="button" id="btn_turbo" class="botonContratar boton--blanco" value="Contratar" aria-label="Contratar" onclick="showPopup()">
             </div>
@@ -245,7 +257,7 @@
                 <!-- Leyenda superpuesta -->
                 <div id="legend">
                     <h4>Simbología</h4>
-                    <div><span class="box" style="background-color: #70ff00;"></span> Cobertura Antena</div>
+                    <div><span class="box" style="background-color: #70ff00;"></span> Cobertura Inalámbrica</div>
                     <div><span class="box" style="background-color: #006cff;"></span> Cobertura Fibra Óptica</div>
                 </div>
             </div> 
@@ -258,14 +270,13 @@
             </div>           
         </div> 
         
-        <footer class="footer">        
+        <!--footer class="footer">        
             <div class="contenedor">
                 <div class="footer-image-center">
                     <div class="logoTlaxi" href="https://www.tlaxicom.com/index.html"></div>      
                 </div>
             </div>
-            <div class="contenedor">
-                <!--Aqui abajo va el texto de politicas de privacidad-->
+            <div class="contenedor">                
                 <div class="footer-center">
                     <div>
                         <a href="aviso_priv.html" class="navegacion__enlace">Consulte nuestro aviso de privacidad</a> 
@@ -280,7 +291,43 @@
                     <p class="o">Llámenos: <a href="tel:2411195233" class="llamar_enlace">2411195233</a></p>                                     
                 </div> 
             </div>                                   
-        </footer>      
+        </footer-->   
+        <footer class="footer">        
+            <div class="contenedor">
+                <div class="footer-image-center">
+                    <div class="logoTlaxi" onclick="window.location.href='https://www.tlaxicom.com/index.html'"></div>      
+                </div>
+            </div>
+        
+            <div class="contenedor">
+                <div class="footer-center">
+                    <div>
+                        <a href="aviso_priv.html" class="navegacion__enlace">Consulte nuestro aviso de privacidad</a> 
+                    </div>
+                    <div>                    
+                        <a id="cartaDerMin2" style="cursor: pointer;" class="navegacion__enlace">
+                            <strong>Conozca sus derechos mínimos como usuario</strong>
+                        </a>
+                    </div>                                        
+                </div>                                
+            </div>
+        
+            <div class="contenedor">
+                <div class="footer-llamanos">   
+                    <p class="o">Llámenos: <a href="tel:2411195233" class="llamar_enlace">2411195233</a></p>  
+                    <div class="social-icons">
+                        <p style="margin: 7px 0px 0px 0px; color: white;">Siguenos en redes</p>
+                        <a href="https://www.facebook.com/share/15PgLrKVmr/" target="_blank" class="social-icon">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.youtube.com/@TLAXICOM" target="_blank" class="social-icon">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>                                   
+                </div> 
+            </div>                                   
+        </footer>
+           
     </div>    
     
     <!--AQUI IBA EL CONTENEDOR CONTENIDO--PRINCIPAL-->

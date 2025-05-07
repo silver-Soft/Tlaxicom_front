@@ -14,22 +14,17 @@ var txt_nombre = document.getElementById("nombre_popUp");
 var txt_telefono = document.getElementById("telefono_popUp");
 var txt_correo = document.getElementById("correo_popUp");
 
-/*Boton carta derechos minimos*/
-var btn_cartaDerechosMinimos = document.getElementById("cartaDerMin");
-var btn_cartaDerechosMinimos2 = document.getElementById("cartaDerMin2");
+const slider = document.getElementById('showCaseSlider')
+const slides = slider.querySelectorAll('.item')
+const dotContainer = document.querySelector('.dot-container')
 
-btn_cartaDerechosMinimos.addEventListener("click", () => {
-  download(this.btn_cartaDerechosMinimos.id);
-});
+/** @type {HTMLDivElement[]} */
+let dots = []
 
-btn_cartaDerechosMinimos2.addEventListener("click", () => {
-  download("cartaDerMin");
-});
-
-function download(filename) {
-  const link = "./docs/" + filename + ".pdf";
-  window.open(link, "_blank");
-}
+const autoSlideInterval = 3000
+let index = 0
+let sliding = false
+let timer = null
 
 /* MAP CANVAS*/
 function initialize() {
@@ -336,6 +331,63 @@ function initialize() {
     poligono.setMap(map);
   });
 }
+
+/** Go to a slide
+ * @param {number} go - The index of the slide to go to
+ **/
+async function slideTo(go) {
+  if (sliding || go === index) return
+  sliding = true
+  clearInterval(timer)
+
+  slides[index].classList.remove('active')
+  dots[index].classList.remove('active')
+
+  // Ensure index is in range
+  index = (go + slides.length) % slides.length
+
+  slides[index].classList.add('active')
+  dots[index].classList.add('active')
+
+  await new Promise(resolve => setTimeout(resolve, 500))
+
+  sliding = false
+  autoSlide()
+}
+
+/** Start auto slide timer **/
+function autoSlide() { 
+  timer = setInterval(() => {
+      slideTo(index + 1)
+  }, autoSlideInterval)
+}
+
+// Create dots
+if (slides.length > 1){
+  let dotContainer = slider.querySelector('.dot-container')
+
+  for (let i = 0; i < slides.length; i++) {
+      const dot = document.createElement('div')
+
+      dot.classList.add('dot')
+      dotContainer.appendChild(dot)
+
+      dots.push(dot)
+      dot.addEventListener('click', () => slideTo(i))
+  }
+  // Set first dot active
+  dots[0].classList.add('active')
+}
+
+// On ready
+document.addEventListener('DOMContentLoaded', () => {
+  if (slides.length <= 1) return
+  
+  const hammer = new Hammer(slider)
+  hammer.on('swipeleft', () => slideTo(index + 1))
+  hammer.on('swiperight', () => slideTo(index - 1))
+  autoSlide()
+})
 
 /*Ventana PopUp de paquetes*/
 btn_basico.addEventListener("click", () => {

@@ -1,0 +1,13 @@
+<mat-toolbar color="primary" class="toolbar">
+    <span class="logo">Tlaxicom</span>
+    <span class="spacer"></span>
+
+    <nav class="nav-links">
+        <a mat-button href="https://www.google.com/" target="_blank">Link</a>
+        <a mat-button routerLink="/" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+        <a mat-button routerLink="/quienes-somos" routerLinkActive="active-link">¿Quiénes somos?</a>
+        <a mat-button routerLink="/servicios" routerLinkActive="active-link">Servicios</a>
+        <a mat-button routerLink="/preguntas-frecuentes" routerLinkActive="active-link">Preguntas frecuentes</a>
+        <a mat-button routerLink="/contacto" routerLinkActive="active-link">Contáctanos</a>
+    </nav>
+</mat-toolbar>

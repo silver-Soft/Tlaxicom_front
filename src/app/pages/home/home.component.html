@@ -1,4 +1,33 @@
-<section>
+<div style="width: 100%;">
+  <section class="show-case-slider" id="showCaseSlider">
+    <span class="show-case-slider_wrapper">
+      <div
+        class="item"
+        *ngFor="let slide of slides; let i = index"
+        [class.active]="i === activeIndex">
+        <!--div class="content">
+          <h1 class="title" [innerHTML]="slide.title"></h1>
+          <p [innerHTML]="slide.description"></p>
+        </div-->  
+        <picture style="width: 100%; height: auto;">
+          <img style="width: 100%;" [src]="slide.image" alt="image" draggable="false" />
+        </picture>
+      </div>
+    </span>
+  
+    <span class="dot-container">
+      <div
+        class="dot"
+        *ngFor="let slide of slides; let i = index"
+        [class.active]="i === activeIndex"
+        (click)="goToSlide(i)"
+      ></div>
+    </span>
+  </section>  
+</div>
+
+<div class="container">
+  <section>
     <div class="example-label">Basic</div>
     <div class="example-button-row">
       <button mat-button>Basic</button>
@@ -108,4 +137,5 @@
       </div>
     </div>
   </section>
+</div>
   

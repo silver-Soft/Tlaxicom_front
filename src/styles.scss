@@ -1,9 +1,35 @@
 // Estilos globales
+* {
+  box-sizing: border-box;
+}
+
 html, body {
   height: 100%;
+  width: 100%;
 }
 
 body {
+  width: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mainContainer {
+  max-width: 1800px;      // Ancho máximo para pantallas grandes
+  margin: 0 auto;         // Centrado horizontal
+  padding: 0%;        // Padding lateral por defecto (desktop)
+  box-sizing: border-box;
+  /*background-image: url('app/img/back4.png');
+  background-repeat: repeat-y;           
+  background-size: 100% auto;            
+  background-position: top center;       
+  background-attachment: scroll;         
+  background-color: rgba(255, 255, 255, 0); 
+  background-blend-mode: overlay; */  
+}
+
+.container{
+  width: 100%;
+  padding: 20px;
+  margin: 0px;
 }

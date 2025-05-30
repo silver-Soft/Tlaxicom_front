@@ -134,7 +134,7 @@
         <?php
     } else {
         
-        echo "<div class='no-permission'>No tienes permisos para acceder a esta página. <a href='index.php'>Volver al inicio</a></div>";
+        echo "<div class='no-permission'>No tienes permisos para acceder a esta página. <a href='../contratos/dashboard.php'>Volver al inicio</a></div>";
     }
     ?>
 </div>

@@ -106,6 +106,6 @@ if (isset($_SESSION['privilegios']) && $_SESSION['privilegios'] == true) {
         echo "Error al obtener la lista de usuarios: " . mysqli_error($conexion);
     }
 } else {
-    echo "No tienes permisos para acceder a esta página. <a href='index.php'>Volver al inicio</a>";
+    echo "No tienes permisos para acceder a esta página. <a href='../contratos/dashboard.php'>Volver al inicio</a>";
 }
 ?>

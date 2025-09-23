@@ -1,0 +1,154 @@
+<div class="example-is-mobile">        
+    <mat-drawer-container class="containerMapPolygonEditor">        
+        <mat-drawer mode="side" closed #snav mode="side">
+            <h2 style="margin: 10px 10px; font-size: larger; text-align: center;">
+                Lista de polígonos registrados
+            </h2>
+            <div class="table-container">
+                <table mat-table [dataSource]="poligonos" class="table">
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef> Id </th>
+                        <td mat-cell *matCellDef="let poligono">
+                            {{ poligono.idPoligono }}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="nombre">
+                        <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                        <td mat-cell *matCellDef="let poligono">
+                            {{ poligono.nombre }}
+                        </td>
+                    </ng-container>
+
+                    <!-- Operación -->
+                    <ng-container matColumnDef="acciones">
+                        <th mat-header-cell *matHeaderCellDef>Opciones</th>
+                        <td mat-cell *matCellDef="let poligono">
+                            <div>
+                                <button mat-mini-fab aria-label="Editar polígono"
+                                    (click)="editarZona(poligono)"
+                                    matTooltip="Editar polígono de {{poligono.nombre}}"
+                                    matTooltipPosition="right">
+                                    <mat-icon>edit</mat-icon>
+                                </button>                                
+                            </div>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+        </mat-drawer>
+        <mat-drawer-content>
+            <button mat-fab aria-label="Example icon button with a delete icon"
+                class="fab-drawer-btn"
+                (click)="snav.toggle()"
+                matTooltip="{{snav.opened?'Ocultar':'Mostrar'}} lista de polígonos"
+                matTooltipPosition="right">
+                <mat-icon>menu</mat-icon>
+            </button>
+
+            <div class="fab-right-btn-container" *ngIf="poligonoModel.idPoligono != 0">
+                <button mat-fab aria-label="Guardar polígono"
+                    class="fab-right-btn"
+                    (click)="guardarPoligono()"
+                    matTooltip="Guardar polígono"
+                    matTooltipPosition="left">
+                    <mat-icon>check</mat-icon>
+                </button>
+                <button mat-fab aria-label="Cancelar edición"
+                    class="fab-right-btn"
+                    (click)="cancelarEdicion()"
+                    matTooltip="Cancelar edición"
+                    matTooltipPosition="left">
+                    <mat-icon>close</mat-icon>
+                </button>
+                <button mat-fab aria-label="Reiniciar polígono"
+                    class="fab-right-btn"
+                    (click)="reiniciarPoligono()"
+                    matTooltip="Reiniciar polígono"
+                    matTooltipPosition="left">
+                    <mat-icon>refresh</mat-icon>
+                </button>
+                <button mat-fab aria-label="Reiniciar polígono"
+                    class="fab-right-btn"
+                    (click)="editarAtributos()"
+                    matTooltip="Editar más atributos"
+                    matTooltipPosition="left">
+                    <mat-icon>edit_attributes</mat-icon>
+                </button>
+            </div>
+           
+            <div>
+                <google-map #googleMap width="100%" height="500px" [center]="center" [zoom]="zoom">
+
+                    <map-polygon *ngIf="poligonoModel.poligono.length > 0" [paths]="poligonoModel.poligono" [options]="{
+                            strokeColor: getStrokeColor(poligonoModel.tipo),
+                            fillColor: getFillColor(poligonoModel.tipo),
+                            strokeOpacity: 0.8,
+                            fillOpacity: 0.35,
+                            strokeWeight: 2
+                            }">
+                    </map-polygon>
+
+                </google-map>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>
+<!--div class="container">
+    <h2>Polígonos</h2>
+    <div class="grid-flex-polygonEditor">
+        <div class="table-container">
+            <table mat-table [dataSource]="poligonos" class="table">
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef> Id </th>
+                    <td mat-cell *matCellDef="let poligono">
+                        {{ poligono.idPoligono }}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                    <td mat-cell *matCellDef="let poligono">
+                        {{ poligono.nombre }}
+                    </td>
+                </ng-container>
+                
+                <ng-container matColumnDef="acciones">
+                    <th mat-header-cell *matHeaderCellDef>Opciones</th>
+                    <td mat-cell *matCellDef="let poligono">
+                        <div>
+                            <button mat-menu-item (click)="editarZona(poligono)">
+                                <mat-icon>edit</mat-icon>
+                                Modificar
+                            </button>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+        
+        <div class="map-polygon-editor">
+            <google-map #googleMap width="100%" height="500px" [center]="center" [zoom]="zoom">
+
+                <map-polygon *ngIf="poligonoModel.poligono.length > 0" [paths]="poligonoModel.poligono" [options]="{
+                        strokeColor: getStrokeColor(poligonoModel.tipo),
+                        fillColor: getFillColor(poligonoModel.tipo),
+                        strokeOpacity: 0.8,
+                        fillOpacity: 0.35,
+                        strokeWeight: 2
+                        }">
+                </map-polygon>
+
+            </google-map>
+        </div>
+    </div>
+    <div class="mt-4 flex gap-2">
+        <button mat-raised-button (click)="cancelarEdicion()">Cancelar</button>
+    </div>
+</div-->

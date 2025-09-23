@@ -1,0 +1,76 @@
+<section class="show-case-slider" id="showCaseSlider">
+  <span class="show-case-slider_wrapper">
+    <div class="item" *ngFor="let slide of slides; let i = index" [class.active]="i === activeIndex">
+      <!--div class="content">
+          <h1 class="title" [innerHTML]="slide.title"></h1>
+          <p [innerHTML]="slide.description"></p>
+        </div-->
+      <picture style="width: 100%; height: auto;">
+        <img style="width: 100%;" [src]="slide.image" alt="image" draggable="false" />
+      </picture>
+    </div>
+  </span>
+
+  <span class="dot-container">
+    <div class="dot" *ngFor="let slide of slides; let i = index" [class.active]="i === activeIndex"
+      (click)="goToSlide(i)"></div>
+  </span>
+</section>
+
+<div class="container">
+  <div class="flex-align-center">
+    <mat-button-toggle-group [(ngModel)]="idTipo" aria-label="Tipo de internet">
+      <mat-button-toggle [value]=1>Internet inalámbrico</mat-button-toggle>
+      <mat-button-toggle [value]=2>Internet con fibra óptica</mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <div class="paquetes">
+    <div *ngFor="let paquete of paquetes">
+      <mat-card appearance="outlined" class="paquete" *ngIf="paquete.idTipo == idTipo">
+        <mat-card-header class="megas">
+          <mat-card-title>30 <span>Megas</span></mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content class="contenido">
+          <button mat-fab extended style="width: 50%;">
+            <mat-icon>attach_money</mat-icon>
+            {{paquete.costo}}
+          </button>
+
+          <img mat-card-image style="max-width: 100%" [src]="paquete.features.banner" alt="promoción">
+          <div class="features">
+            <h4>{{paquete.features.info}}</h4>
+            <h4>Folio:{{paquete.features.folio}}</h4>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions class="actions">
+          <button *ngIf="paquete.buttons.showContratar" mat-flat-button color="primary">Contratar</button>
+          <button *ngIf="paquete.buttons.showInfo" mat-button>Más información</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+
+  <div class="aside-map">
+    <app-map></app-map>
+    <!-- Contenedor del mapa -->
+    <div style="position: relative;">
+      <div id="map-canvas" style="height: 500px;"></div>
+      <!-- Leyenda superpuesta -->
+      <div id="legend">
+        <h4>Simbología</h4>
+        <div><span class="box" style="background-color: #70ff00;"></span> Cobertura Inalámbrica</div>
+        <div><span class="box" style="background-color: #006cff;"></span> Cobertura Fibra Óptica</div>
+      </div>
+    </div>
+    <div>
+      <h3 class="title">¿No se encuentra en la zona de cobertura TLAXICOM?</h3>
+      <div class="title">
+        <i class="fa-brands fa-whatsapp" id="sinCobertura_contacto_wa" onclick="sinCoverturaContacto()"></i>
+        <p class="pie_wha">Contactenos</p>
+      </div>
+    </div>
+  </div>
+</div>

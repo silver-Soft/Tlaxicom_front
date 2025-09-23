@@ -5,31 +5,50 @@
 
 html, body {
   height: 100%;
-  width: 100%;
+  margin: 0;
 }
 
 body {
-  width: 100%;
-  margin: 0;
+  display: flex;
+  flex-direction: column;
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  min-height: 100vh; // Forzar a que el body ocupe toda la altura de la ventana
 }
 
-.mainContainer {
-  max-width: 1800px;      // Ancho máximo para pantallas grandes
-  margin: 0 auto;         // Centrado horizontal
-  padding: 0%;        // Padding lateral por defecto (desktop)
-  box-sizing: border-box;
-  /*background-image: url('app/img/back4.png');
-  background-repeat: repeat-y;           
-  background-size: 100% auto;            
-  background-position: top center;       
-  background-attachment: scroll;         
-  background-color: rgba(255, 255, 255, 0); 
-  background-blend-mode: overlay; */  
+app-root {
+  display: flex;
+  flex-direction: column;
+  flex: 1;  // ocupa todo el alto
+}
+
+app-footer {
+  flex-shrink: 0;           // evita que el footer se encoja
+}
+
+.main-container {
+  width: 100%;
+  max-width: 1800px;
+  margin-left: auto;
+  margin-right: auto;
+  flex: 1;  
 }
 
 .container{
   width: 100%;
-  padding: 20px;
+  padding: 2rem 3rem;
   margin: 0px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+} 
+
+.flex-align-center {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  column-gap: 10px;
 }

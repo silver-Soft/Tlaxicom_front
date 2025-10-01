@@ -3,13 +3,16 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 //import { GoogleMapsService } from '../../services/google-maps.service';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { PoligonosService } from '../../services/poligonos.service';
+import { NotificationService } from '../../services/core/notification.service';
 
 declare var google: any;
 
 interface Zona {
   tipo: string;
   idTipo: number;
-  coordenadas: any[];
+  nombre:String;
+  poligono: any[];
 }
 
 @Component({
@@ -19,7 +22,7 @@ interface Zona {
   templateUrl: './map.component.html',
   styleUrl: './map.component.scss',
 })
-export class MapComponent implements AfterViewInit {
+export class MapComponent implements OnInit {
   // Centro del mapa (Tlaxcala)
   center: google.maps.LatLngLiteral = {
     lat: 19.4722,
@@ -41,7 +44,7 @@ export class MapComponent implements AfterViewInit {
   };
 
   // Datos de las zonas (luego vendrán de un servicio)
-  zonas: Zona[] = [
+  zonas: Zona[] = []/*[
     {//Terrenate
       tipo: "fibra",
       idTipo: 2,
@@ -320,13 +323,41 @@ export class MapComponent implements AfterViewInit {
         { lat: 19.64753986305761, lng: -97.9878628615468 }
       ]
     }
-  ];
+  ]*/;
 
-  ngAfterViewInit(): void {
+  constructor(private poligonosService: PoligonosService,
+      private notificationService: NotificationService
+    ) { }
+  
+  ngOnInit(): void {
     // ¡No necesitas inicialización manual! 
     // Angular Google Maps se encarga de todo
-    console.log('Mapa inicializado automáticamente');
+    this.obtenerPoligonos(
+      (listaPoligonos) => {
+        this.zonas = listaPoligonos;
+      },
+      (message: string) => {
+        this.notificationService.pushError(message);
+      }
+    )
   }
+
+  obtenerPoligonos(onSuccess: (listaPoligonos: any) => void, onError: (message: string) => void) {
+    this.poligonosService.getPoligonos().subscribe((data: any) => {
+      if (data.resultado === true) {        
+        const poligonos = data.obj.map((p: any) => ({
+          ...p,
+          poligono: p.poligono.map((pt: any) => ({
+            lat: Number(pt.latitude),
+            lng: Number(pt.longitude)
+          }))
+        }));
+        onSuccess(poligonos);           
+      } else {
+        onError("Error al obtener los polígonos: " + data.mensaje);
+      }
+    })
+  }  
 
   // Método para obtener color del borde según el tipo
   getStrokeColor(tipo: string): string {

@@ -1,1 +1,36 @@
-<p>mod-atributos-poligono works!</p>
+<mat-card>
+    <mat-card-title class="dialog-title">
+        <h4>{{dialogData.poligonoModel.idPoligono != 0? 'Editar atributos del':'Registrar nuevo'}} polígono</h4>
+    </mat-card-title>
+    <mat-card-content>
+        <div>
+            <form [formGroup]="detallesPoligonoFormGroup" (submit)="validarFormulario(f)" #f="ngForm">
+                <div class="fields-container">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Tipo de conexión</mat-label>
+                        <mat-select formControlName="idTipo">
+                            <mat-option [value]="conexion.idTipo"
+                                *ngFor="let conexion of tiposConexion">{{conexion.tipo}}</mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="detallesPoligonoFormGroup.get('idTipo')!.hasError('required')">
+                            El tipo de conexión es requerido
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Nombre del polígono</mat-label>
+                        <input matInput placeholder="Nombre del polígono" formControlName="nombre" type="text">
+                        <mat-error *ngIf="detallesPoligonoFormGroup.get('nombre')!.hasError('required')">
+                            El nombre del polígono es requerido
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div class="actions flex-end">        
+                    <button mat-stroked-button matTooltip="Cancelar" type="button" (click)="onNoClick()">Cancelar</button>
+                    <button mat-flat-button color="primary" type="submit">Aceptar</button>                                                    
+                </div>
+            </form>
+        </div>
+    </mat-card-content>
+</mat-card>

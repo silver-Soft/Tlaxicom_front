@@ -8,6 +8,10 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle'
 import { FormsModule } from '@angular/forms';
 //import { GoogleMapsService } from '../../services/google-maps.service';
 import { MapComponent } from '../../map/map.component';
+import { PaqueteModel } from '../../models/paqueteModel';
+import { CatalogosService } from '../../../services/catalogos.service';
+import { NotificationService } from '../../../services/core/notification.service';
+import { ResultadoDto } from '../../../DTOs/response/resultadoDto';
 @Component({
   selector: 'app-home',
   imports: [MatIconModule, MatDividerModule, MatButtonModule, MatCardModule, CommonModule,
@@ -41,7 +45,8 @@ export class HomeComponent {
     }
   ];
 
-  paquetes = [
+  paquetes: PaqueteModel[] = []
+  /*[
     {
       idPaquete: 1,      
       title: 'Básico',      
@@ -168,17 +173,35 @@ export class HomeComponent {
         showInfo: true
       }
     }
-  ]
+  ]*/
+
   activeIndex = 0;
   intervalId: any;
 
   idTipo: number = 1;
 
+
+  constructor(private catalogosService: CatalogosService,
+        private notificationService: NotificationService
+      ) { }
+
   ngOnInit(): void {
+    this.obtenerPaquetes();
     this.clearSlideInterval();
     this.intervalId = setInterval(() => this.nextSlide(), 5000);
   }
 
+
+  obtenerPaquetes(): void {
+    this.catalogosService.obtenerPaquetes().subscribe((data: ResultadoDto) => {
+      if (data.resultado === true) {   
+        this.paquetes = data.obj as PaqueteModel[];              
+      } else {
+        this.notificationService. pushError("Error al obtener los paquetes: " + data.mensaje);
+      }
+    })
+  }  
+  
   ngOnDestroy(): void {
     this.clearSlideInterval();
   }

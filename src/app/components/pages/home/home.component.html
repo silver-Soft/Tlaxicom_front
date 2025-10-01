@@ -1,10 +1,6 @@
 <section class="show-case-slider" id="showCaseSlider">
   <span class="show-case-slider_wrapper">
     <div class="item" *ngFor="let slide of slides; let i = index" [class.active]="i === activeIndex">
-      <!--div class="content">
-          <h1 class="title" [innerHTML]="slide.title"></h1>
-          <p [innerHTML]="slide.description"></p>
-        </div-->
       <picture style="width: 100%; height: auto;">
         <img style="width: 100%;" [src]="slide.image" alt="image" draggable="false" />
       </picture>
@@ -26,10 +22,12 @@
   </div>
 
   <div class="paquetes">
-    <div *ngFor="let paquete of paquetes">
-      <mat-card appearance="outlined" class="paquete" *ngIf="paquete.idTipo == idTipo">
-        <mat-card-header class="megas">
-          <mat-card-title>30 <span>Megas</span></mat-card-title>
+    <ng-container *ngFor="let paquete of paquetes">
+      <mat-card appearance="outlined" class="paquete" *ngIf="paquete.idTipo == idTipo"
+      [ngStyle]="(paquete.background && paquete.background.trim()) ? { 'background-image': 'url(' + paquete.background + ')' } : {}">
+        <mat-card-header class="megas"
+          [ngStyle]="{ 'background-color': paquete.headerBackground, 'color': paquete.headerTextColor }">
+          <mat-card-title>{{paquete.speed}} <span>Megas</span></mat-card-title>
         </mat-card-header>
 
         <mat-card-content class="contenido">
@@ -40,8 +38,8 @@
 
           <img mat-card-image style="max-width: 100%" [src]="paquete.features.banner" alt="promoción">
           <div class="features">
-            <h4>{{paquete.features.info}}</h4>
-            <h4>Folio:{{paquete.features.folio}}</h4>
+            <h4 [ngStyle]="{ 'color': paquete.features.textColor}">{{paquete.features.info}}</h4>
+            <h4 [ngStyle]="{ 'color': paquete.features.textColor}">Folio:{{paquete.features.folio}}</h4>
           </div>
         </mat-card-content>
 
@@ -50,27 +48,17 @@
           <button *ngIf="paquete.buttons.showInfo" mat-button>Más información</button>
         </mat-card-actions>
       </mat-card>
-    </div>
+    </ng-container>
   </div>
 
   <div class="aside-map">
-    <app-map></app-map>
-    <!-- Contenedor del mapa -->
-    <div style="position: relative;">
-      <div id="map-canvas" style="height: 500px;"></div>
-      <!-- Leyenda superpuesta -->
-      <div id="legend">
-        <h4>Simbología</h4>
-        <div><span class="box" style="background-color: #70ff00;"></span> Cobertura Inalámbrica</div>
-        <div><span class="box" style="background-color: #006cff;"></span> Cobertura Fibra Óptica</div>
-      </div>
-    </div>
+    <app-map></app-map>    
     <div>
-      <h3 class="title">¿No se encuentra en la zona de cobertura TLAXICOM?</h3>
-      <div class="title">
-        <i class="fa-brands fa-whatsapp" id="sinCobertura_contacto_wa" onclick="sinCoverturaContacto()"></i>
-        <p class="pie_wha">Contactenos</p>
-      </div>
+        <h3 class="title">¿No se encuentra en la zona de cobertura TLAXICOM?</h3>
+        <div class="title">
+          <i class="fa-brands fa-whatsapp" id="sinCobertura_contacto_wa" onclick="sinCoverturaContacto()"></i>
+          <p class="pie_wha">Contactenos</p>
+        </div>
     </div>
   </div>
 </div>

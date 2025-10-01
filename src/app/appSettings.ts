@@ -3,7 +3,7 @@ import { HttpHeaders } from '@angular/common/http';
 export class AppSettings {
 
     public static API_ENDPOINT = 'http://localhost:8080';
-    public static token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzbHBlenJvbWFuby5zbEBnbWFpbC5jb20iLCJyb2xlIjoxLCJpYXQiOjE3NTg2NTI0NDksImV4cCI6MTc1ODczODg0OX0.pbK5k6a8rtDeTv-JG5A5iuVdOtI-yhCJ2ZO30exMpmE"
+    public static token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzbHBlenJvbWFuby5zbEBnbWFpbC5jb20iLCJyb2xlIjoxLCJpYXQiOjE3NTg3NDExMTIsImV4cCI6MTc1ODgyNzUxMn0.NUVnZbh_btaTeHaYjn66klCBYjlLSzPtUGh_Mtutang"
     public static TITLE = 'TLAXICOM';
     public static SLOGAN = 'Velocidad y Confianza en un solo lugar';
     public static COPYRIGHT = 'Copyright © 2025 - Todos los derechos reservados';

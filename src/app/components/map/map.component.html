@@ -1,20 +1,21 @@
-<google-map 
-    width="100%" 
-    height="500px"
-    [center]="center"
-    [zoom]="zoom">
-    
-    <map-polygon
-  *ngFor="let zona of zonas"
-  [paths]="zona.coordenadas"
-  [options]="{
+<google-map width="100%" height="500px" [center]="center" [zoom]="zoom">
+
+  <map-polygon *ngFor="let zona of zonas" [paths]="zona.poligono" [options]="{
     strokeColor: getStrokeColor(zona.tipo),
     fillColor: getFillColor(zona.tipo),
     strokeOpacity: 0.8,
     fillOpacity: 0.35,
     strokeWeight: 2
-  }"
-  (polygonClick)="onPolygonClick(zona)">
-</map-polygon>
-    
+  }" (polygonClick)="onPolygonClick(zona)">
+  </map-polygon>
+  <!--
+<div style="position: relative;">
+        <div id="map-canvas" style="height: 500px;"></div>        
+        <div id="legend">
+          <h4>Simbología</h4>
+          <div><span class="box" style="background-color: #70ff00;"></span> Cobertura Inalámbrica</div>
+          <div><span class="box" style="background-color: #006cff;"></span> Cobertura Fibra Óptica</div>
+        </div>
+      </div>
+    -->
 </google-map>

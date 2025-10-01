@@ -44,6 +44,17 @@ app-footer {
   border-collapse: collapse;
 } 
 
+/* Estilos para botones de accion*/
+.actions{
+  display: block;
+  margin: 20px 0px 0px 0px;
+}
+.flex-end {
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 10px;
+}
+
 .flex-align-center {
   display: flex;
   width: 100%;
@@ -51,4 +62,24 @@ app-footer {
   align-items: center;
   justify-content: center;
   column-gap: 10px;
+}
+
+/* Estilos para los dialogos */
+.dialog-title {
+  background: #0067ce;
+  color: white;
+  h4{
+    padding: 5px 5px;
+    margin: 5px 5px;
+    text-align: center;
+  }    
+}
+mat-card-content {
+    margin-top: 20px;
+}
+
+@media (max-width: 760px){
+  .container{    
+    padding: 2rem 0.5rem;    
+  }
 }

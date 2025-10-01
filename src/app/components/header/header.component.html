@@ -1,8 +1,5 @@
-<mat-toolbar *ngIf="!esDispositivoMovil" class="fixed-toolbar">
+<!--mat-toolbar *ngIf="!esDispositivoMovil" class="fixed-toolbar">
     <div class="headerContainer">
-        <!--span class="logo">            
-            <img src="https://tlaxicom.com/img/logo_tlaxi.webp" alt="">
-        </span-->
         <svg width="429.00000000000006" height="88.23433108041655"
                 viewBox="0 0 369.66666666666663 76.03098148265885" class="looka-1j8o68f">
                 <defs id="SvgjsDefs1011"></defs>
@@ -331,17 +328,406 @@
             </svg>
 
 
-        <nav class="nav-links">
-            <a mat-button class="button" href="https://www.google.com/" target="_blank">Link</a>
+        <nav class="nav-links">            
             <a mat-button class="button" routerLink="/" routerLinkActive="active-link"
                 [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+
             <a mat-button class="button" routerLink="/quienes-somos" routerLinkActive="active-link">¿Quiénes somos?</a>
             <a mat-button class="button" routerLink="/servicios" routerLinkActive="active-link">Servicios</a>
             <a mat-button class="button" routerLink="/preguntas-frecuentes" routerLinkActive="active-link">Preguntas
                 frecuentes</a>
-            <a mat-button class="button" routerLink="/contacto" routerLinkActive="active-link">Contáctanos</a>
-            <a mat-button class="button">Contáctanos</a>
-            <button mat-button class="rocketButton" style="vertical-align:middle"><span>SpeedTest</span></button>
+            <a mat-button class="button" routerLink="/contacto" routerLinkActive="active-link">Contáctanos</a>            
+            <button mat-button class="rocketButton" style="vertical-align:middle" href="https://www.speedtest.net/" target="_blank"><span>SpeedTest</span></button>
+            <a mat-button class="button" routerLink="/login">Login</a>
         </nav>
     </div>
+</mat-toolbar-->
+
+<mat-toolbar>
+    <div class="headerContainer">
+        <div class="menu-logo-container">
+            <button mat-icon-button class="menu-btn" aria-label="Example icon-button with menu icon"        
+            (click)="sidenav.toggle()">
+                <mat-icon>menu</mat-icon>
+            </button>
+            <span class="logo">
+                <app-logo-tlaxicom></app-logo-tlaxicom>
+            </span>
+        </div>
+        
+        <nav class="nav-links">       
+            <ng-container *ngFor="let menuItem of menuList">
+                <a mat-button class="button" *ngIf="menuItem.nombre != 'SpeedTest' && menuItem.nombre != 'Account'" 
+                    [routerLink]="menuItem.ruta" 
+                    routerLinkActive="active-link"
+                    [routerLinkActiveOptions]="{ exact: true }">
+                    {{menuItem.nombre}}
+                </a>
+
+                <button mat-button class="rocketButton" *ngIf="menuItem.nombre == 'SpeedTest'" 
+                style="vertical-align:middle" (click)="navigate(menuItem.ruta)"
+                    target="_blank"><span>SpeedTest</span>
+                </button>                                
+            </ng-container>  
+            
+            <a mat-button class="button" [matMenuTriggerFor]="menu"
+                [matTooltip]="loginService.obtenerDatosUsuario().nombre">
+                <mat-icon>person_outline</mat-icon>
+            </a>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item routerLink="/login" *ngIf="loginService.obtenerToken()==null">Iniciar sesión</button>
+                <button mat-menu-item (click)="cerrarSesion()" *ngIf="loginService.obtenerToken()!=null">Cerrar sesión</button>
+                <button mat-menu-item *ngIf="loginService.obtenerToken()!=null" routerLink="/dashboard">Mi cuenta</button>
+            </mat-menu>
+        </nav>
+    </div>
+    <!--div>
+        <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+            <mat-button-toggle value="bold">Bold</mat-button-toggle>
+            <mat-button-toggle value="italic">Italic</mat-button-toggle>
+            <mat-button-toggle value="underline">Underline</mat-button-toggle>
+        </mat-button-toggle-group>
+    </div-->    
 </mat-toolbar>
+
+
+<!--mat-sidenav #sidenav
+    class="mat-drawer mat-sidenav docs-component-viewer-sidenav mat-drawer-over mat-sidenav-fixed mat-drawer-opened"
+    tabindex="-1" style="top: 56px; bottom: 0px;">
+    <div cdkscrollable="" class="mat-drawer-inner-container">
+        <div class="docs-component-viewer-nav">
+                <div class="docs-component-viewer-nav-content"><mat-nav-list role="navigation"
+                        class="mat-mdc-nav-list mat-mdc-list-base mdc-list" aria-disabled="false"><a mat-list-item=""
+                            routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/autocomplete" aria-disabled="false"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Autocomplete
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/badge" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Badge
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/bottom-sheet" aria-disabled="false"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Bottom Sheet
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/button" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Button
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/button-toggle" aria-disabled="false"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Button
+                                    toggle </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/card" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Card
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/checkbox" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Checkbox
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/chips" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Chips
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/core" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Core
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/datepicker" aria-disabled="false"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Datepicker
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/dialog" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Dialog
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/divider" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Divider
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line docs-component-viewer-sidenav-item-selected mdc-list-item--activated"
+                            href="/components/expansion" aria-disabled="false" aria-current="page"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Expansion
+                                    Panel </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/form-field" aria-disabled="false"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Form field
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/grid-list" aria-disabled="false"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Grid list
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/icon" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Icon
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/input" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Input
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/list" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> List
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/menu" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Menu
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/paginator" aria-disabled="false"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Paginator
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/progress-bar" aria-disabled="false"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Progress bar
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/progress-spinner" aria-disabled="false"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Progress
+                                    spinner </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/radio" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Radio button
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/ripple" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Ripples
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/select" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Select
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/sidenav" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Sidenav
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/slide-toggle" aria-disabled="false"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Slide toggle
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/slider" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Slider
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/snack-bar" aria-disabled="false"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Snackbar
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/sort" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Sort header
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/stepper" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Stepper
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/table" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Table
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/tabs" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Tabs
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/timepicker" aria-disabled="false"><span
+                                class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Timepicker
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/toolbar" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Toolbar
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/tooltip" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Tooltip
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a><a mat-list-item="" routerlinkactive="docs-component-viewer-sidenav-item-selected"
+                            class="mat-mdc-list-item mdc-list-item mat-mdc-list-item-interactive mat-mdc-list-item-single-line mdc-list-item--with-one-line"
+                            href="/components/tree" aria-disabled="false"><span class="mdc-list-item__content"><span
+                                    class="mat-mdc-list-item-unscoped-content mdc-list-item__primary-text"> Tree
+                                </span></span>
+                            <div class="mat-focus-indicator"></div>
+                        </a></mat-nav-list></div>
+            </div>
+    </div>
+</mat-sidenav-->
+
+<mat-sidenav-container class="sidenav-container">    
+  <mat-sidenav #sidenav="matSidenav" mode="over" position="start" class="custom-sidenav">
+    <div class="sidebar" style="height: 100%;">
+        <div class="sidebar-content">
+            <ul class="lists" style="padding: 0%;">
+                <li class="list">
+                    <a href="#" class="nav-link">
+                        <mat-icon>home</mat-icon>
+                        <span class="link">Inicio</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#" class="nav-link">
+                        <mat-icon>person_outline</mat-icon>
+                        <span class="link">Nosotros</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#" class="nav-link">
+                        <mat-icon>phone</mat-icon>
+                        <span class="link">Contacto</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#" class="nav-link">
+                        <mat-icon>help</mat-icon>
+                        <span class="link">Ayuda</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#" class="nav-link">
+                        <mat-icon>av_timer</mat-icon>
+                        <span class="link">SpeedTest</span>
+                    </a>
+                </li>
+            </ul>
+
+            <ul class="lists" style="padding: 0%;">
+                <li class="list">
+                    <a href="#" class="nav-link">
+                        <mat-icon>settings</mat-icon>
+                        <span class="link">Mi cuenta</span>
+                    </a>
+                </li>
+                <li class="list">
+                    <a href="#" class="nav-link">
+                        <mat-icon>power_settings_new</mat-icon>
+                        <span class="link">Logout</span>
+                    </a>
+                </li>                
+            </ul>
+        </div>
+    </div>
+    
+    <!--mat-list role="list">
+        <mat-list-item role="listitem">
+            <a routerLink="/" routerLinkActive="active-link" class="sideButton"
+                [routerLinkActiveOptions]="{ exact: true }">Inicio
+            </a>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+            <a routerLink="/nosotros" routerLinkActive="active-link" class="sideButton">
+                Nosotros
+            </a>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+            <a routerLink="/contacto" routerLinkActive="active-link" class="sideButton">
+                Contacto
+            </a>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+            <a routerLink="/ayuda" routerLinkActive="active-link" class="sideButton">
+                Ayuda
+            </a>
+        </mat-list-item>
+        <mat-list-item role="listitem">
+            <a class="sideButton" href="https://www.speedtest.net/" target="_blank"><span>SpeedTest</span>
+            </a>
+        </mat-list-item>
+    </mat-list-->
+  </mat-sidenav>
+</mat-sidenav-container>
+
+
+<!--mat-drawer-container class="sideNavContainer">        
+        <mat-drawer mode="side" closed #snav mode="side">
+            <mat-list role="list">
+                <mat-list-item role="listitem">Item 1</mat-list-item>
+                <mat-list-item role="listitem">Item 2</mat-list-item>
+                <mat-list-item role="listitem">Item 3</mat-list-item>
+            </mat-list>
+        </mat-drawer>
+</mat-drawer-container-->

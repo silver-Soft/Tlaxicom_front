@@ -1,0 +1,29 @@
+<div class="container background-login">
+    <div class="form-container">
+        <h2>Inicio de sesión</h2>
+        <form [formGroup]="loginFormGroup" (submit)="validarFormulario(f)" #f="ngForm">
+            <div class="fields-container">                        
+                <mat-form-field appearance="outline">
+                    <mat-label>Usuario</mat-label>
+                    <input matInput placeholder="Ingrese su usuario" formControlName="email" type="text">
+                    <mat-error *ngIf="loginFormGroup.get('email')!.hasError('required')">
+                        El usuario es requerido
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Contraseña</mat-label>
+                    <input matInput placeholder="Ingrese su contraseña" formControlName="password" type="text">
+                    <mat-error *ngIf="loginFormGroup.get('password')!.hasError('required')">
+                        La contraseña es requerida
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        
+            <div class="actions flex-end">
+                <button mat-stroked-button matTooltip="Recuperar contraseña" type="button" (click)="recuperaPassword()">Olvidé mi contraseña</button>
+                <button mat-flat-button color="primary" type="submit">Aceptar</button>
+            </div>
+        </form>
+    </div>
+</div>

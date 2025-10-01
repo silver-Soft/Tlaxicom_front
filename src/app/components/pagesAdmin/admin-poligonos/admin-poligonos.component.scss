@@ -99,10 +99,19 @@
 
 /********************************/
 
-.fab-drawer-btn {
+.fab-menu-drawer-btn {
   position: absolute;
   left: 1%;
-  top: 20%;
+  top: 11%;
+  transform: translateY(0%);
+  z-index: 10;
+  transition: left 0.3s;
+}
+
+.fab-add-drawer-btn {
+  position: absolute;
+  left: 1%;
+  top: 25%;
   transform: translateY(0%);
   z-index: 10;
   transition: left 0.3s;
@@ -114,7 +123,7 @@
     row-gap: 10px;
     position: absolute;
     right: 1%;
-    top: 10%;
+    top: 11%;
     transform: translateY(0%);
     z-index: 10;
     transition: left 0.3s;

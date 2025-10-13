@@ -8,7 +8,9 @@ import { NotificationService } from './core/notification.service';
   providedIn: 'root'
 })
 export class CatalogosService {
-    private token = sessionStorage.getItem("token")
+  private get token(): string | null {
+    return sessionStorage.getItem("token");
+  }
   constructor(
     private http: HttpClient,
     protected _notificationService: NotificationService

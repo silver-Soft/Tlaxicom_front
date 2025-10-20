@@ -75,7 +75,7 @@ export class HeaderComponent implements OnInit {
   cerrarSesion(){
     sessionStorage.clear()
     this.servicioNavBar.triggerLogin.emit(false) //emitir evento de que no hay sesion
-    this.router.navigate(['inicio']).then(() => {
+    this.router.navigate(['login']).then(() => {
       window.location.replace(window.location.href);
     });
   }

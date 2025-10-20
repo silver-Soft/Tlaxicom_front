@@ -4,6 +4,7 @@ import { NotificationService } from './notification.service';
 import { catchError, Observable, throwError } from 'rxjs';
 import { AppSettings } from '../../appSettings';
 import { LoginRequest } from '../../DTOs/request/loginRequest';
+import { LoginResponseDto } from '../../DTOs/response/loginResponseDto';
 
 class DatosUsuario {
   nombre: string;
@@ -12,6 +13,11 @@ class DatosUsuario {
     this.nombre = '';
     this.email = '';    
   }
+}
+
+// Interfaz para el Payload de Google
+export interface GoogleLoginPayload {
+    idToken: string;
 }
 
 @Injectable({
@@ -50,7 +56,19 @@ export class LoginUsuarioService {
     datosUsuario.email = sessionStorage.getItem("email") || '';
     return datosUsuario    
   }  
-
+  
+//Login con Google ID Token
+  /**
+   * Envía el ID Token de Google al backend para la Vinculación de Cuentas.
+   * El backend debe retornar la misma estructura LoginResponseDto.
+   * @param idToken El token de identidad de Google.
+   */
+  LoginConGoogle(idToken: string): Observable<LoginResponseDto> {    
+    // Construye el objeto que coincide con el record GoogleLoginRequest del backend
+    const payload: GoogleLoginPayload = { idToken: idToken };        
+    return this.http.post<LoginResponseDto>(`${AppSettings.API_ENDPOINT}/public/auth/google`, payload);
+  }
+  
   // Manejo de errores más robusto
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Error desconocido';

@@ -21,8 +21,30 @@
             </div>
         
             <div class="actions flex-end">
-                <button mat-stroked-button matTooltip="Recuperar contraseña" type="button" (click)="recuperaPassword()">Olvidé mi contraseña</button>
+                <button mat-stroked-button matTooltip="Recuperar contraseña" type="button" (click)="recuperaPassword()">Olvidé mi
+                    contraseña</button>
                 <button mat-flat-button color="primary" type="submit">Aceptar</button>
+                <div>
+                    <div style="display: flex; justify-content: center; margin-top: 20px;">
+                    <asl-google-signin-button type="standard" size="large" text="signin_with" shape="rectangular" theme="outline"
+                        logo_alignment="left">
+                    </asl-google-signin-button>
+                    </div>
+                
+                    <div>
+                        <div id="g_id_onload" 
+                            data-client_id="718967229132-mups6lquncet0at4p2p0q8sqo6n7pdgr.apps.googleusercontent.com"
+                            data-callback="googleCallbackHandler" 
+                            data-auto_prompt="false">
+                        </div>
+                        <div #googleSignInBtn class="g_id_signin" data-type="standard" 
+                            data-size="large" 
+                            data-theme="outline" 
+                            data-text="sign_in_with"
+                            data-shape="pill" data-logo_alignment="left">
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>

@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, CUSTOM_ELEMENTS_SCHEMA, ElementRef, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -19,6 +19,14 @@ declare global {
     googleCallbackHandler: (response: { credential: string }) => void;
   }
 }
+declare var google: any;
+// 1. Declaración global para los dos callbacks de Google
+declare global {
+  interface Window {
+    googleCallbackHandler: (response: { credential: string }) => void;
+    googleLibraryLoaded: () => void; // Declaración del nuevo callback
+  }
+}
 
 @Component({
   selector: 'app-login',
@@ -29,12 +37,15 @@ declare global {
   styleUrl: './login.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit, AfterViewInit{
   loginFormGroup!: FormGroup;
 
   userData: LoginResponseDto = new LoginResponseDto();
 
-  
+  @ViewChild('googleSignInBtn') googleBtnRef!: ElementRef;
+  // Bandera para asegurar que la librería solo se inicialice una vez por carga de la app
+  private isGISInitialized = false;
+
   constructor(
     private _formBuilder: FormBuilder,
     private notificationService: NotificationService,
@@ -46,11 +57,58 @@ export class LoginComponent implements OnInit{
       email: [null, [Validators.required]],
       password: [null, [Validators.required]]
     });
-    
+    // 2. Vinculación del Callback de RESPUESTA (para el login)
     if (typeof window !== 'undefined') {
-        window.googleCallbackHandler = this.handleGoogleCredentialResponse.bind(this);
+      window.googleCallbackHandler = this.handleGoogleCredentialResponse.bind(this);
+      // 3. Vinculación del Callback de INICIALIZACIÓN (para el renderizado)
+      window.googleLibraryLoaded = this.renderGoogleButton.bind(this);
     }
   }
+
+  // 4. Implementación del renderizado forzado (Llamado por Google después de la inicialización)
+  renderGoogleButton(): void {
+    if (!this.isGISInitialized) {
+      this.isGISInitialized = true; // Previene inicializaciones múltiples en la primera carga
+    }
+
+    // 5. Verifica que el elemento del botón esté en el DOM antes de renderizar
+    if (this.googleBtnRef && typeof google !== 'undefined') {
+      google.accounts.id.renderButton(
+        this.googleBtnRef.nativeElement,
+        {
+          type: 'standard',
+          size: 'large',
+          theme: 'outline',
+          text: 'sign_in_with',
+          shape: 'pill',
+          logo_alignment: 'left',
+          width: '300px' // Asegura que se vea bien
+        }
+      );
+    }
+  }
+
+  ngAfterViewInit(): void {
+    // Ejecuta el renderizado solo si el objeto de Google existe
+        if (typeof google !== 'undefined' && this.googleBtnRef) {
+            
+            google.accounts.id.renderButton(
+                this.googleBtnRef.nativeElement, // El elemento HTML
+                { 
+                    // Estos son los atributos que tenías en tu div class="g_id_signin"
+                    type: 'standard', 
+                    size: 'large', 
+                    theme: 'outline',
+                    text: 'sign_in_with',
+                    shape: 'pill', // Usamos el de cápsula
+                    logo_alignment: 'left',
+                    // Asegúrate de que este ancho funcione en tu layout
+                    width: '300px' // Definir un ancho es útil
+                }
+            );
+        }
+  }
+
   ngOnInit(): void {    
     if(this.loginUsuarioService.obtenerToken()!=null){
       this.router.navigate(['/dashboard'])    

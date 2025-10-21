@@ -51,12 +51,30 @@ if (!isset($_SESSION['usuario'])) {
         Telefono: <input type="text" name="telefono" required><br>
         <h1>Servicio de Internet Fijo en Casa</h1>
 
-        Paquete: <input type="text" name="paquete" required><br>
+        <!--Paquete: <input type="text" name="paquete" required><br-->
+        Paquete:
+        <select name="paquete" id="paquete" required>
+            <option value="">--- Selecciona un paquete ---</option>
+            <option value="Basico Wireless" data-megas="5mb" data-costo="300" data-folio="682147">Básico Wireless</option>
+            <option value="Premium Wireless" data-megas="10mb" data-costo="500" data-folio="682199">Premium Wireless</option>
+            <option value="Turbo Wireless" data-megas="15mb" data-costo="700" data-folio="682207">Turbo Wireless</option>
+            <option value="Basico Fibra Optica" data-megas="10mb" data-costo="300" data-folio="682147">Básico Fibra Óptica</option>
+            <option value="Premium Fibra Optica" data-megas="20mb" data-costo="500" data-folio="682199">Premium Fibra Óptica</option>
+            <option value="Turbo Fibra Optica" data-megas="30mb" data-costo="700" data-folio="682207">Turbo Fibra Óptica</option>
+        </select>
+        Megas: <input type="text" name="megas" id="megas_paquete" readonly>
+        <br>
+        Costo:
+        <span>$</span>
+        <input type="text" name="tarifa" id="costo_paquete" readonly style="width:80px; text-align:right;">
+        <span>.00</span>
+        <br>
+        Folio: <input type="text" name="folio" id="folio_paquete" readonly>
       
-    <div style="display: flex; align-items: center;">
+    <!--div style="display: flex; align-items: center;">
         Tarifa:<input type="number" name="tarifa" required>
         <span style="margin-left: 5px;">$</span>
-    </div>
+    </div-->
      
      <h1>Datos del equipo Compra Venta</h1>
 
@@ -65,7 +83,7 @@ if (!isset($_SESSION['usuario'])) {
        Serie:<input type="text" name="serie" ><br>
 
        
-       NO.Equipos:<input type="number" name="equipo" required><br>
+       NO.Equipos:<input type="number" name="equipo" min="1" required><br>
        
      <h1>Instalacion del Equipo</h1>
 
@@ -92,12 +110,27 @@ if (!isset($_SESSION['usuario'])) {
         var seleccionado = this.value;
         var leyendas = document.getElementById('leyendas');
         var leyendaOpcion1 = document.getElementById('leyenda_opcion1');
-        var leyendaOpcion2 = document.getElementById('leyenda_opcion2');       
+        var leyendaOpcion2 = document.getElementById('leyenda_opcion2');
 
-        leyendaOpcion1.style.display = (seleccionado === 'opcion1') ? 'block' : 'none';
-        leyendaOpcion2.style.display = (seleccionado === 'opcion2') ? 'block' : 'none';
-     
-        leyendas.style.display = 'block';
+        // Oculta ambas leyendas por defecto
+        leyendaOpcion1.style.display = 'none';
+        leyendaOpcion2.style.display = 'none';
+
+        if (seleccionado === 'opcion1') {
+            leyendas.style.display = 'block';
+            leyendaOpcion1.style.display = 'block';
+        } else if (seleccionado === 'opcion2') {
+            leyendas.style.display = 'block';
+            leyendaOpcion2.style.display = 'block';
+        } else {
+            leyendas.style.display = 'none';
+        }
+    });
+    document.getElementById('paquete').addEventListener('change', function() {
+        var selected = this.options[this.selectedIndex];
+        document.getElementById('costo_paquete').value = selected.getAttribute('data-costo') || '';
+        document.getElementById('folio_paquete').value = selected.getAttribute('data-folio') || '';
+        document.getElementById('megas_paquete').value = selected.getAttribute('data-megas') || '';
     });
 </script> 
 

@@ -4,7 +4,7 @@ if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit();
 }
-
+ 
 require(__DIR__ .'/TCPDF/tcpdf.php');
 require(__DIR__ . '/PHPMailer/src/PHPMailer.php');
 require(__DIR__ . '/PHPMailer/src/SMTP.php');
@@ -23,7 +23,9 @@ $cp = $_POST['cp'];
 
 $tefono = $_POST['telefono'];
 $paquete = strtoupper($_POST['paquete']);    
-$tarifa = $_POST['tarifa'];      
+$tarifa = $_POST['tarifa'];  
+$folio = $_POST['folio'];
+$megas = $_POST['megas'];      
 $marca = strtoupper($_POST['marca']);
 $modelo = strtoupper($_POST['modelo']);
 $serie = isset($_POST['serie']) ? $_POST['serie'] : 'N/A';
@@ -65,7 +67,7 @@ $fecha_2 = $fechaObjeto->format('d') . ' ' . $mesEnEspañol . ' ' . $fechaObjeto
 $correo = $_POST['correo'];
 
 if (!empty($correo)) {
-    echo " $correo";
+    //echo " $correo";
     $notificacion1 = 'X';
     $notificacion2 = 'X';
     $notificacion3 = 'X';
@@ -86,18 +88,25 @@ $servicio2 = strtoupper($_POST['servicio2']);
 $descripcion2 = strtoupper($_POST['descripcion2']);
 $costo2 = strtoupper($_POST['costo2']);
 
-if ($opcionSeleccionada === 'opcion1') {
-    $contenido = 'Carnicería "Sadot"';
-             $conte4 ='Av. 27 de septiembre #11 Terrenate' ;
-              $conte5 = 'lunes a domingo 09:00 am a 05:00 pm';
-                 $contenido2 = 'X';
+if ($opcionSeleccionada === "opcion1") {
+    $contenido  = 'Carnicería "Sadot"';
+    $conte4     = 'Av. 27 de septiembre #11 Terrenate';
+    $conte5     = 'Lunes a domingo 09:00 am a 05:00 pm';
+    $contenido2 = 'X';
 
-} elseif ($opcionSeleccionada === 'opcion2') {
-    $contenido = 'Yonatan Ugarte Juárez';
-                 $conte6 = 'No. de cuenta: 0478144451';
-                 $conte7 = 'Tarjeta: 4555113012650786';
-                  $contenido3 = 'X';
+} elseif ($opcionSeleccionada === "opcion2") {
+    $contenido  = 'Yonatan Ugarte Juárez';
+    $conte4     = 'No. de cuenta: 0478144451';
+    $conte5     = 'Tarjeta: 4555 1130 1265 0786';
+    $contenido3 = 'X';
+
+} else {
+    $contenido  = 'Carnicería "Sadot"';
+    $conte4     = 'Av. 27 de septiembre #11 Terrenate';
+    $conte5     = 'Lunes a domingo 09:00 am a 05:00 pm';
+    $contenido2 = 'X';
 }
+
 
 $plantillaPdf = 'CONTRATOEDITABLE.pdf';
 $pdfSalida = 'CONTRATOEDITABLE_CON_DATOS.pdf';
@@ -124,8 +133,8 @@ $pdf->SetXY(100, 48);
 $pdf->Text(100, 48, $apellido1);
 $pdf->SetXY(160, 48);
 $pdf->Text(160, 48, $apellido2);
-$pdf->SetXY(35, 69); 
-$pdf->Text(35, 69, $calle);
+$pdf->SetXY(17, 69); 
+$pdf->Text(17, 69, $calle);
 $pdf->SetXY(82, 69); 
 $pdf->Text(82, 69, $num_ext);
 $pdf->SetXY(91, 69); 
@@ -142,10 +151,16 @@ $pdf->Text(190, 69, $cp);
 $pdf->SetXY(85, 83); 
 $pdf->Text(85, 83, $tefono);
 
-$pdf->SetXY(40, 125); 
-$pdf->Text(40, 125, $paquete);
+$pdf->SetXY(20, 125); 
+$pdf->Text(20, 125, $paquete.' '.$megas);
 $pdf->SetXY(129, 115); 
 $pdf->Text(129, 115, $tarifa);
+
+$pdf->SetXY(100, 99.5); 
+$pdf->Text(100, 99.5, '$'.$tarifa.'.00');
+
+$pdf->SetXY(103, 103.3); 
+$pdf->Text(103, 103.5, $folio);
 
 $pdf->SetXY(60, 162); 
 $pdf->Text(60, 162, $marca);
@@ -173,10 +188,10 @@ $pdf->Text(81,216, $conte4);
 $pdf->SetXY(81,220);
 $pdf->Text(81,220, $conte5);
 
-$pdf->SetXY(81,216);
+/*$pdf->SetXY(81,216);
 $pdf->Text(81,216, $conte6);
 $pdf->SetXY(81,220);
-$pdf->Text(81,220, $conte7);
+$pdf->Text(81,220, $conte7);*/
 
 $pdf->SetXY(81,218);
 $pdf->Text(20,208, $contenido2);
@@ -299,16 +314,17 @@ $mail->Host = 'smtp.titan.email';
 $mail->Port = 465;
 $mail->SMTPAuth = true;
 $mail->Username = 'contratos@tlaxicom.com';
-$mail->Password = 'tlaxi_contratos_2025';
+$mail->Password = 'MA IS YO 2021';//tlaxi_contratos_2025
 $mail->SMTPSecure = 'ssl'; 
 
 $mail->setFrom('contratos@tlaxicom.com', 'Tlaxicom');
 $mail->addAddress($correo);
+$mail->addCC('contratostlaxicom@gmail.com', 'Contratos Tlaxicom');
 //$mail->addAddress('clsrtreyes@gmail.com'); 
 $mail->Subject = 'Bienvenido a Tlaxicom '  ;
 $mail->isHTML(true); // Asegúrate de enviar en HTML
 $mensaje = '
-<p>¡Hola ' . $nombre . '!</p>
+<p>¡Hola ' . trim($nombre . ' ' . ($apellido1 ?? '') . ' ' . ($apellido2 ?? '')) . '!</p>
 
 <p style="text-align: justify">Es un placer informarte que tu contrato de servicio de internet ha sido procesado y está listo. Puedes encontrarlo adjunto a este correo electrónico. <br> Si tienes alguna pregunta o necesitas más información, no dudes en ponerte en contacto con nosotros.</p>
 
@@ -361,6 +377,16 @@ $nombreArchivo = $nombre . $apellido1 . $apellido2 . '_' . $nombreUsuario . '_' 
 try {
     $pdfContent = $pdf->Output('', 'S');
     $mail->addStringAttachment($pdfContent, $nombreArchivo);
+
+    // Adjuntar el PDF de Derechos de Usuario (archivo físico)
+    $derechosPath = realpath(__DIR__ . '/../docs/DerechosDeUsuario.pdf');
+    if ($derechosPath && file_exists($derechosPath)) {
+        // El segundo parámetro es el nombre que aparecerá en el adjunto del correo
+        $mail->addAttachment($derechosPath, 'DerechosDeUsuario.pdf');
+    } else {
+        // Opcional: registrar que no se encontró el archivo, pero no abortar el envío
+        error_log('Aviso: no se encontró el archivo DerechosDeUsuario.pdf en ' . __DIR__ . '/../docs/');
+    }
 
     if (!$mail->send()) {
         throw new Exception('Error al enviar el correo: ' . $mail->ErrorInfo);

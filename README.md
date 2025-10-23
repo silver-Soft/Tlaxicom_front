@@ -1,59 +1,68 @@
-# TlaxicomTlaxcala
+# README.md: TLAXICOM - Especificaciones Técnicas
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.12.
+Este documento detalla la arquitectura y la implementación de la autenticación de usuarios y la integración del inicio de sesión único (SSO) mediante Google OAuth 2.0 (Vinculación de Cuentas) para el sistema de administración.
 
-## Development server
+---
 
-To start a local development server, run:
+## 1. Arquitectura del Sistema
 
-```bash
-ng serve
-```
+| Componente | Tecnología | Propósito |
+| :--- | :--- | :--- |
+| **Frontend** | Angular 19+ (Standalone) | Interfaz de usuario y manejo del flujo de Google Identity Services (GIS). |
+| **Backend** | Spring Boot (Java) | Servicios REST, **Vinculación de Cuentas** y generación de JWT de TLAXICOM. |
+| **Base de Datos** | Cloud Firestore | Almacenamiento de usuarios/empleados registrados. |
+| **Autenticación** | Google OAuth 2.0 / GIS | Proceso de verificación de identidad. |
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## 2. Integración de Google OAuth 2.0: Vinculación de Cuentas (Account Linking)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+La estrategia de seguridad implementada restringe el acceso solo a **usuarios (empleados) pre-registrados** en Firestore. El proceso utiliza el ID Token de Google para verificar la identidad antes de emitir un token de sesión de TLAXICOM.
 
-```bash
-ng generate component component-name
-```
+### 2.1. Flujo de Autenticación (`/public/auth/google`)
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+| Paso | Origen / Destino | Resumen de la Acción |
+| :--- | :--- | :--- |
+| **1. Captura de Token** | Frontend (GIS) | El SDK de Google llama a la función global **`googleCallbackHandler`**, extrayendo el `idToken` (JWT de Google). |
+| **2. Petición REST**| Angular $\rightarrow$ Spring Boot | Se realiza un `POST` al *endpoint* `/public/auth/google` enviando el `idToken`. |
+| **3. Verificación** | `GoogleTokenVerifier` | Valida la autenticidad del `idToken` y extrae el *payload* (email, nombre, `fotoUrl`). |
+| **4. Vinculación** | `AuthService` $\rightarrow$ Firestore | Se ejecuta `UsuarioRepository.findByEmail(email)`. **Si el email NO existe en Firestore, se niega el acceso (Unauthorized).** |
+| **5. Respuesta** | Spring Boot $\rightarrow$ Angular | Si es exitoso, el `AuthService` genera un **JWT de TLAXICOM** y devuelve la respuesta en la estructura JSON **`LoginResponseDto`**, incluyendo `nombre`, `apPaterno` y `fotoUrl` obtenidos del *payload* de Google. |
 
-```bash
-ng generate --help
-```
+---
 
-## Building
+## 3. Especificaciones Técnicas del Backend (Java/Spring Boot)
 
-To build the project run:
+### 3.1. Clases y Lógica Central
 
-```bash
-ng build
-```
+| Clase | Rol Principal | Detalles de Implementación |
+| :--- | :--- | :--- |
+| `GoogleLoginRequest` | DTO de Petición | `record` que modela el payload JSON `{"idToken": "..."}`. |
+| `GoogleTokenVerifier` | Verificador | Utiliza la librería de Google para validar el `idToken` y extraer el `Payload` (datos de usuario y foto). |
+| `AuthService` | Lógica de Negocio | Implementa **`loginWithGoogle()`**: maneja la excepción de "Usuario no encontrado" de Firestore para restringir el acceso. Reutiliza la lógica de JWT y la estructura de respuesta (`LoginResponseDto`). |
+| `AuthController` | API REST | Expone el *endpoint* `/public/auth/google`. |
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### 3.2. Configuración de Seguridad
 
-## Running unit tests
+La configuración en `SecurityConfig.java` permite que el filtro de JWT funcione sin interrumpir las peticiones públicas.
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+* **Exclusión de Rutas:** `.requestMatchers("/public/**").permitAll()` asegura que el `JwtAuthenticationFilter` no lance errores de token en peticiones de login.
 
-```bash
-ng test
-```
+---
 
-## Running end-to-end tests
+## 4. Especificaciones Técnicas del Frontend (Angular 19+)
 
-For end-to-end (e2e) testing, run:
+### 4.1. Configuración GIS y Botón
 
-```bash
-ng e2e
-```
+| Elemento | Ubicación | Función / Detalle Técnico |
+| :--- | :--- | :--- |
+| **Carga de SDK** | `index.html` | `<script src="https://accounts.google.com/gsi/client" async defer></script>` para cargar el SDK de Google de forma global. |
+| **Botón GIS** | `login.component.html` | Usa el contenedor `div class="g_id_signin"` con **`data-shape="pill"`** para el diseño de cápsula. |
+| **Enganche Callback** | `login.component.ts` | La función global `window.googleCallbackHandler` captura el `idToken` de Google y llama al servicio Angular. |
+| **Redibujo** | `login.component.ts` (`ngAfterViewInit`) | Se utiliza `google.accounts.id.renderButton()` para **forzar el redibujo** del botón al navegar de vuelta al login (solucionando el problema de las SPA). |
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### 4.2. Persistencia y UX
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+* **Servicio:** El método `LoginConGoogle(idToken)` realiza la llamada REST.
+* **Datos de Usuario:** El método `processLogin` (común a ambos logins) almacena el **`token`**, `email`, nombre y la **`fotoUrl`** (obtenida del *payload* de Google) en **`sessionStorage`**.
+* **Avatar UX:** El *header* utiliza un contenedor CSS **`.profile-avatar-container`** con `border-radius: 50%` y una lógica **`*ngIf`** para mostrar la foto de perfil (si existe) o el `mat-icon` por defecto.

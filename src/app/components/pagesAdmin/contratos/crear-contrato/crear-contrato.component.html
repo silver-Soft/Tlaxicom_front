@@ -1,180 +1,251 @@
 <div class="container">
     <h2>Crear nuevo contrato</h2>
 
+    <!-- El formulario principal debe envolver el stepper -->
     <form class="form-container" [formGroup]="contratoFormGroup" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="fill">
-            <mat-label>Nombre</mat-label>
-            <input matInput formControlName="nombre" required>
-            <mat-error *ngIf="contratoFormGroup.get('nombre')?.hasError('required')">
-                El nombre es obligatorio.
-            </mat-error>
-        </mat-form-field>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Apellido Paterno</mat-label>
-            <input matInput formControlName="apPaterno" required>
-            <mat-error *ngIf="contratoFormGroup.get('apPaterno')?.hasError('required')">
-                El apellido paterno es obligatorio.
-            </mat-error>
-        </mat-form-field>
+        <mat-stepper orientation="horizontal" #stepper>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Apellido Materno</mat-label>
-            <input matInput formControlName="apMaterno">
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Teléfono</mat-label>
-            <input matInput formControlName="telefono" type="tel" required>
-            <mat-error *ngIf="contratoFormGroup.get('telefono')?.hasError('required')">
-                El teléfono es obligatorio.
-            </mat-error>
-        </mat-form-field>
-
-        <div style="display: flex; justify-content: center; align-items: center;">
-            <mat-slide-toggle formControlName="cuentaEmail">
-                ¿Cuenta con Email?
-            </mat-slide-toggle>
-        </div>
-            
-        <mat-form-field appearance="fill" *ngIf="contratoFormGroup.get('cuentaEmail')?.value == true">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email" type="email">
-        </mat-form-field>
-
-
-        <mat-form-field appearance="fill">
-            <mat-label>Calle / Avenida</mat-label>
-            <input matInput formControlName="domicilio" required>
-            <mat-error *ngIf="contratoFormGroup.get('domicilio')?.hasError('required')">
-                El domicilio es obligatorio.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Número Exterior</mat-label>
-            <input matInput formControlName="numExterior" required>
-            <mat-error *ngIf="contratoFormGroup.get('numExterior')?.hasError('required')">
-                El número exterior es obligatorio.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Número Interior</mat-label>
-            <input matInput formControlName="numInterior">
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Colonia</mat-label>
-            <input matInput formControlName="colonia" required>
-            <mat-error *ngIf="contratoFormGroup.get('colonia')?.hasError('required')">
-                La colonia es obligatoria.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Código Postal</mat-label>
-            <input matInput formControlName="cp" required>
-            <mat-error *ngIf="contratoFormGroup.get('cp')?.hasError('required')">
-                El código postal es obligatorio.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Municipio</mat-label>
-            <input matInput formControlName="municipio" required>
-            <mat-error *ngIf="contratoFormGroup.get('municipio')?.hasError('required')">
-                El municipio es obligatorio.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Estado</mat-label>
-            <input matInput formControlName="estado" required>
-            <mat-error *ngIf="contratoFormGroup.get('estado')?.hasError('required')">
-                El estado es obligatorio.
-            </mat-error>
-        </mat-form-field>
-
-
-        <mat-form-field appearance="fill">
-            <mat-label>ID Paquete</mat-label>
-            <input matInput formControlName="idPaquete" required>
-            <mat-error *ngIf="contratoFormGroup.get('idPaquete')?.hasError('required')">
-                El paquete es obligatorio.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Tarifa Mensual</mat-label>
-            <input matInput formControlName="tarifa" type="number" required>
-            <mat-error *ngIf="contratoFormGroup.get('tarifa')?.hasError('required')">
-                La tarifa es obligatoria.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Marca del Módem</mat-label>
-            <input matInput formControlName="marcaModem" required>
-            <mat-error *ngIf="contratoFormGroup.get('marcaModem')?.hasError('required')">
-                La marca del módem es obligatoria.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Modelo del Módem</mat-label>
-            <input matInput formControlName="modeloModem" required>
-            <mat-error *ngIf="contratoFormGroup.get('modeloModem')?.hasError('required')">
-                El modelo del módem es obligatorio.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>No. de Serie del Módem</mat-label>
-            <input matInput formControlName="noSerieModem" required>
-            <mat-error *ngIf="contratoFormGroup.get('noSerieModem')?.hasError('required')">
-                El número de serie es obligatorio.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Cantidad de Equipos</mat-label>
-            <input matInput formControlName="cantEquipos" type="number" required>
-            <mat-error *ngIf="contratoFormGroup.get('cantEquipos')?.hasError('required')">
-                La cantidad de equipos es obligatoria.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Fecha de Instalación</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="fechaInstalacion" required>
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="contratoFormGroup.get('fechaInstalacion')?.hasError('required')">
-                La fecha es obligatoria.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Hora de Instalación</mat-label>
-            <input matInput formControlName="horaInstalacion" type="time" required>
-            <mat-error *ngIf="contratoFormGroup.get('horaInstalacion')?.hasError('required')">
-                La hora es obligatoria.
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill">
-            <mat-label>Método de Pago</mat-label>
-            <input matInput formControlName="idMetodoPago" required>
-            <mat-error *ngIf="contratoFormGroup.get('idMetodoPago')?.hasError('required')">
-                El método de pago es obligatorio.
-            </mat-error>
-        </mat-form-field>
+            <!-- ============================================== -->
+            <!-- PASO 1: DATOS PERSONALES Y DE CONTACTO -->
+            <!-- ============================================== -->
+            <mat-step [stepControl]="stepPersonalData" label="Datos Personales y Contacto">
+                <form [formGroup]="stepPersonalData" class="form-step">
+                    
+                    <div class="input-group">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Nombre</mat-label>
+                            <input matInput formControlName="nombre" required>
+                            <mat-error *ngIf="personalControls['nombre'].hasError('required')">
+                                El nombre es obligatorio.
+                            </mat-error>
+                        </mat-form-field>
         
-        <div style="display: flex; justify-content: center; align-items: center;">
-            <mat-slide-toggle formControlName="serviciosAdicionales">
-                Servicios Adicionales
-            </mat-slide-toggle>
-        </div>
+                        <mat-form-field appearance="outline">
+                            <mat-label>Apellido Paterno</mat-label>
+                            <input matInput formControlName="apPaterno" required>
+                            <mat-error *ngIf="personalControls['apPaterno'].hasError('required')">
+                                El apellido paterno es obligatorio.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Apellido Materno</mat-label>
+                            <input matInput formControlName="apMaterno">
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Teléfono</mat-label>
+                            <input matInput formControlName="telefono" type="tel" required>
+                            <mat-error *ngIf="personalControls['telefono'].hasError('required')">
+                                El teléfono es obligatorio.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <!-- Toggle para Email (Controla la visibilidad y validación del campo 'email') -->
+                    <div style="margin: 20px 0; display: flex; align-items: center;">
+                        <mat-slide-toggle formControlName="cuentaEmail">
+                            ¿Cuenta con Email?
+                        </mat-slide-toggle>
+                    </div>
+                        
+                    <!-- Campo Email Condicional -->
+                    <mat-form-field appearance="outline" *ngIf="personalControls['cuentaEmail'].value">
+                        <mat-label>Email (Requerido)</mat-label>
+                        <input matInput formControlName="email" type="email" required>
+                        <mat-error *ngIf="personalControls['email'].hasError('required')">
+                            El email es obligatorio.
+                        </mat-error>
+                        <mat-error *ngIf="personalControls['email'].hasError('email')">
+                            Formato de email inválido.
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div class="button-row">
+                        <button mat-flat-button color="primary" matStepperNext>Siguiente</button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <!-- ============================================== -->
+            <!-- PASO 2: DATOS DE DOMICILIO -->
+            <!-- ============================================== -->
+            <mat-step [stepControl]="stepAddressData" label="Datos de Domicilio">
+                <form [formGroup]="stepAddressData" class="form-step">
+                    
+                    <div class="input-group">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Calle / Avenida</mat-label>
+                            <input matInput formControlName="domicilio" required>
+                            <mat-error *ngIf="addressControls['domicilio'].hasError('required')">
+                                El domicilio es obligatorio.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Número Exterior</mat-label>
+                            <input matInput formControlName="numExterior" required>
+                            <mat-error *ngIf="addressControls['numExterior'].hasError('required')">
+                                El número exterior es obligatorio.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Número Interior</mat-label>
+                            <input matInput formControlName="numInterior">
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Colonia</mat-label>
+                            <input matInput formControlName="colonia" required>
+                            <mat-error *ngIf="addressControls['colonia'].hasError('required')">
+                                La colonia es obligatoria.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Código Postal</mat-label>
+                            <input matInput formControlName="cp" required>
+                            <mat-error *ngIf="addressControls['cp'].hasError('required')">
+                                El código postal es obligatorio.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Municipio</mat-label>
+                            <input matInput formControlName="municipio" required>
+                            <mat-error *ngIf="addressControls['municipio'].hasError('required')">
+                                El municipio es obligatorio.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Estado</mat-label>
+                            <input matInput formControlName="estado" required>
+                            <mat-error *ngIf="addressControls['estado'].hasError('required')">
+                                El estado es obligatorio.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="button-row">
+                        <button mat-button matStepperPrevious>Anterior</button>
+                        <button mat-flat-button color="primary" matStepperNext>Siguiente</button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <!-- ============================================== -->
+            <!-- PASO 3: DATOS DEL SERVICIO Y EQUIPO -->
+            <!-- ============================================== -->
+            <mat-step [stepControl]="stepServiceData" label="Servicio, Equipo e Instalación">
+                <form [formGroup]="stepServiceData" class="form-step">
+
+                    <div class="input-group">
+                        <mat-form-field appearance="outline">
+                            <mat-label>ID Paquete</mat-label>
+                            <input matInput formControlName="idPaquete" required>
+                            <mat-error *ngIf="serviceControls['idPaquete'].hasError('required')">
+                                El paquete es obligatorio.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Tarifa Mensual</mat-label>
+                            <input matInput formControlName="tarifa" type="number" required>
+                            <mat-error *ngIf="serviceControls['tarifa'].hasError('required')">
+                                La tarifa es obligatoria.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Marca del Módem</mat-label>
+                            <input matInput formControlName="marcaModem" required>
+                            <mat-error *ngIf="serviceControls['marcaModem'].hasError('required')">
+                                La marca del módem es obligatoria.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Modelo del Módem</mat-label>
+                            <input matInput formControlName="modeloModem" required>
+                            <mat-error *ngIf="serviceControls['modeloModem'].hasError('required')">
+                                El modelo del módem es obligatorio.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>No. de Serie del Módem</mat-label>
+                            <input matInput formControlName="noSerieModem" required>
+                            <mat-error *ngIf="serviceControls['noSerieModem'].hasError('required')">
+                                El número de serie es obligatorio.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Cantidad de Equipos</mat-label>
+                            <input matInput formControlName="cantEquipos" type="number" required>
+                            <mat-error *ngIf="serviceControls['cantEquipos'].hasError('required')">
+                                La cantidad de equipos es obligatoria.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Fecha de Instalación</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="fechaInstalacion" required>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                            <mat-error *ngIf="serviceControls['fechaInstalacion'].hasError('required')">
+                                La fecha es obligatoria.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Hora de Instalación</mat-label>
+                            <input matInput [matTimepicker]="timePicker" formControlName="horaInstalacion" required>
+                            <mat-timepicker-toggle matIconSuffix [for]="timePicker"/>
+                            <mat-timepicker #timePicker/>
+                            <mat-error *ngIf="serviceControls['horaInstalacion'].hasError('required')">
+                                La hora es obligatoria.
+                            </mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                            <mat-label>Método de Pago</mat-label>
+                            <input matInput formControlName="idMetodoPago" required>
+                            <mat-error *ngIf="serviceControls['idMetodoPago'].hasError('required')">
+                                El método de pago es obligatorio.
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                    
+                    <div style="margin: 20px 0; display: flex; align-items: center;">
+                        <mat-slide-toggle formControlName="serviciosAdicionales">
+                            Servicios Adicionales
+                        </mat-slide-toggle>
+                    </div>
+
+                    <div class="button-row">
+                        <button mat-button matStepperPrevious>Anterior</button>
+                        <button mat-flat-button color="accent" [disabled]="stepServiceData.invalid" matStepperNext>
+                            Finalizar Contrato
+                        </button>
+                    </div>
+                </form>
+            </mat-step>
+
+            <!-- ============================================== -->
+            <!-- PASO 4: RESUMEN / COMPLETADO (Opcional) -->
+            <!-- ============================================== -->
+            <mat-step label="Completado">
+                <p>¡Formulario listo para enviar!</p>
+                <div class="button-row">
+                    <button mat-button matStepperPrevious>Volver a Revisar</button>
+                    <button mat-flat-button color="primary" type="submit">Guardar contrato</button>
+                </div>
+            </mat-step>
+
+        </mat-stepper>
     </form>
 </div>

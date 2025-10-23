@@ -1,12 +1,9 @@
 // map.component.ts
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-//import { GoogleMapsService } from '../../services/google-maps.service';
-import { GoogleMapsModule } from '@angular/google-maps';
+import { Component, OnInit, ViewChild} from '@angular/core';
+import { GoogleMapsModule, MapInfoWindow } from '@angular/google-maps';
 import { PoligonosService } from '../../services/poligonos.service';
 import { NotificationService } from '../../services/core/notification.service';
-
-declare var google: any;
 
 interface Zona {
   tipo: string;
@@ -14,7 +11,15 @@ interface Zona {
   nombre:String;
   poligono: any[];
 }
-
+interface MapMouseEvent {
+    latLng: google.maps.LatLng;
+    // ... otras propiedades
+}
+// 🚩 Interfaz que coincide con el evento de polígono
+interface PolyMouseEvent {
+    latLng: google.maps.LatLng | null; // El compilador exige la posibilidad de 'null'
+    // ... otras propiedades
+}
 @Component({
   selector: 'app-map',
   standalone: true,
@@ -31,6 +36,11 @@ export class MapComponent implements OnInit {
 
   zoom = 12;
 
+  // 🚩 1. Usar @ViewChild para obtener la instancia del componente MapInfoWindow
+    @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
+  // 🚩 2. Propiedad para almacenar la posición donde debe abrirse el tooltip
+    infoWindowPosition: google.maps.LatLngLiteral = { lat: 0, lng:0 };
+    
   // Opciones avanzadas del mapa
   mapOptions: google.maps.MapOptions = {
     disableDefaultUI: true,
@@ -42,7 +52,43 @@ export class MapComponent implements OnInit {
     fullscreenControl: false,
     mapTypeId: 'roadmap'
   };
+  
+    // 1. Propiedad para almacenar el polígono sobre el que está el ratón
+    activeZone: Zona | null = null;
+    
+    // 2. Método para mostrar el InfoWindow (Tooltip)
+    openInfoWindow(event: PolyMouseEvent, zona: Zona) {
+        console.log("OPEN")
+        // Cierra cualquier ventana que pudiera estar abierta
+        this.infoWindow.close(); 
+        
+        // 1. Verificación de Nulidad: Aseguramos que las coordenadas existan.
+        if (!event.latLng) {
+            console.warn("Posición de mouseover no disponible.");
+            return;
+        }
 
+        // 2. Procesa la posición (ya sabemos que NO es null)
+        const latLng = event.latLng.toJSON();
+        
+        this.activeZone = zona; 
+        this.infoWindowPosition = latLng;
+        
+        // 3. Abrir la ventana de información en esa posición.
+        this.infoWindow.open(); 
+    }
+
+    // 3. Método para cerrar el InfoWindow (Tooltip)
+    closeInfoWindow() {
+        // Cierra la ventana
+        this.infoWindow.close();
+        
+        // Limpia el contenido después de un breve retraso para evitar parpadeos
+        setTimeout(() => {
+             this.activeZone = null;
+        }, 100); 
+    }
+    
   // Datos de las zonas (luego vendrán de un servicio)
   zonas: Zona[] = []/*[
     {//Terrenate

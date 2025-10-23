@@ -1,13 +1,22 @@
 <google-map width="100%" height="500px" [center]="center" [zoom]="zoom">
 
-  <map-polygon *ngFor="let zona of zonas" [paths]="zona.poligono" [options]="{
+  <map-polygon *ngFor="let zona of zonas let i = index" [paths]="zona.poligono" [options]="{
     strokeColor: getStrokeColor(zona.tipo),
     fillColor: getFillColor(zona.tipo),
     strokeOpacity: 0.8,
     fillOpacity: 0.35,
     strokeWeight: 2
-  }" (polygonClick)="onPolygonClick(zona)">
+  }" 
+  (polygonMouseover)="openInfoWindow($event, zona)" 
+        (polygonMouseout)="closeInfoWindow()">
   </map-polygon>
+
+  <map-info-window #infoWindowRef [position]="infoWindowPosition">
+        <div *ngIf="activeZone" class="polygon-tooltip">
+            <h3>{{ activeZone.nombre }}</h3>            
+            <h4>Tipo: {{ activeZone.tipo }}</h4>            
+        </div>
+  </map-info-window>
   <!--
 <div style="position: relative;">
         <div id="map-canvas" style="height: 500px;"></div>        

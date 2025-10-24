@@ -3,14 +3,7 @@
     margin-top: 20px;
 }
 
-@media (max-width: 761px) {
-    .form-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        row-gap: 10px;
-    }        
-}
+
 
 .form-step {
     padding: 10px 0;
@@ -34,4 +27,30 @@ mat-form-field {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
+}
+
+.check-toggle-container {
+    grid-column: 1/-1; 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    column-gap: 10px;
+}
+.radio-group-container {
+    margin: 16px 0px;
+}
+
+@media (max-width: 761px) {
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        row-gap: 10px;
+    }   
+    
+    .check-toggle-container {        
+        display: flex; 
+        flex-direction: column;
+        justify-content: center;
+        row-gap: 10px;
+    }
 }

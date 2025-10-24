@@ -33,34 +33,54 @@
                             <mat-label>Apellido Materno</mat-label>
                             <input matInput formControlName="apMaterno">
                         </mat-form-field>
-        
-                        <mat-form-field appearance="outline">
-                            <mat-label>Teléfono</mat-label>
-                            <input matInput formControlName="telefono" type="tel" required>
-                            <mat-error *ngIf="personalControls['telefono'].hasError('required')">
-                                El teléfono es obligatorio.
-                            </mat-error>
-                        </mat-form-field>
+
+                        <div class="check-toggle-container">
+                            <div>
+                                <div class="radio-group-container">
+                                    <mat-label>Tipo de Teléfono *</mat-label>
+                                    <mat-radio-group formControlName="tipoTelefono" aria-label="Seleccionar tipo de teléfono">
+                                        <!-- Valor '1' corresponde a Teléfono fijo -->
+                                        <mat-radio-button value="1">Teléfono fijo</mat-radio-button>
+                                        <!-- Valor '2' corresponde a Teléfono móvil (seleccionado por defecto en el TS) -->
+                                        <mat-radio-button value="2">Teléfono móvil</mat-radio-button>
+                                    </mat-radio-group>
+                                    <mat-error *ngIf="personalControls['tipoTelefono'].hasError('required') && personalControls['tipoTelefono'].touched" class="radio-error">
+                                        Debe seleccionar un tipo de teléfono.
+                                    </mat-error>                            
+                                </div>
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Teléfono</mat-label>
+                                    <input matInput formControlName="telefono" type="tel" required>
+                                    <mat-error *ngIf="personalControls['telefono'].hasError('required')">
+                                        El teléfono es obligatorio.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div>
+                                <!-- Toggle para Email (Controla la visibilidad y validación del campo 'email') -->
+                                <div style="margin: 20px 0; display: flex; align-items: center;">
+                                    <mat-slide-toggle formControlName="cuentaEmail">
+                                        ¿Cuenta con Email?
+                                    </mat-slide-toggle>
+                                </div>
+                                    
+                                <!-- Campo Email Condicional -->
+                                <mat-form-field appearance="outline" *ngIf="personalControls['cuentaEmail'].value">
+                                    <mat-label>Email (Requerido)</mat-label>
+                                    <input matInput formControlName="email" type="email" required>
+                                    <mat-error *ngIf="personalControls['email'].hasError('required')">
+                                        El email es obligatorio.
+                                    </mat-error>
+                                    <mat-error *ngIf="personalControls['email'].hasError('email')">
+                                        Formato de email inválido.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                        </div>                                                
                     </div>
 
-                    <!-- Toggle para Email (Controla la visibilidad y validación del campo 'email') -->
-                    <div style="margin: 20px 0; display: flex; align-items: center;">
-                        <mat-slide-toggle formControlName="cuentaEmail">
-                            ¿Cuenta con Email?
-                        </mat-slide-toggle>
-                    </div>
-                        
-                    <!-- Campo Email Condicional -->
-                    <mat-form-field appearance="outline" *ngIf="personalControls['cuentaEmail'].value">
-                        <mat-label>Email (Requerido)</mat-label>
-                        <input matInput formControlName="email" type="email" required>
-                        <mat-error *ngIf="personalControls['email'].hasError('required')">
-                            El email es obligatorio.
-                        </mat-error>
-                        <mat-error *ngIf="personalControls['email'].hasError('email')">
-                            Formato de email inválido.
-                        </mat-error>
-                    </mat-form-field>
+                    
 
                     <div class="button-row">
                         <button mat-flat-button color="primary" matStepperNext>Siguiente</button>
@@ -143,9 +163,14 @@
                 <form [formGroup]="stepServiceData" class="form-step">
 
                     <div class="input-group">
+
                         <mat-form-field appearance="outline">
-                            <mat-label>ID Paquete</mat-label>
-                            <input matInput formControlName="idPaquete" required>
+                            <mat-label>Paquete contratado</mat-label>
+                            <mat-select formControlName="idPaquete">
+                                <mat-option [value]="paquete.idPaquete" *ngFor="let paquete of paquetes">
+                                    {{ paquete.title + ' - ' + paquete.speed + 'mb - ' + paquete.tipo }}
+                                </mat-option>
+                            </mat-select>
                             <mat-error *ngIf="serviceControls['idPaquete'].hasError('required')">
                                 El paquete es obligatorio.
                             </mat-error>
@@ -211,9 +236,14 @@
                             </mat-error>
                         </mat-form-field>
         
-                        <mat-form-field appearance="outline">
+
+                        <mat-form-field appearance="outline"> 
                             <mat-label>Método de Pago</mat-label>
-                            <input matInput formControlName="idMetodoPago" required>
+                            <mat-select formControlName="idMetodoPago">
+                                <mat-option [value]="metodo.idMetodo" *ngFor="let metodo of metodosPago">
+                                    {{ metodo.metodo }}
+                                </mat-option>
+                            </mat-select>
                             <mat-error *ngIf="serviceControls['idMetodoPago'].hasError('required')">
                                 El método de pago es obligatorio.
                             </mat-error>

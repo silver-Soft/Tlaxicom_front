@@ -90,7 +90,8 @@ export class LoginComponent implements OnInit, AfterViewInit{
 
   ngAfterViewInit(): void {
     // Ejecuta el renderizado solo si el objeto de Google existe
-        if (typeof google !== 'undefined' && this.googleBtnRef) {
+    setTimeout(() => {
+      if (typeof google !== 'undefined' && this.googleBtnRef) {
             
             google.accounts.id.renderButton(
                 this.googleBtnRef.nativeElement, // El elemento HTML
@@ -106,7 +107,8 @@ export class LoginComponent implements OnInit, AfterViewInit{
                     width: '300px' // Definir un ancho es útil
                 }
             );
-        }
+        }    
+    }, 100);        
   }
 
   ngOnInit(): void {    

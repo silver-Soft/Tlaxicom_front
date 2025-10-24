@@ -260,8 +260,7 @@ $color: rgb(41, 148, 248);
     overflow: hidden; /* Recorta la imagen a la forma circular */
     display: flex; /* Para centrar el ícono o la imagen */
     align-items: center;
-    justify-content: center;
-    background-color: #e0e0e0; /* Fondo gris claro si no hay foto */
+    justify-content: center;    
 }
 
 /* 3. Estilo para el ícono (Fallback) */
@@ -269,7 +268,7 @@ $color: rgb(41, 148, 248);
     font-size: 24px; /* Tamaño del ícono */
     width: 24px;
     height: 24px;
-    color: #424242; /* Color del ícono por defecto */
+    color: #ffffff; /* Color del ícono por defecto */
 }
 
 /* 4. Estilo para la imagen de perfil */

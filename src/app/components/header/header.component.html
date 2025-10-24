@@ -370,9 +370,21 @@
                 </button>                                
             </ng-container>  
             
-            <a mat-button class="button" [matMenuTriggerFor]="menu"
-                [matTooltip]="loginService.obtenerDatosUsuario().nombre">
-                <mat-icon>person_outline</mat-icon>
+            <a mat-button 
+            class="profile-button" 
+            [matMenuTriggerFor]="menu"
+            [matTooltip]="loginService.obtenerDatosUsuario().nombre">
+            
+                <div class="profile-avatar-container">
+                    
+                    <img [src]="loginService.obtenerDatosUsuario().fotoUrl" 
+                        alt="Foto de perfil" 
+                        class="profile-image" 
+                        *ngIf="loginService.obtenerDatosUsuario().fotoUrl">
+                    
+                    <mat-icon *ngIf="!loginService.obtenerDatosUsuario().fotoUrl">person_outline</mat-icon>
+                    
+                </div>
             </a>
             <mat-menu #menu="matMenu">
                 <button mat-menu-item routerLink="/login" *ngIf="loginService.obtenerToken()==null">Iniciar sesión</button>

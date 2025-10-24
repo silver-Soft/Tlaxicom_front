@@ -9,9 +9,11 @@ import { LoginResponseDto } from '../../DTOs/response/loginResponseDto';
 class DatosUsuario {
   nombre: string;
   email: string;  
+  fotoUrl: string;
   constructor() {
     this.nombre = '';
-    this.email = '';    
+    this.email = '';  
+    this.fotoUrl = '';  
   }
 }
 
@@ -54,6 +56,7 @@ export class LoginUsuarioService {
     let datosUsuario = new DatosUsuario();
     datosUsuario.nombre = sessionStorage.getItem("usuario") || '';
     datosUsuario.email = sessionStorage.getItem("email") || '';
+    datosUsuario.fotoUrl = sessionStorage.getItem("fotoUrl") || '';
     return datosUsuario    
   }  
   

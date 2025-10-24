@@ -244,3 +244,37 @@ $color: rgb(41, 148, 248);
   justify-content: center;
   align-items: center;
 }
+
+/* 1. Estilo para el botón (a) que contiene el avatar */
+.profile-button {
+    padding: 0 8px; /* Reduce el padding estándar para que el botón se ajuste al avatar */
+    min-width: 40px; /* Tamaño mínimo del botón */
+    height: 40px;
+}
+
+/* 2. Contenedor principal que define el espacio (40x40px, tamaño de un ícono grande) */
+.profile-avatar-container {
+    width: 32px; /* Tamaño estándar del ícono de Material */
+    height: 32px;
+    border-radius: 50%; /* 🚩 Clave para hacerlo circular */
+    overflow: hidden; /* Recorta la imagen a la forma circular */
+    display: flex; /* Para centrar el ícono o la imagen */
+    align-items: center;
+    justify-content: center;
+    background-color: #e0e0e0; /* Fondo gris claro si no hay foto */
+}
+
+/* 3. Estilo para el ícono (Fallback) */
+.profile-avatar-container mat-icon {
+    font-size: 24px; /* Tamaño del ícono */
+    width: 24px;
+    height: 24px;
+    color: #424242; /* Color del ícono por defecto */
+}
+
+/* 4. Estilo para la imagen de perfil */
+.profile-image {
+    width: 100%; /* La imagen ocupa todo el contenedor */
+    height: 100%;
+    object-fit: cover; /* Asegura que la imagen llene el espacio sin distorsionarse */
+}

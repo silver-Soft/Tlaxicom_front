@@ -30,6 +30,7 @@ export class UsuarioDto{
     idRol: number;
     lstPrivilegios: Privilegio[];
     token: string;
+    fotoUrl?: string;
 
     constructor() {
         this.nombre = null
@@ -39,5 +40,6 @@ export class UsuarioDto{
         this.idRol = 0
         this.lstPrivilegios = []
         this.token = ""
+        this.fotoUrl = ""
     }
 }

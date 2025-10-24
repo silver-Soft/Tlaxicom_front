@@ -160,6 +160,11 @@ export class LoginComponent implements OnInit, AfterViewInit{
       sessionStorage.setItem("usuario", nombreCompleto);
       sessionStorage.setItem("idRol", this.userData.obj.idRol.toString());
       
+      if (this.userData.obj.fotoUrl) {
+        console.log("Guardando fotoUrl en sessionStorage:", this.userData.obj.fotoUrl);
+          sessionStorage.setItem("fotoUrl", this.userData.obj.fotoUrl);
+      }
+
       this.servicioNavBar.triggerLogin.emit(true);
       this.router.navigate(['/dashboard']);
       this.notificationService.pushSuccess("Bienvenido " + this.userData.obj.nombre);

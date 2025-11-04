@@ -269,13 +269,31 @@
             <!-- PASO 4: RESUMEN / COMPLETADO (Opcional) -->
             <!-- ============================================== -->
             <mat-step label="Completado">
-                <p>¡Formulario listo para enviar!</p>
-                <div class="button-row">
+                <div class="centrado">                    
+                    <div style="display: flex; justify-content: center;">
+                        <p style="margin: 3px 0px 0px 0px;">¡Formulario listo para enviar!</p>    
+                        <mat-icon style="color: green;">check_circle</mat-icon>
+                    </div>                 
+                    <p>Solo falta tu firma.</p>
+                    <canvas #canvas width="400" height="300" class="canvas-container"></canvas>
+                </div>                
+                <div class="flex-end-center">
                     <button mat-button matStepperPrevious>Volver a Revisar</button>
+                    <button mat-stroked-button type="button" (click)="vistaPreviaContrato()">Vista previa del contrato</button>
                     <button mat-flat-button color="primary" type="submit">Guardar contrato</button>
                 </div>
             </mat-step>
 
         </mat-stepper>
+        <div class="pdf-modal-overlay" *ngIf="mostrarModalPdf">
+            <div class="pdf-modal-content">
+                <button class="close-button" type="button" (click)="cerrarVistaPrevia()">✖</button>     
+                <button mat-fab extended type="button" (click)="cerrarVistaPrevia()" class="close-button">
+                    <mat-icon>close</mat-icon>
+                    Cerrar
+                </button>       
+                <iframe [src]="pdfUrlSegura" class="pdf-viewer"></iframe>
+            </div>
+        </div>
     </form>
 </div>

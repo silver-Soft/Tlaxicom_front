@@ -13,6 +13,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import { NavBarService } from '../../../services/core/navBar.service';
+import { ContratosService } from '../../../services/contratos.service';
+import { ResultadoDto } from '../../../DTOs/response/resultadoDto';
+import { UtilsService } from '../../../services/utils.service';
 
 @Component({
   selector: 'app-contratos',
@@ -30,9 +33,10 @@ export class ContratosComponent implements OnInit{
 
   constructor(
       private notificationService: NotificationService,
-      //private dialog: MatDialog,
+      private contratosService: ContratosService,
       public navbarService:NavBarService,
       private observer : BreakpointObserver,
+      private utilsService: UtilsService
     ) { 
       this.observer.observe(['(max-width : 800px)']).subscribe(res => {
       this.esDispositivoMovil = res.matches;
@@ -40,20 +44,43 @@ export class ContratosComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.dataSource.data = [
+    this.obtenerContratos()
+    /*this.dataSource.data = [
       {id: 1, nombre: 'Ernesto Pérez', domicilio: 'Calle 5 de Febrero #123, Col. Centro, CP 06000, CDMX', paquete: 'Básico', activo: true},
       {id: 2, nombre: 'María López', domicilio: 'Avenida Insurgentes Sur #456, Col. Del Valle, CP 03100, CDMX', paquete: 'Premium', activo: false},
       {id: 3, nombre: 'Juan Martínez', domicilio: 'Calle Reforma #789, Col. Juárez, CP 06600, CDMX', paquete: 'Estándar', activo: true},
-      {id: 4, nombre: 'Ana Gómez', domicilio: 'Avenida Coyoacán #101, Col. Narvarte, CP 03020, CDMX', paquete: 'Básico', activo: true},]
+      {id: 4, nombre: 'Ana Gómez', domicilio: 'Avenida Coyoacán #101, Col. Narvarte, CP 03020, CDMX', paquete: 'Básico', activo: true},]*/
   }
 
   detalle(element: any) {
+    this.utilsService.downloadPdf(element.rutaPdf, 'Contrato_'+element.idContrato+'_'+element.personal.nombre + '_' + element.personal.apPaterno + '_' + element.personal.apMaterno + '.pdf');
+  }
+
+  archivar(idAcreedor: number) {
     
   }
 
-  modificar(idAcreedor: number) {
-    
+  eliminar(idContrato: number) {
+    this.contratosService.eliminarContrato(idContrato.toString()).subscribe((data: ResultadoDto) => {
+      if (data.resultado === true) {
+        this.notificationService.pushSuccess("Contrato eliminado correctamente");
+        this.obtenerContratos();
+      } else {
+        this.notificationService.pushError(data.mensaje);
+      }
+    });
   }
+
+  obtenerContratos(): void {
+    this.contratosService.obtenerContratos().subscribe((data: ResultadoDto) => {
+      if (data.resultado === true) {
+        this.dataSource.data = data.obj
+      } else {
+        this.notificationService.pushError(data.mensaje);
+      }
+    })
+  }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

@@ -23,6 +23,7 @@ import { PaqueteModel } from '../../../models/paqueteModel';
 import { MetodoPagoModel } from '../../../models/metodoPagoModel';
 import SignaturePad from "signature_pad";
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ContratosService } from '../../../../services/contratos.service';
 
 @Component({
   selector: 'app-crear-contrato',
@@ -62,7 +63,8 @@ export class CrearContratoComponent implements OnInit{
       private catalogosService: CatalogosService,
       private notificationService: NotificationService,
       private sanitizer: DomSanitizer,
-      private cdRef: ChangeDetectorRef
+      private cdRef: ChangeDetectorRef,
+      private contratosService: ContratosService
     ){}
 
   ngOnInit(): void {
@@ -127,10 +129,12 @@ export class CrearContratoComponent implements OnInit{
   }
 
   clear() {
+    console.log("limpiar firma:\n"+this.sig.toDataURL("image/png"));
     this.sig.clear();
   }
 
   async vistaPreviaContrato(){
+    console.log("valores:\n"+JSON.stringify(this.contratoFormGroup.getRawValue()))
     const resultado = await this.generatePdf();
 
     if (!this.contratoFormGroup.valid) {
@@ -174,11 +178,21 @@ export class CrearContratoComponent implements OnInit{
       
       const resultado = await this.generatePdf()
 
-      const link = document.createElement('a');
+      finalData.pdfBase64 = resultado.base64 // PDF en base64
+
+      this.contratosService.nuevoContrato(finalData).subscribe((data: ResultadoDto) => {
+          if (data.resultado === true) {   
+            this.notificationService.pushSuccess("Contrato creado correctamente.");           
+          } else {
+            this.notificationService.pushError("Error al crear el contrato: " + data.mensaje);
+          }
+        })
+
+      /*const link = document.createElement('a');
       link.href = resultado.urlBytes;
       link.download = resultado.nombre;
       link.click();        
-      this.notificationService.pushSuccess('PDF generado y descargado con éxito.');
+      this.notificationService.pushSuccess('PDF generado y descargado con éxito.');*/
       
     } else {
       // Marca todos los controles de todos los pasos como 'touched' para mostrar errores
@@ -442,7 +456,7 @@ export class CrearContratoComponent implements OnInit{
             this.notificationService. pushError("Error al obtener los paquetes: " + data.mensaje);
           }
         })
-      }  
+     }  
 
     // Método de utilidad para simplificar la validación en la plantilla
     get personalControls() { return this.stepPersonalData.controls; }

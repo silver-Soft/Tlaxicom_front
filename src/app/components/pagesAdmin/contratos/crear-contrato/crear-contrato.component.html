@@ -269,14 +269,25 @@
             <!-- PASO 4: RESUMEN / COMPLETADO (Opcional) -->
             <!-- ============================================== -->
             <mat-step label="Completado">
-                <div class="centrado">                    
+                <div class="centrado" style="position: relative; width: 100%;"> <div style="display: flex; justify-content: center; width: 100%; position: absolute; top: 0; left: 0; padding: 8px 0;"> <p style="margin: 3px 0px 0px 0px;">¡Formulario listo para enviar!</p> <mat-icon style="color: green;">check_circle</mat-icon> </div> <!-- Botón de reinicio (FAB) -->
+                    <button mat-fab color="warn" aria-label="Reiniciar canvas"
+                    style="position: absolute; top: 8px; right: 8px; z-index: 2;"
+                    (click)="clear()">
+                    <mat-icon>delete</mat-icon>
+                    </button>
+
+                    <p style="margin: 28px 0 0 0;">Solo falta tu firma.</p>
+                    <canvas #canvas width="400" height="300" class="canvas-container"></canvas>
+
+                </div>
+                <!--div class="centrado">                    
                     <div style="display: flex; justify-content: center;">
                         <p style="margin: 3px 0px 0px 0px;">¡Formulario listo para enviar!</p>    
                         <mat-icon style="color: green;">check_circle</mat-icon>
                     </div>                 
                     <p>Solo falta tu firma.</p>
                     <canvas #canvas width="400" height="300" class="canvas-container"></canvas>
-                </div>                
+                </div-->                
                 <div class="flex-end-center">
                     <button mat-button matStepperPrevious>Volver a Revisar</button>
                     <button mat-stroked-button type="button" (click)="vistaPreviaContrato()">Vista previa del contrato</button>

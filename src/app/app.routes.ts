@@ -5,6 +5,7 @@ import { LoginComponent } from './components/pagesAdmin/login/login.component';
 import { DashboardComponent } from './components/pagesAdmin/dashboard/dashboard.component';
 import { ContratosComponent } from './components/pagesAdmin/contratos/contratos.component';
 import { CrearContratoComponent } from './components/pagesAdmin/contratos/crear-contrato/crear-contrato.component';
+import { CarruselesComponent } from './components/pagesAdmin/carruseles/carruseles.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -14,5 +15,6 @@ export const routes: Routes = [
     { path: 'dashboard', component: DashboardComponent, pathMatch: 'full' },
     { path: 'contratos', component: ContratosComponent, pathMatch: 'full' },
     { path: 'contratos/crearContrato', component: CrearContratoComponent, pathMatch: 'full' },
-    
+    { path: 'adminCarrusel', component: CarruselesComponent, pathMatch: 'full' },
+
 ];

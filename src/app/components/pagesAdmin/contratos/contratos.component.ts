@@ -44,16 +44,20 @@ export class ContratosComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.obtenerContratos()
-    /*this.dataSource.data = [
-      {id: 1, nombre: 'Ernesto Pérez', domicilio: 'Calle 5 de Febrero #123, Col. Centro, CP 06000, CDMX', paquete: 'Básico', activo: true},
-      {id: 2, nombre: 'María López', domicilio: 'Avenida Insurgentes Sur #456, Col. Del Valle, CP 03100, CDMX', paquete: 'Premium', activo: false},
-      {id: 3, nombre: 'Juan Martínez', domicilio: 'Calle Reforma #789, Col. Juárez, CP 06600, CDMX', paquete: 'Estándar', activo: true},
-      {id: 4, nombre: 'Ana Gómez', domicilio: 'Avenida Coyoacán #101, Col. Narvarte, CP 03020, CDMX', paquete: 'Básico', activo: true},]*/
+    this.obtenerContratos()    
   }
 
   detalle(element: any) {
-    this.utilsService.downloadPdf(element.rutaPdf, 'Contrato_'+element.idContrato+'_'+element.personal.nombre + '_' + element.personal.apPaterno + '_' + element.personal.apMaterno + '.pdf');
+    this.contratosService.obtenerUrlContrato(element.idContrato).subscribe((data: ResultadoDto) => {
+      if (data.resultado === true) {
+        this.utilsService.downloadPdf(
+          data.obj, 
+          'Contrato_'+element.idContrato+'_'+element.personal.nombre + '_' + element.personal.apPaterno + '_' + element.personal.apMaterno + '.pdf'
+        );
+      } else {
+        this.notificationService.pushError(data.mensaje);
+      }
+    });    
   }
 
   archivar(idAcreedor: number) {

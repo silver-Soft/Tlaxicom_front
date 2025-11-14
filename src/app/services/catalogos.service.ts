@@ -51,6 +51,19 @@ export class CatalogosService {
     );
   }
 
+  //Carruseles
+  obtenerCarrousels(): Observable<any> {
+    const headers = new HttpHeaders({ Authorization: 'Bearer ' + this.token });
+    return this.http.get(
+      AppSettings.API_ENDPOINT + '/api/obtenerCarrousels',{ headers: headers }
+    ).pipe(
+      catchError(error => {
+        console.log(error);
+        return this.handleError(error);
+      })
+    );
+  }
+
    protected handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       this._notificationService.pushError("No hay comunicación");

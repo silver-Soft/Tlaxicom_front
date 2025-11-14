@@ -1,0 +1,69 @@
+<div class="container">
+    <h2>Administrar carruseles</h2>
+    <div class="table-container">
+        <div class="table-header">            
+            <mat-form-field>
+                <mat-label>Filtrar</mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Ernesto Pérez" #input>
+            </mat-form-field>
+        </div>
+        
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort>
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                    <td mat-cell *matCellDef="let row"> {{row.idCarrusel}} </td>
+                </ng-container>
+
+                <!-- Nombre -->
+                <ng-container matColumnDef="nombre">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
+                    <td mat-cell *matCellDef="let row"> {{row.nombreCarrusel}}</td>
+                </ng-container>
+
+                <!-- Ubicación -->
+                <ng-container matColumnDef="ubicacion">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ubicación </th>
+                    <td mat-cell *matCellDef="let row"> {{row.ubicacion}}</td>
+                </ng-container>
+
+                <!-- Acciones -->
+                <ng-container matColumnDef="acciones">
+                    <th mat-header-cell *matHeaderCellDef>Opciónes</th>
+                    <td mat-cell *matCellDef="let element">
+                        <div>
+                            <mat-icon [matMenuTriggerFor]="menuUserBtn" matTooltip="Opciónes"
+                                matTooltipPosition="above">more_vert</mat-icon>
+                            <mat-menu #menuUserBtn="matMenu">
+                                <button mat-menu-item (click)="editar(element)">
+                                    <mat-icon>edit</mat-icon>
+                                    Editar carrusel
+                                </button>
+                                <button mat-menu-item (click)="habilitar(element.idCarrusel)">
+                                    <mat-icon>archive</mat-icon>
+                                    Habilitar carrusel
+                                </button>
+                                <button mat-menu-item (click)="eliminar(element.idCarrusel)">
+                                    <mat-icon>delete</mat-icon>
+                                    Eliminar carrusel
+                                </button>
+                            </mat-menu>
+                        </div>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                <!-- Row shown when there is no matching data. -->
+                <tr class="mat-row" *matNoDataRow>
+                    <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+                </tr>
+            </table>
+
+            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+        </div>
+    </div>
+</div>

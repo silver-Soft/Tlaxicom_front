@@ -2,8 +2,8 @@ import { HttpHeaders } from '@angular/common/http';
 
 export class AppSettings {
 
-    public static API_ENDPOINT = 'http://localhost:8080';
-    public static token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzbHBlenJvbWFuby5zbEBnbWFpbC5jb20iLCJyb2xlIjoxLCJpYXQiOjE3NTg3NDExMTIsImV4cCI6MTc1ODgyNzUxMn0.NUVnZbh_btaTeHaYjn66klCBYjlLSzPtUGh_Mtutang"
+    //public static API_ENDPOINT = 'http://localhost:8080';
+    public static API_ENDPOINT = 'https://tlaxicom-backend-718967229132.us-central1.run.app';
     public static TITLE = 'TLAXICOM';
     public static SLOGAN = 'Velocidad y Confianza en un solo lugar';
     public static COPYRIGHT = 'Copyright © 2025 - Todos los derechos reservados';

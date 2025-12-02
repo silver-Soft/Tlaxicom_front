@@ -24,6 +24,7 @@ import { MetodoPagoModel } from '../../../models/metodoPagoModel';
 import SignaturePad from "signature_pad";
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ContratosService } from '../../../../services/contratos.service';
+import { NavBarService } from '../../../../services/core/navBar.service';
 
 @Component({
   selector: 'app-crear-contrato',
@@ -64,7 +65,8 @@ export class CrearContratoComponent implements OnInit{
       private notificationService: NotificationService,
       private sanitizer: DomSanitizer,
       private cdRef: ChangeDetectorRef,
-      private contratosService: ContratosService
+      private contratosService: ContratosService,
+      public navbarService:NavBarService,
     ){}
 
   ngOnInit(): void {

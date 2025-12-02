@@ -35,7 +35,7 @@ app-footer {
 
 .container{
   width: 100%;
-  padding: 2rem 3rem;
+  padding: 1rem 3rem;
   margin: 0px;
 }
 
@@ -75,31 +75,36 @@ app-footer {
     text-align: center;
   }    
 }
-mat-card-content {
-    margin-top: 20px;
-}
 
 
 /*Estilos de tabla*/
-
 .table-container {
+  margin-top: 2rem;
   width: 100%;
   overflow-x: auto;
 }
 .table-header {
     display: flex;
     //justify-content: space-between;
-    margin-bottom: 5px;        
+    margin-bottom: 0px;        
+}
+table td, th{
+  text-align: center !important;
+}
+mat-paginator{
+  margin-top: 5px !important;
 }
 
-table {
-  width: 100%;  
+/*Estilos del mat card*/
+mat-card {
+  padding: 10px;
 }
-
-td, th {
-    //text-align: center !important;
+mat-card-title{
+  margin-bottom: 1rem !important;
 }
-
+mat-card-content {
+    margin-top: 20px;
+}
 @media (max-width: 760px){
   .container{    
     padding: 2rem 0.5rem;    

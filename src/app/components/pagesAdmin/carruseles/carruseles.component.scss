@@ -9,11 +9,8 @@
   text-align: center;
 }
 
-table td, th{
-  text-align: center;
-}
-::ng-deep{
-    .mat-mdc-form-field-subscript-wrapper {
-        display: none;
-    }
+::ng-deep .table-header {
+  .mat-mdc-form-field-bottom-align {
+    display: none !important;
+  }
 }

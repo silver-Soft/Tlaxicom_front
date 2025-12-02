@@ -16,12 +16,15 @@ import { NavBarService } from '../../../services/core/navBar.service';
 import { ContratosService } from '../../../services/contratos.service';
 import { ResultadoDto } from '../../../DTOs/response/resultadoDto';
 import { UtilsService } from '../../../services/utils.service';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-contratos',
   imports: [MatButtonModule, MatDividerModule, MatIconModule, MatCardModule, CommonModule,
     MatTooltipModule, MatTableModule, MatMenuModule, MatPaginatorModule, MatFormFieldModule,
-    MatInputModule],
+    MatInputModule, MatFormFieldModule, MatInputModule,
+        FormsModule, ReactiveFormsModule, MatIconModule, MatDatepickerModule],
   templateUrl: './contratos.component.html',
   styleUrl: './contratos.component.scss'
 })
@@ -31,12 +34,14 @@ export class ContratosComponent implements OnInit{
   displayedColumns: string[] = ['id', 'nombre', 'domicilio', 'paquete', 'activo', 'acciones'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
+  busquedaContratosFormGroup!: FormGroup;
   constructor(
       private notificationService: NotificationService,
       private contratosService: ContratosService,
       public navbarService:NavBarService,
       private observer : BreakpointObserver,
-      private utilsService: UtilsService
+      private utilsService: UtilsService,
+      private _formBuilder: FormBuilder,
     ) { 
       this.observer.observe(['(max-width : 800px)']).subscribe(res => {
       this.esDispositivoMovil = res.matches;
@@ -44,13 +49,41 @@ export class ContratosComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.busquedaContratosFormGroup = this._formBuilder.group({
+        nombre: [''],
+        domicilio: [''],
+        fechaInstalacion1: [''],
+        fechaInstalacion2: [''],
+      }, { validators: this.busquedaContratosValidator });
+
     this.obtenerContratos()    
+  }
+
+  buscarContratos(){
+    if(this.busquedaContratosFormGroup.valid){
+      const raw = this.busquedaContratosFormGroup.value;
+      const payload = {
+        nombre: raw.nombre?.trim() || "",
+        domicilio: raw.domicilio?.trim() || "",
+        fechaInstalacion1: this.utilsService.formatDate(raw.fechaInstalacion1),
+        fechaInstalacion2: this.utilsService.formatDate(raw.fechaInstalacion2)
+      };
+      this.contratosService.buscarContratoPorCriterio(payload).subscribe((data: ResultadoDto) => {
+        if (data.resultado === true) {
+          this.dataSource.data = data.obj
+        } else {
+          this.notificationService.pushError(data.mensaje);
+        }
+      })
+    }else{
+      this.notificationService.pushError("Por favor, complete los campos correctamente.");
+    }
   }
 
   detalle(element: any) {
     this.contratosService.obtenerUrlContrato(element.idContrato).subscribe((data: ResultadoDto) => {
       if (data.resultado === true) {
-        this.utilsService.downloadPdf(
+        this.utilsService.downloadPdfFromSignedUrl(
           data.obj, 
           'Contrato_'+element.idContrato+'_'+element.personal.nombre + '_' + element.personal.apPaterno + '_' + element.personal.apMaterno + '.pdf'
         );
@@ -92,5 +125,32 @@ export class ContratosComponent implements OnInit{
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  busquedaContratosValidator(control: AbstractControl): ValidationErrors | null {
+    const nombre = control.get('nombre')?.value?.trim();
+    const domicilio = control.get('domicilio')?.value?.trim();
+    const fechaInstalacion1 = control.get('fechaInstalacion1')?.value;
+    const fechaInstalacion2 = control.get('fechaInstalacion2')?.value;
+
+    const tieneTexto = !!(nombre || domicilio);
+    const tieneFechas = !!(fechaInstalacion1 || fechaInstalacion2);
+
+    // ---- REGLA 1: Búsqueda por texto ----
+    if (tieneTexto) {
+      return null; // No requiere fechas
+    }
+
+    // ---- REGLA 2: Búsqueda por fechas ----
+    if (tieneFechas) {
+      if (fechaInstalacion1 && fechaInstalacion2) {
+        return null; // OK, rango válido
+      } else {
+        return { rangoFechasIncompleto: true }; // Falta una de las dos fechas
+      }
+    }
+
+    // ---- REGLA 3: Nada lleno ----
+    return { sinCriterios: true };
   }
 }

@@ -83,6 +83,7 @@
                     
 
                     <div class="button-row">
+                        <button mat-button color="primary" (click)="navbarService.navigateTo('/contratos');">Cancelar</button>
                         <button mat-flat-button color="primary" matStepperNext>Siguiente</button>
                     </div>
                 </form>
@@ -257,6 +258,7 @@
                     </div>
 
                     <div class="button-row">
+                        <button mat-button color="primary" (click)="navbarService.navigateTo('/contratos');">Cancelar</button>
                         <button mat-button matStepperPrevious>Anterior</button>
                         <button mat-flat-button color="accent" [disabled]="stepServiceData.invalid" matStepperNext>
                             Finalizar Contrato

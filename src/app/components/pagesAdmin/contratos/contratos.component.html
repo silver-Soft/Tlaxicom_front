@@ -1,13 +1,72 @@
 <div class="container">
     <h2>Administrar contratos</h2>
-    <div class="flex-end-center">
-        <button mat-flat-button (click)="navbarService.navigateTo('/contratos/crearContrato');">Agregar contrato</button>
-    </div>
+    <mat-card>
+        <mat-card-title>
+            Filtros de búsqueda
+        </mat-card-title>
+        <form [formGroup]="busquedaContratosFormGroup" (ngSubmit)="buscarContratos()">
+            <div class="form-busqueda">
+                <mat-form-field appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input matInput formControlName="nombre">
+                    <mat-error *ngIf="busquedaContratosFormGroup.get('nombre')?.hasError('required')">
+                        El nombre es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Domicilio</mat-label>
+                    <input matInput formControlName="domicilio">
+                    <mat-error *ngIf="busquedaContratosFormGroup.get('domicilio')?.hasError('required')">
+                        El domicilio es obligatorio.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha de inicio</mat-label>
+                    <input matInput [matDatepicker]="pickerInicio" formControlName="fechaInstalacion1">
+                    <mat-datepicker-toggle matSuffix [for]="pickerInicio"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerInicio></mat-datepicker>
+                    <mat-error *ngIf="busquedaContratosFormGroup.errors?['rangoFechasIncompleto'] : false">
+                        El rango de fechas es incompleto.
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Fecha de fin</mat-label>
+                    <input matInput [matDatepicker]="pickerFin" formControlName="fechaInstalacion2">
+                    <mat-datepicker-toggle matSuffix [for]="pickerFin"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerFin></mat-datepicker>
+                    <mat-error *ngIf="busquedaContratosFormGroup.errors?['rangoFechasIncompleto'] : false">
+                        El rango de fechas es incompleto.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+
+            <div class="flex-end-center">                
+                <button mat-button color="primary" type="button"
+                    *ngIf="busquedaContratosFormGroup.dirty"
+                    (click)="busquedaContratosFormGroup.reset()">
+                    <mat-icon>refresh</mat-icon>
+                    Reiniciar campos
+                </button>
+                <button mat-raised-button color="primary" type="submit">
+                    <mat-icon>search</mat-icon>
+                    Buscar
+                </button>
+                <button mat-flat-button (click)="navbarService.navigateTo('/contratos/crearContrato');">
+                    <mat-icon>note_add</mat-icon>
+                    Agregar contrato
+                </button>
+            </div>            
+        </form>
+    </mat-card>
+
     <div class="table-container">
         <div class="table-header">
             <!--h3>Listado de contratos</h3-->
             <mat-form-field>
-                <mat-label>Buscar</mat-label>
+                <mat-label>Filtrar</mat-label>
                 <input matInput (keyup)="applyFilter($event)" placeholder="Ernesto Pérez" #input>
             </mat-form-field>
         </div>
@@ -64,10 +123,10 @@
                                     <mat-icon>picture_as_pdf</mat-icon>
                                     Descargar contrato
                                 </button>
-                                <button mat-menu-item (click)="archivar(element.idContrato)">
+                                <!--button mat-menu-item (click)="archivar(element.idContrato)">
                                     <mat-icon>archive</mat-icon>
                                     Archivar contrato
-                                </button>
+                                </button-->
                                 <button mat-menu-item (click)="eliminar(element.idContrato)">
                                     <mat-icon>delete</mat-icon>
                                     Eliminar contrato

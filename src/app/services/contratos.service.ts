@@ -39,6 +39,18 @@ export class ContratosService {
     );
   }
   
+  buscarContratoPorCriterio(body:any): Observable<any> {
+    const headers = new HttpHeaders({ Authorization: 'Bearer ' + this.token });
+    return this.http.post(
+      AppSettings.API_ENDPOINT + '/api/buscarContratos', body, { headers: headers }
+    ).pipe(
+      catchError(error => {
+        console.log(error);
+        return this.handleError(error);
+      })
+    );
+  }
+
   obtenerContratos(): Observable<any> {
     const headers = new HttpHeaders({ Authorization: 'Bearer ' + this.token });
     return this.http.get(

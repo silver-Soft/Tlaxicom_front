@@ -119,7 +119,7 @@ function initialize() {
       ],
     },
     {
-      tipo: "wireless", //CAPULIN
+      tipo: "fibra", //CAPULIN
       coordenadas: [
         new google.maps.LatLng(19.45175083880799, -97.91000056862374),
         new google.maps.LatLng(19.44866031281817, -97.91115754154247),
@@ -158,7 +158,7 @@ function initialize() {
       ],
     },
     {
-      tipo: "wireless", //GALEANA
+      tipo: "fibra", //GALEANA
       coordenadas: [
         new google.maps.LatLng(19.40906170467606, -97.96123031997733),
         new google.maps.LatLng(19.4074311545568, -97.95899198728155),
@@ -215,7 +215,7 @@ function initialize() {
       ],
     },
     {
-      tipo: "wireless", //CARDENAS
+      tipo: "fibra", //CARDENAS
       coordenadas: [
         new google.maps.LatLng(19.53939149623004, -97.97845502855219),
         new google.maps.LatLng(19.5418525396271, -97.97163954529466),
@@ -269,7 +269,7 @@ function initialize() {
       ],
     },
     {
-      tipo: "wireless", //DIAZ ORDAZ
+      tipo: "fibra", //DIAZ ORDAZ
       coordenadas: [
         new google.maps.LatLng(19.57693746491569, -97.95274292368157),
         new google.maps.LatLng(19.57783396715146, -97.95231174869798),

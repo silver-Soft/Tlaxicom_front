@@ -60,7 +60,7 @@ if (!isset($_SESSION['usuario'])) {
             <option value="Turbo Wireless" data-megas="30mb" data-costo="700" data-folio="2095343">Turbo Wireless</option>
             <option value="Basico Fibra Optica" data-megas="10mb" data-costo="300" data-folio="2099081">Básico Fibra Óptica</option>
             <option value="Premium Fibra Optica" data-megas="20mb" data-costo="500" data-folio="2099094">Premium Fibra Óptica</option>
-            <option value="Turbo Fibra Optica" data-megas="30mb" data-costo="700" data-folio="2099108">Turbo Fibra Óptica</option>
+            <option value="Turbo Fibra Optica" data-megas="30mb" data-costo="700" data-folio="2099119">Turbo Fibra Óptica</option>
         </select>
         Megas: <input type="text" name="megas" id="megas_paquete" readonly>
         <br>

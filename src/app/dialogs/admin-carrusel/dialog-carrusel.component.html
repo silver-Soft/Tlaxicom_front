@@ -1,0 +1,171 @@
+<div class="dialog-header">
+  <div>
+    <h2 mat-dialog-title>{{ data ? 'Editar carrusel' : 'Crear nuevo carrusel' }}</h2>
+    <p class="dialog-subtitle">Configura las imágenes que rotarán en tu carrusel</p>
+  </div>
+  <button mat-icon-button (click)="cancelar()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content [formGroup]="form">
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Nombre del carrusel *</mat-label>
+    <input matInput formControlName="nombreCarrusel" placeholder="Ej. Promociones de temporada">
+    <mat-icon matPrefix class="field-icon">badge</mat-icon>
+    <mat-hint>Este nombre solo es visible para ti, no se muestra al público.</mat-hint>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Ubicación *</mat-label>
+    <mat-icon matPrefix class="field-icon">place</mat-icon>
+    <mat-select formControlName="ubicacion" [disabled]="cargandoUbicaciones">
+      <mat-option *ngFor="let ub of ubicaciones" [value]="ub.idUbicacion">
+        {{ ub.nombreDisplay }}
+        <span *ngIf="ub.idCarruselActivo"> (carrusel activo: {{ ub.idCarruselActivo==1?"si":"no" }})</span>
+      </mat-option>
+    </mat-select>
+    <mat-hint *ngIf="!cargandoUbicaciones">Indica en qué parte del sitio se mostrará este carrusel.</mat-hint>
+    <mat-hint *ngIf="cargandoUbicaciones">Cargando ubicaciones...</mat-hint>
+  </mat-form-field>
+
+  <div class="seccion-imagenes" *ngIf="imagenes.length > 0">
+
+    <!-- ============ VISTA PREVIA REAL DEL CARRUSEL ============ -->
+    <div class="bloque-titulo">
+      <mat-icon>visibility</mat-icon>
+      <h3>Así se verá el carrusel</h3>
+    </div>
+
+    <div class="carrusel-real">
+      <div class="carrusel-real-slide">
+        <img
+          *ngIf="imagenActualGroup.get('url')?.value; else sinImagenReal"
+          [src]="imagenActualGroup.get('url')?.value"
+          class="carrusel-real-img"
+          alt="preview carrusel"
+        >
+        <ng-template #sinImagenReal>
+          <div class="carrusel-real-placeholder">
+            <mat-icon>image</mat-icon>
+          </div>
+        </ng-template>
+
+        <div class="carrusel-real-gradiente"></div>
+
+        <div class="carrusel-real-overlay" *ngIf="imagenActualGroup.get('titulo')?.value || imagenActualGroup.get('descripcion')?.value">
+          <h4>{{ imagenActualGroup.get('titulo')?.value || 'Título de la imagen' }}</h4>
+          <p *ngIf="imagenActualGroup.get('descripcion')?.value">{{ imagenActualGroup.get('descripcion')?.value }}</p>
+        </div>
+
+        <button
+          mat-icon-button
+          class="carrusel-real-nav carrusel-real-nav-left"
+          (click)="anteriorPreview()"
+          *ngIf="imagenes.length > 1"
+        >
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          class="carrusel-real-nav carrusel-real-nav-right"
+          (click)="siguientePreview()"
+          *ngIf="imagenes.length > 1"
+        >
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+
+      <div class="carrusel-real-dots" *ngIf="imagenes.length > 1">
+        <span
+          class="rdot"
+          *ngFor="let img of imagenes.controls; let i = index"
+          [class.activo]="i === previewIndex"
+          (click)="irAPreview(i)"
+        ></span>
+      </div>
+    </div>
+
+    <!-- ============ EDICIÓN DE LA IMAGEN ACTUAL ============ -->
+    <div class="bloque-titulo bloque-titulo-editar">
+      <mat-icon>edit</mat-icon>
+      <h3>Editar imagen {{ previewIndex + 1 }} de {{ imagenes.length }}</h3>
+      <button
+        mat-icon-button
+        color="warn"
+        (click)="eliminarImagen(previewIndex)"
+        *ngIf="imagenes.length > 1"
+        matTooltip="Eliminar esta imagen"
+        class="btn-eliminar-actual"
+      >
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+    </div>
+
+    <div [formGroup]="imagenActualGroup" class="tarjeta-edicion">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Título *</mat-label>
+        <input matInput formControlName="titulo" placeholder="Título llamativo">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Descripción *</mat-label>
+        <input matInput formControlName="descripcion" placeholder="Breve descripción">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>URL de la imagen *</mat-label>
+        <input matInput formControlName="url" placeholder="https://...">
+        <mat-icon matPrefix class="field-icon">link</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <!-- ============ TIRA DE MINIATURAS ============ -->
+    <div class="bloque-titulo">
+      <mat-icon>collections</mat-icon>
+      <h3>Imágenes ({{ imagenes.length }})</h3>
+    </div>
+
+    <div class="thumbs-strip">
+      <div
+        class="thumb"
+        *ngFor="let img of imagenes.controls; let i = index"
+        [class.active]="i === previewIndex"
+        (click)="irAPreview(i)"
+      >
+        <img *ngIf="img.get('url')?.value" [src]="img.get('url')?.value" alt="">
+        <mat-icon *ngIf="!img.get('url')?.value" class="thumb-placeholder-icon">image</mat-icon>
+        <span class="thumb-index">{{ i + 1 }}</span>
+        <button
+          mat-icon-button
+          class="thumb-delete"
+          *ngIf="imagenes.length > 1"
+          (click)="eliminarImagen(i); $event.stopPropagation()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
+      <button class="thumb thumb-add" (click)="agregarImagen()" type="button" matTooltip="Agregar imagen">
+        <mat-icon>add</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============ MENSAJE DE ERROR AL GUARDAR ============ -->
+  <div class="error-guardado" *ngIf="errorGuardado">
+    <mat-icon>error_outline</mat-icon>
+    <span>{{ errorGuardado }}</span>
+  </div>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="cancelar()" [disabled]="guardando">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()" [disabled]="guardando">
+    <mat-spinner *ngIf="guardando" diameter="18" class="btn-spinner"></mat-spinner>
+    <mat-icon *ngIf="!guardando">save</mat-icon>
+    {{ guardando ? 'Guardando...' : 'Guardar carrusel' }}
+  </button>
+</mat-dialog-actions>

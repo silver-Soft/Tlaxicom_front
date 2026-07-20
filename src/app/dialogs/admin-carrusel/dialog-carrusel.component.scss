@@ -1,0 +1,212 @@
+:host {
+  --color-primario: #3f51b5;
+  --color-borde: #e2e5ec;
+  --color-fondo-suave: #f6f7fb;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 20px 24px 0;
+
+  h2 { margin: 0; font-size: 20px; font-weight: 600; }
+
+  .dialog-subtitle {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: #8a8f9c;
+  }
+}
+
+mat-dialog-content {
+  padding: 8px 24px 16px;
+  max-height: 75vh;
+}
+
+.full-width { width: 100%; margin-bottom: 4px; }
+
+.field-icon { color: #9aa0ab; margin-right: 4px; }
+
+.bloque-titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 24px 0 12px;
+
+  mat-icon { color: var(--color-primario); font-size: 20px; width: 20px; height: 20px; }
+
+  h3 { margin: 0; font-size: 14px; font-weight: 600; color: #444; flex: 1; }
+}
+
+.bloque-titulo-editar { margin-top: 20px; }
+
+.btn-eliminar-actual { margin-left: auto; }
+
+/* ===== VISTA PREVIA REAL DEL CARRUSEL ===== */
+.carrusel-real {
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.1);
+  background: #000;
+}
+
+.carrusel-real-slide {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  background: #111;
+}
+
+.carrusel-real-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carrusel-real-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+
+  mat-icon { font-size: 48px; width: 48px; height: 48px; }
+}
+
+.carrusel-real-gradiente {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.15) 45%, transparent 70%);
+  pointer-events: none;
+}
+
+.carrusel-real-overlay {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  padding: 20px 24px;
+  color: #fff;
+
+  h4 { margin: 0 0 4px; font-size: 19px; font-weight: 700; text-shadow: 0 1px 4px rgba(0,0,0,0.5); }
+  p { margin: 0; font-size: 13px; opacity: 0.9; max-width: 80%; }
+}
+
+.carrusel-real-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.85) !important;
+  width: 34px; height: 34px;
+
+  &:hover { background: #fff !important; }
+}
+.carrusel-real-nav-left { left: 10px; }
+.carrusel-real-nav-right { right: 10px; }
+
+.carrusel-real-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 0;
+  background: #f2f3f7;
+
+  .rdot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: #cfd3dc;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.activo {
+      background: var(--color-primario);
+      width: 18px;
+      border-radius: 4px;
+    }
+  }
+}
+
+/* ===== TARJETA DE EDICIÓN ===== */
+.tarjeta-edicion {
+  background: var(--color-fondo-suave);
+  border: 1px solid var(--color-borde);
+  border-radius: 12px;
+  padding: 16px 16px 4px;
+}
+
+/* ===== TIRA DE MINIATURAS ===== */
+.thumbs-strip {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 4px 14px;
+
+  &::-webkit-scrollbar { height: 6px; }
+  &::-webkit-scrollbar-thumb { background: #d2d5dd; border-radius: 3px; }
+
+  .thumb {
+    position: relative;
+    flex: 0 0 auto;
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+    border: 2px solid var(--color-borde);
+    overflow: hidden;
+    cursor: pointer;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+
+    &:hover { transform: translateY(-2px); }
+
+    img { width: 100%; height: 100%; object-fit: cover; }
+
+    .thumb-placeholder-icon { color: #b7bbc4; }
+
+    .thumb-index {
+      position: absolute;
+      bottom: 2px;
+      left: 4px;
+      font-size: 10px;
+      color: #fff;
+      background: rgba(0,0,0,0.55);
+      padding: 0 4px;
+      border-radius: 3px;
+    }
+
+    &.active {
+      border-color: var(--color-primario);
+      box-shadow: 0 0 0 2px rgba(63,81,181,0.15);
+    }
+
+    .thumb-delete {
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      width: 20px;
+      height: 20px;
+      line-height: 20px;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+
+      mat-icon { font-size: 14px; width: 14px; height: 14px; }
+    }
+  }
+
+  .thumb-add {
+    border: 2px dashed #c3c7d1;
+    background: transparent;
+    color: var(--color-primario);
+
+    &:hover { background: rgba(63,81,181,0.06); }
+  }
+}
+
+mat-dialog-actions {
+  padding: 12px 24px 20px;
+  border-top: 1px solid var(--color-borde);
+}

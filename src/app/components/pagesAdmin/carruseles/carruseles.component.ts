@@ -10,46 +10,68 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CatalogosService } from '../../../services/catalogos.service';
 import { ResultadoDto } from '../../../DTOs/response/resultadoDto';
+import { DialogCarruselComponent } from '../../../dialogs/admin-carrusel/dialog-carrusel.component';
 
 @Component({
   selector: 'app-carruseles',
   imports: [MatButtonModule, MatDividerModule, MatIconModule, MatCardModule, CommonModule,
     MatTooltipModule, MatTableModule, MatMenuModule, MatPaginatorModule, MatFormFieldModule,
-    MatInputModule],
+    MatInputModule, MatDialogModule],
   templateUrl: './carruseles.component.html',
   styleUrl: './carruseles.component.scss'
 })
-export class CarruselesComponent {
+export class CarruselesComponent implements OnInit {
 
   esDispositivoMovil: boolean = false;
-  
-  displayedColumns: string[] = ['id', 'nombre', 'ubicacion','acciones'];
+
+  displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'acciones'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   constructor(
-        private notificationService: NotificationService,
-        //private contratosService: ContratosService,
-        //public navbarService:NavBarService,
-        private observer : BreakpointObserver,
-        private catalogosService: CatalogosService,
-        //private utilsService: UtilsService
-      ) { 
-        this.observer.observe(['(max-width : 800px)']).subscribe(res => {
-        this.esDispositivoMovil = res.matches;
-      });
-    }
-  
+    private notificationService: NotificationService,
+    private observer: BreakpointObserver,
+    private catalogosService: CatalogosService,
+    private dialog: MatDialog
+  ) {
+    this.observer.observe(['(max-width : 800px)']).subscribe(res => {
+      this.esDispositivoMovil = res.matches;
+    });
+  }
+
   ngOnInit(): void {
     this.obtenerCarrousels();
   }
 
-  editar(element: any) {
+  nuevoCarrusel(): void {
+    const dialogRef = this.dialog.open(DialogCarruselComponent, {
+      width: '750px',
+      data: null
+    });
 
+    dialogRef.afterClosed().subscribe(_ => {
+      this.obtenerCarrousels();
+    });
   }
+
+  editar(element: any): void {
+    const dialogRef = this.dialog.open(DialogCarruselComponent, {
+      width: '750px',
+      data: element
+    });
+
+    dialogRef.afterClosed().subscribe(resultado => {
+      if (resultado) {
+        // TODO: llamar a catalogosService para actualizar
+        this.obtenerCarrousels();
+      }
+    });
+  }
+
   habilitar(idCarrusel: number) {
 
   }
@@ -66,6 +88,7 @@ export class CarruselesComponent {
       }
     })
   }
+
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

@@ -28,11 +28,11 @@
                     <td mat-cell *matCellDef="let row"> {{row.nombreCarrusel}}</td>
                 </ng-container>
 
-                <!-- Ubicación -->
-                <ng-container matColumnDef="ubicacion">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ubicación </th>
-                    <td mat-cell *matCellDef="let row"> {{row.ubicacion}}</td>
-                </ng-container>
+               <!-- Ubicación -->
+<ng-container matColumnDef="ubicacion">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ubicación </th>
+    <td mat-cell *matCellDef="let row"> {{ nombreUbicacion(row.ubicacionAsignada) }}</td>
+</ng-container>
 
                 <!-- Acciones -->
                 <ng-container matColumnDef="acciones">

@@ -33,6 +33,9 @@ export class CarruselesComponent implements OnInit {
   displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'acciones'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
+  // Mapa idUbicacion -> nombreDisplay, para resolver el nombre legible en la tabla
+  private mapaUbicaciones = new Map<string, string>();
+
   constructor(
     private notificationService: NotificationService,
     private observer: BreakpointObserver,
@@ -46,10 +49,30 @@ export class CarruselesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.cargarUbicaciones();
     this.obtenerCarrousels();
   }
 
-  nuevoCarrusel(carruselObjeto ?: any): void {
+  cargarUbicaciones(): void {
+    this.CarruselApiService.getUbicaciones().subscribe({
+      next: (resp) => {
+        if (resp.resultado && resp.obj) {
+          this.mapaUbicaciones.clear();
+          resp.obj.forEach((ub: any) => {
+            this.mapaUbicaciones.set(ub.idUbicacion, ub.nombreDisplay);
+          });
+        }
+      }
+    });
+  }
+
+  // Usado en el template para mostrar el nombre legible de la ubicación
+  nombreUbicacion(idUbicacion: string | null): string {
+    if (!idUbicacion) return 'Sin asignar';
+    return this.mapaUbicaciones.get(idUbicacion) ?? idUbicacion;
+  }
+
+  nuevoCarrusel(carruselObjeto?: any): void {
     const dialogRef = this.dialog.open(DialogCarruselComponent, {
       data: carruselObjeto || null
     });
@@ -59,47 +82,17 @@ export class CarruselesComponent implements OnInit {
     });
   }
 
-obtDetalleCarrusel(element: any){
+  obtDetalleCarrusel(element: any) {
     this.CarruselApiService.obtenerDetalleCarrusel(element.idCarrusel).subscribe({
       next: (resp: ResultadoDto) => {
-        if (resp.resultado) { 
-          this.nuevoCarrusel(resp.obj);   
+        if (resp.resultado) {
+          this.nuevoCarrusel(resp.obj);
         } else {
           this.notificationService.pushError(resp.mensaje);
         }
       }
     });
   }
-
-editar(element: any): void {
-  const payload = {
-    nombre: element.nombre,
-    ubicacion: element.ubicacion,
-    imagenes: element.imagenes
-  };
-
-  this.CarruselApiService.actualizarCarrusel(element.idCarrusel ,payload).subscribe({
-    next: (resp: ResultadoDto) => {
-      if (resp.resultado) {
-        const dialogRef = this.dialog.open(DialogCarruselComponent, {
-          width: '750px',
-          data: resp.obj
-        });
-
-        dialogRef.afterClosed().subscribe(resultado => {
-          if (resultado) {
-            this.obtenerCarrousels();
-          }
-        });
-      } else {
-        this.notificationService.pushError(resp.mensaje);
-      }
-    },
-    error: () => {
-      this.notificationService.pushError('Error al obtener el detalle del carrusel.');
-    }
-  });
-}
 
   habilitar(idCarrusel: number) {
 

@@ -129,7 +129,6 @@ export class DialogCarruselComponent implements OnInit, OnDestroy {
     return this.fb.group({
       idImagen: [img?.idImagen ?? null],
       orden: [img?.orden ?? null],
-      titulo: [img?.titulo ?? '', Validators.required],
       descripcion: [img?.descripcion ?? '', Validators.required],
       url: [img?.urlGCS ?? '', Validators.required]
     });
@@ -167,7 +166,6 @@ export class DialogCarruselComponent implements OnInit, OnDestroy {
       this.imagenes.at(index).reset({
         idImagen: null,
         orden: null,
-        titulo: '',
         descripcion: '',
         url: ''
       });
@@ -222,7 +220,6 @@ export class DialogCarruselComponent implements OnInit, OnDestroy {
       listaImagenes: valorForm.imagenes.map((img: any, index: number) => ({
         idImagen: img.idImagen ?? null,
         orden: img.orden ?? (index + 1),
-        titulo: img.titulo,
         descripcion: img.descripcion,
         urlGCS: img.url
       }))

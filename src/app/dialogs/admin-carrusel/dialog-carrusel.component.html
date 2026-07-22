@@ -20,7 +20,7 @@
   <mat-form-field appearance="outline" class="full-width">
     <mat-label>Ubicación *</mat-label>
     <mat-icon matPrefix class="field-icon">place</mat-icon>
-    <mat-select formControlName="ubicacion" [disabled]="cargandoUbicaciones">
+    <mat-select formControlName="ubicacion" [disabled]="cargandoUbicaciones" [compareWith]="compararUbicacion">
       <mat-option *ngFor="let ub of ubicaciones" [value]="ub.idUbicacion">
         {{ ub.nombreDisplay }}
         <span *ngIf="ub.idCarruselActivo"> (carrusel activo: {{ ub.idCarruselActivo==1?"si":"no" }})</span>

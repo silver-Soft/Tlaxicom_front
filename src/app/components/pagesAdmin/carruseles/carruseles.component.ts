@@ -16,6 +16,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CatalogosService } from '../../../services/catalogos.service';
 import { ResultadoDto } from '../../../DTOs/response/resultadoDto';
 import { DialogCarruselComponent } from '../../../dialogs/admin-carrusel/dialog-carrusel.component';
+import { CarruselApiService } from '../../../services/carrusel-api.service';
 
 @Component({
   selector: 'app-carruseles',
@@ -36,6 +37,7 @@ export class CarruselesComponent implements OnInit {
     private notificationService: NotificationService,
     private observer: BreakpointObserver,
     private catalogosService: CatalogosService,
+    private CarruselApiService: CarruselApiService,
     private dialog: MatDialog
   ) {
     this.observer.observe(['(max-width : 800px)']).subscribe(res => {
@@ -47,10 +49,9 @@ export class CarruselesComponent implements OnInit {
     this.obtenerCarrousels();
   }
 
-  nuevoCarrusel(): void {
+  nuevoCarrusel(carruselObjeto ?: any): void {
     const dialogRef = this.dialog.open(DialogCarruselComponent, {
-      width: '750px',
-      data: null
+      data: carruselObjeto || null
     });
 
     dialogRef.afterClosed().subscribe(_ => {
@@ -58,19 +59,47 @@ export class CarruselesComponent implements OnInit {
     });
   }
 
-  editar(element: any): void {
-    const dialogRef = this.dialog.open(DialogCarruselComponent, {
-      width: '750px',
-      data: element
-    });
-
-    dialogRef.afterClosed().subscribe(resultado => {
-      if (resultado) {
-        // TODO: llamar a catalogosService para actualizar
-        this.obtenerCarrousels();
+obtDetalleCarrusel(element: any){
+    this.CarruselApiService.obtenerDetalleCarrusel(element.idCarrusel).subscribe({
+      next: (resp: ResultadoDto) => {
+        if (resp.resultado) { 
+          this.nuevoCarrusel(resp.obj);   
+        } else {
+          this.notificationService.pushError(resp.mensaje);
+        }
       }
     });
   }
+
+editar(element: any): void {
+  const payload = {
+    nombre: element.nombre,
+    ubicacion: element.ubicacion,
+    imagenes: element.imagenes
+  };
+
+  this.CarruselApiService.actualizarCarrusel(element.idCarrusel ,payload).subscribe({
+    next: (resp: ResultadoDto) => {
+      if (resp.resultado) {
+        const dialogRef = this.dialog.open(DialogCarruselComponent, {
+          width: '750px',
+          data: resp.obj
+        });
+
+        dialogRef.afterClosed().subscribe(resultado => {
+          if (resultado) {
+            this.obtenerCarrousels();
+          }
+        });
+      } else {
+        this.notificationService.pushError(resp.mensaje);
+      }
+    },
+    error: () => {
+      this.notificationService.pushError('Error al obtener el detalle del carrusel.');
+    }
+  });
+}
 
   habilitar(idCarrusel: number) {
 

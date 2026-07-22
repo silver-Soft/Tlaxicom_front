@@ -21,6 +21,12 @@ export class CarruselApiService {
     return this.http.post<ResultadoApi<any>>(`${AppSettings.API_ENDPOINT}/api/nuevoCarrusel`, payload, { headers });
   }
 
+  obtenerDetalleCarrusel(idCarrusel: number): Observable<ResultadoApi<any>> {
+     const headers = new HttpHeaders({ Authorization: 'Bearer ' + sessionStorage.getItem("token") });
+
+    return this.http.get<ResultadoApi<any>>(`${AppSettings.API_ENDPOINT}/api/detalleCarrusel/${idCarrusel}`, { headers });
+  }
+
   actualizarCarrusel(idCarrusel: number, payload: any): Observable<ResultadoApi<any>> {
      const headers = new HttpHeaders({ Authorization: 'Bearer ' + sessionStorage.getItem("token") });
 

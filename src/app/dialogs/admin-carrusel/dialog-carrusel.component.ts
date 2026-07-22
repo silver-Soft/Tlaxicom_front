@@ -19,7 +19,7 @@ import {
   Validators,
   ReactiveFormsModule
 } from '@angular/forms';
-import { CarruselApiService } from '../../services/carrusel-api.service'; // ajusta la ruta real
+import { CarruselApiService } from '../../services/carrusel-api.service';
 import { NotificationService } from '../../services/core/notification.service';
 
 interface UbicacionCarrusel {
@@ -46,8 +46,6 @@ interface UbicacionCarrusel {
   templateUrl: './dialog-carrusel.component.html',
   styleUrl: './dialog-carrusel.component.scss'
 })
-
-
 export class DialogCarruselComponent implements OnInit {
   form: FormGroup;
   previewIndex = 0;
@@ -63,15 +61,25 @@ export class DialogCarruselComponent implements OnInit {
     private fb: FormBuilder,
     private carruselApi: CarruselApiService,
     private notificationService: NotificationService,
-    @Inject(MAT_DIALOG_DATA) public data: any
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
+    const carruselData = data?.obj ? data.obj : data;
+
+    const ubicacionExtraida =
+      carruselData?.ubicacionAsignada ??
+      carruselData?.ubicacion ??
+      carruselData?.idUbicacion ??
+      carruselData?.ubicacion_asignada ??
+      carruselData?.ubicacionId ??
+      '';
+
     this.form = this.fb.group({
-      idCarrusel: [data?.idCarrusel ?? null],
-      nombreCarrusel: [data?.nombreCarrusel ?? '', Validators.required],
-      ubicacion: [data?.ubicacion ?? '', Validators.required],
+      idCarrusel: [carruselData?.idCarrusel ?? null],
+      nombreCarrusel: [carruselData?.nombreCarrusel ?? '', Validators.required],
+      ubicacion: [ubicacionExtraida, Validators.required],
       imagenes: this.fb.array(
-        data?.imagenes?.length
-          ? data.imagenes.map((img: any) => this.crearImagenGroup(img))
+        carruselData?.listaImagenes?.length
+          ? carruselData.listaImagenes.map((img: any) => this.crearImagenGroup(img))
           : [this.crearImagenGroup()]
       )
     });
@@ -86,22 +94,28 @@ export class DialogCarruselComponent implements OnInit {
     this.cargandoUbicaciones = true;
     this.carruselApi.getUbicaciones().subscribe({
       next: (resp) => {
+        this.cargandoUbicaciones = false;
+        this.ubicaciones = resp.resultado ? (resp.obj ?? []) : [];
 
-        if (resp.resultado) {
-          this.cargandoUbicaciones = false;
-          this.ubicaciones = resp.obj ?? [];
-
-          
-        }else {
-          this.ubicaciones = [];
-          this.cargandoUbicaciones = false;
+        // Re-forzamos el valor de ubicación ahora que ya existen las <mat-option>.
+        // Sin esto, si el form se llenó antes de que llegaran las ubicaciones,
+        // el mat-select puede no reflejar visualmente la selección.
+        const valorActual = this.form.get('ubicacion')?.value;
+        if (valorActual !== null && valorActual !== '' && valorActual !== undefined) {
+          this.form.get('ubicacion')?.setValue(valorActual);
         }
-      },  
+      },
       error: () => {
         this.ubicaciones = [];
         this.cargandoUbicaciones = false;
       }
     });
+  }
+
+  // Evita que el mat-select falle en marcar la opción seleccionada
+  // por mismatch de tipos (ej. "3" string vs 3 number).
+  compararUbicacion(o1: any, o2: any): boolean {
+    return o1 != null && o2 != null && String(o1) === String(o2);
   }
 
   get imagenes(): FormArray {
@@ -111,9 +125,10 @@ export class DialogCarruselComponent implements OnInit {
   crearImagenGroup(img?: any): FormGroup {
     return this.fb.group({
       idImagen: [img?.idImagen ?? null],
+      orden: [img?.orden ?? null],
       titulo: [img?.titulo ?? '', Validators.required],
       descripcion: [img?.descripcion ?? '', Validators.required],
-      url: [img?.urlImagen ?? img?.url ?? '', Validators.required]
+      url: [img?.urlGCS ?? '', Validators.required]
     });
   }
 
@@ -133,7 +148,6 @@ export class DialogCarruselComponent implements OnInit {
     return this.imagenes.at(this.previewIndex) as FormGroup;
   }
 
-  // --- Vista previa ---
   get imagenPreviewActual() {
     return this.imagenes.at(this.previewIndex)?.value;
   }
@@ -154,51 +168,50 @@ export class DialogCarruselComponent implements OnInit {
   }
 
   guardar() {
-    if (this.form.invalid) {
-      this.form.markAllAsTouched();
-      return;
-    }
-
-    this.errorGuardado = null;
-
-    const valorForm = this.form.value;
-
-    const payload = {
-      idCarrusel: valorForm.idCarrusel,
-      nombreCarrusel: valorForm.nombreCarrusel,
-      ubicacion: valorForm.ubicacion,
-      listaImagenes: valorForm.imagenes.map((img: any) => ({
-        idImagen: img.idImagen ?? null,
-        titulo: img.titulo,
-        descripcion: img.descripcion,
-        urlImagen: img.url
-      }))
-    };
-
-    this.guardando = true;
-
-    const request$ = payload.idCarrusel
-      ? this.carruselApi.actualizarCarrusel(payload.idCarrusel, payload)
-      : this.carruselApi.nuevoCarrusel(payload);
-
-    request$.subscribe({
-      next: (resp) => {
-        this.guardando = false;
-        if (resp.resultado) {
-          this.notificationService.pushSuccess(resp.mensaje || 'Carrusel guardado exitosamente.');
-          this.dialogRef.close();
-        } else {
-          this.errorGuardado = resp.mensaje || 'No se pudo guardar el carrusel.';
-        }
-      },
-      error: (err) => {
-        this.guardando = false;
-        this.errorGuardado =
-          err?.error?.mensaje || 'Error inesperado al guardar el carrusel.';
-      }
-    });
+  if (this.form.invalid) {
+    this.form.markAllAsTouched();
+    return;
   }
 
+  this.errorGuardado = null;
+  const valorForm = this.form.value;
+
+ const payload = {
+  idCarrusel: valorForm.idCarrusel,
+  nombreCarrusel: valorForm.nombreCarrusel,
+  activo: true,
+  idUbicacionDeseada: valorForm.ubicacion,
+  listaImagenes: valorForm.imagenes.map((img: any, index: number) => ({
+    idImagen: img.idImagen ?? null,
+    orden: img.orden ?? (index + 1),
+    titulo: img.titulo,
+    descripcion: img.descripcion,
+    urlGCS: img.url
+  }))
+};
+  this.guardando = true;
+
+  const request$ = payload.idCarrusel
+    ? this.carruselApi.actualizarCarrusel(payload.idCarrusel, payload)
+    : this.carruselApi.nuevoCarrusel(payload);
+
+  request$.subscribe({
+    next: (resp) => {
+      this.guardando = false;
+      if (resp.resultado) {
+        this.notificationService.pushSuccess(resp.mensaje || 'Carrusel guardado exitosamente.');
+        this.dialogRef.close(true);
+      } else {
+        this.errorGuardado = resp.mensaje || 'No se pudo guardar el carrusel.';
+      }
+    },
+    error: (err) => {
+      this.guardando = false;
+      this.errorGuardado =
+        err?.error?.mensaje || 'Error inesperado al guardar el carrusel.';
+    }
+  });
+}
   cancelar() {
     this.dialogRef.close();
   }

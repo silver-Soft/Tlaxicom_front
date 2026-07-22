@@ -12,68 +12,68 @@ import { PoligonoModel } from '../components/models/poligonoModel';
 })
 export class PoligonosService {
   private token = sessionStorage.getItem("token")
-headers: HttpHeaders = new HttpHeaders({ Authorization: 'Bearer ' + this.token });
+  headers: HttpHeaders = new HttpHeaders({ Authorization: 'Bearer: ' + this.token });
   constructor(
     private http: HttpClient,
     protected _notificationService: NotificationService
-  ) {}
+  ) { }
 
-  getPoligonos(): Observable<any> {    
+  getPoligonos(): Observable<any> {
     return this.http.get(
       AppSettings.API_ENDPOINT + '/public/obtenerPoligonos').pipe(
-      timeout(30000), // Timeout de 30 segundos
-      retry(2),
+        timeout(30000), // Timeout de 30 segundos
+        retry(2),
+        catchError(error => {
+          console.log(error);
+          return this.handleError(error);
+        })
+      );
+  }
+
+  actualizarPoligono(body: AddUpdatePoligonoRequest): Observable<any> {
+    return this.http.post(AppSettings.API_ENDPOINT + '/api/actualizarPoligono', body, { headers: this.headers }
+    ).pipe(
+      timeout(30000),
       catchError(error => {
-        console.log(error);
         return this.handleError(error);
       })
     );
   }
 
-  actualizarPoligono(body: AddUpdatePoligonoRequest): Observable<any> {
-    return this.http.post(AppSettings.API_ENDPOINT + '/api/actualizarPoligono',body,{ headers: this.headers }
-    ).pipe(
-      timeout(30000),
-      catchError(error => {                
-        return this.handleError(error);
-      })
-    );
-  }  
-
   actualizarDetallesPoligono(body: AddUpdatePoligonoRequest): Observable<any> {
-    return this.http.post(AppSettings.API_ENDPOINT + '/api/actualizarDetallesPoligono',body,{ headers: this.headers }
+    return this.http.post(AppSettings.API_ENDPOINT + '/api/actualizarDetallesPoligono', body, { headers: this.headers }
     ).pipe(
       timeout(30000),
-      catchError(error => {                
+      catchError(error => {
         return this.handleError(error);
       })
     );
   }
 
   nuevoPoligono(body: AddUpdatePoligonoRequest): Observable<any> {
-    return this.http.post(AppSettings.API_ENDPOINT + '/api/nuevoPoligono',body,{ headers: this.headers }
+    return this.http.post(AppSettings.API_ENDPOINT + '/api/nuevoPoligono', body, { headers: this.headers }
     ).pipe(
       timeout(30000),
-      catchError(error => {                
+      catchError(error => {
         return this.handleError(error);
       })
     );
   }
 
   eliminarPoligono(body: AddUpdatePoligonoRequest): Observable<any> {
-    return this.http.post(AppSettings.API_ENDPOINT + '/api/eliminarPoligono',body,{ headers: this.headers }
+    return this.http.post(AppSettings.API_ENDPOINT + '/api/eliminarPoligono', body, { headers: this.headers }
     ).pipe(
       timeout(30000),
-      catchError(error => {                
+      catchError(error => {
         return this.handleError(error);
       })
     );
   }
-  
+
   // Manejo de errores más robusto
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'Error desconocido';
-    
+
     if (error.error instanceof ErrorEvent) {
       // Error del lado del cliente
       errorMessage = `Error: ${error.error.message}`;
@@ -81,7 +81,7 @@ headers: HttpHeaders = new HttpHeaders({ Authorization: 'Bearer ' + this.token }
       // Error del lado del servidor
       errorMessage = `Código: ${error.status}\nMensaje: ${error.message}`;
     }
-    
+
     console.error('Error en servicio Poligonos:', errorMessage);
     return throwError(() => new Error(errorMessage));
   }

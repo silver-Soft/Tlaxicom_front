@@ -5,7 +5,7 @@
             <div class="fields-container">                        
                 <mat-form-field appearance="outline">
                     <mat-label>Usuario</mat-label>
-                    <input matInput placeholder="Ingrese su usuario" formControlName="email" type="text">
+                    <input matInput placeholder="Ingrese su usuario" formControlName="email" type="email">
                     <mat-error *ngIf="loginFormGroup.get('email')!.hasError('required')">
                         El usuario es requerido
                     </mat-error>
@@ -13,7 +13,7 @@
 
                 <mat-form-field appearance="outline">
                     <mat-label>Contraseña</mat-label>
-                    <input matInput placeholder="Ingrese su contraseña" formControlName="password" type="text">
+                    <input matInput placeholder="Ingrese su contraseña" formControlName="password" type="password">
                     <mat-error *ngIf="loginFormGroup.get('password')!.hasError('required')">
                         La contraseña es requerida
                     </mat-error>

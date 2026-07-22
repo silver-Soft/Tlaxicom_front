@@ -38,4 +38,21 @@ export class CarruselApiService {
 
     return this.http.get<ResultadoApi<any[]>>(`${AppSettings.API_ENDPOINT}/api/carruseles/ubicaciones`, { headers });
   }
+
+  deleteCarrusel(idCarrusel: number): Observable<ResultadoApi<any>> {
+     const headers = new HttpHeaders({ Authorization: 'Bearer ' + sessionStorage.getItem("token") });
+
+     return this.http.delete<ResultadoApi<any>>(`${AppSettings.API_ENDPOINT}/api/carruseles/eliminar/${idCarrusel}`, { headers });
+  }
+
+  habilitarCarrusel(idCarrusel: number, idUbicacion: number): Observable<ResultadoApi<any>> {
+  const headers = new HttpHeaders({ Authorization: 'Bearer ' + sessionStorage.getItem("token") });
+  const body = { idCarrusel, idUbicacion };
+
+  return this.http.post<ResultadoApi<any>>(
+    `${AppSettings.API_ENDPOINT}/api/carruseles/habilitar/${idCarrusel}`,
+    body,
+    { headers }
+  );
+}
 }

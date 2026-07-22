@@ -55,7 +55,6 @@
         <div class="carrusel-real-gradiente"></div>
 
         <div class="carrusel-real-overlay" *ngIf="imagenActualGroup.get('titulo')?.value || imagenActualGroup.get('descripcion')?.value">
-          <h4>{{ imagenActualGroup.get('titulo')?.value || 'Título de la imagen' }}</h4>
           <p *ngIf="imagenActualGroup.get('descripcion')?.value">{{ imagenActualGroup.get('descripcion')?.value }}</p>
         </div>
 

@@ -30,7 +30,7 @@ export class CarruselesComponent implements OnInit {
 
   esDispositivoMovil: boolean = false;
 
-  displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'acciones'];
+ displayedColumns: string[] = ['id', 'nombre', 'ubicacion', 'status', 'acciones'];
   dataSource: MatTableDataSource<any> = new MatTableDataSource<any>([]);
 
   // Mapa idUbicacion -> nombreDisplay, para resolver el nombre legible en la tabla
@@ -94,12 +94,50 @@ export class CarruselesComponent implements OnInit {
     });
   }
 
-  habilitar(idCarrusel: number) {
+habilitar(idCarrusel: number, idUbicacion: number) {
+  this.CarruselApiService.habilitarCarrusel(idCarrusel, idUbicacion).subscribe({
+    next: (resp) => {
+      if (resp.resultado) {
+        this.notificationService.pushSuccess(resp.mensaje || 'Carrusel habilitado.');
+        this.obtenerCarrousels();
+      } else {
+        this.notificationService.pushError(resp.mensaje || 'No se pudo habilitar el carrusel.');
+      }
+    },
+    error: (err) => {
+      console.error('Error al habilitar carrusel:', err); // opcional, para debug
+      this.notificationService.pushError(
+        err?.error?.mensaje || 'Error al habilitar el carrusel.'
+      );
+    }
+  });
+}
 
-  }
-  eliminar(idCarrusel: number) {
-
-  }
+eliminar(idCarrusel: number) {
+  this.notificationService.pedirConfirmacion(
+    'Confirmación de eliminación',
+    '¿Está seguro de que desea eliminar este carrusel?',
+    'warning', true
+  ).then((confirmado: boolean) => {
+    if (confirmado) {
+      this.CarruselApiService.deleteCarrusel(idCarrusel).subscribe({
+        next: (resp) => {
+          if (resp.resultado) {
+            this.notificationService.pushSuccess(resp.mensaje || 'Carrusel eliminado.');
+            this.obtenerCarrousels();
+          } else {
+            this.notificationService.pushError(resp.mensaje || 'No se pudo eliminar el carrusel.');
+          }
+        },
+        error: (err) => {
+          this.notificationService.pushError(
+            err?.error?.mensaje || 'Error al eliminar el carrusel.'
+          );
+        }
+      });
+    }
+  });
+}
 
   obtenerCarrousels(): void {
     this.catalogosService.obtenerCarrousels().subscribe((data: ResultadoDto) => {

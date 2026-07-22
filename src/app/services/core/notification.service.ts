@@ -127,30 +127,30 @@ export class NotificationService {
     }) 
   }
 
-  public pedirConfirmacion(titulo:string, contenido:string,icon?:SweetAlertIcon, showCancelButton?:boolean){
-    return new Promise((resolve, reject) =>{
-      Swal.fire({
-        icon: icon?icon:'info',
-        title: titulo,
-        text: contenido,
-        showCancelButton: showCancelButton,
-        confirmButtonText: 'Aceptar',
-        cancelButtonText: 'Cancelar',
-        allowOutsideClick:false,
-        allowEscapeKey: false,
-        focusConfirm: false,
-      }).then(result => {
-        if (result.value) {
-          resolve(true); // Valor de retorno cuando se hace clic en "Sí"
-        } else {
-          resolve(false); // Valor de retorno cuando se hace clic en "No" o se cierra el Swal
-        }
-      })
-      .catch(error => {
-        reject(error); // En caso de que ocurra algún error
-      });
-    })    
-  }
+ public pedirConfirmacion(titulo: string, contenido: string, icon?: SweetAlertIcon, showCancelButton?: boolean): Promise<boolean> {
+  return new Promise<boolean>((resolve, reject) => {
+    Swal.fire({
+      icon: icon ? icon : 'info',
+      title: titulo,
+      text: contenido,
+      showCancelButton: showCancelButton,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      allowOutsideClick: false,
+      allowEscapeKey: false,
+      focusConfirm: false,
+    }).then(result => {
+      if (result.value) {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    })
+    .catch(error => {
+      reject(error);
+    });
+  })
+}
   
   public toastCustomize(position:any,        colorTitulo:any,
     title:any,               time:number,          backgroundToast:any,

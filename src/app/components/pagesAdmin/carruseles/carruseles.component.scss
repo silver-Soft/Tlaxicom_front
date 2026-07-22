@@ -14,3 +14,42 @@
     display: none !important;
   }
 }
+.mat-mdc-form-field {  
+  width: 100%;
+}
+
+.btn-acciones {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.mat-column-id {
+  width: 32px;
+  border-right: 1px solid currentColor;
+  padding-right: 24px;
+  text-align: center;
+}
+
+.estado-chip {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+
+  &.activo {
+    background-color: #e6f7e9;
+    color: #1e7e34;
+  }
+
+  &.inactivo {
+    background-color: #fdeaea;
+    color: #c0392b;
+  }
+}
+
+::ng-deep .table-header {
+  .mat-mdc-form-field-bottom-align {
+    display: none !important;
+  }
+}

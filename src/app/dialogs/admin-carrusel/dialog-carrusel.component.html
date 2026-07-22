@@ -94,12 +94,12 @@
       <button
         mat-icon-button
         color="warn"
-        (click)="eliminarImagen(previewIndex)"
-        *ngIf="imagenes.length > 1"
-        matTooltip="Eliminar esta imagen"
+        (click)="eliminarImagen(previewIndex, $event)"
+        [class.confirmando]="imagenAEliminar === previewIndex"
+        [matTooltip]="imagenAEliminar === previewIndex ? 'Clic de nuevo para confirmar' : 'Eliminar esta imagen'"
         class="btn-eliminar-actual"
       >
-        <mat-icon>delete_outline</mat-icon>
+        <mat-icon>{{ imagenAEliminar === previewIndex ? 'check' : 'delete_outline' }}</mat-icon>
       </button>
     </div>
 
@@ -140,10 +140,11 @@
         <button
           mat-icon-button
           class="thumb-delete"
-          *ngIf="imagenes.length > 1"
-          (click)="eliminarImagen(i); $event.stopPropagation()"
+          [class.confirmando]="imagenAEliminar === i"
+          [matTooltip]="imagenAEliminar === i ? 'Clic de nuevo para confirmar' : 'Eliminar imagen'"
+          (click)="eliminarImagen(i, $event)"
         >
-          <mat-icon>close</mat-icon>
+          <mat-icon>{{ imagenAEliminar === i ? 'check' : 'close' }}</mat-icon>
         </button>
       </div>
 

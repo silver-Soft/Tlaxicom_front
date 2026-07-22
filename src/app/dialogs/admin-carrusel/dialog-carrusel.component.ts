@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   MatDialogRef,
@@ -46,7 +46,7 @@ interface UbicacionCarrusel {
   templateUrl: './dialog-carrusel.component.html',
   styleUrl: './dialog-carrusel.component.scss'
 })
-export class DialogCarruselComponent implements OnInit {
+export class DialogCarruselComponent implements OnInit, OnDestroy {
   form: FormGroup;
   previewIndex = 0;
 
@@ -55,6 +55,10 @@ export class DialogCarruselComponent implements OnInit {
 
   guardando = false;
   errorGuardado: string | null = null;
+
+  // Estado de confirmación de borrado ("clic para armar, clic para confirmar")
+  imagenAEliminar: number | null = null;
+  private timeoutConfirmacion: any;
 
   constructor(
     public dialogRef: MatDialogRef<DialogCarruselComponent>,
@@ -89,6 +93,10 @@ export class DialogCarruselComponent implements OnInit {
     this.cargarUbicaciones();
   }
 
+  ngOnDestroy(): void {
+    clearTimeout(this.timeoutConfirmacion);
+  }
+
   cargarUbicaciones() {
     this.ubicaciones = [];
     this.cargandoUbicaciones = true;
@@ -97,9 +105,6 @@ export class DialogCarruselComponent implements OnInit {
         this.cargandoUbicaciones = false;
         this.ubicaciones = resp.resultado ? (resp.obj ?? []) : [];
 
-        // Re-forzamos el valor de ubicación ahora que ya existen las <mat-option>.
-        // Sin esto, si el form se llenó antes de que llegaran las ubicaciones,
-        // el mat-select puede no reflejar visualmente la selección.
         const valorActual = this.form.get('ubicacion')?.value;
         if (valorActual !== null && valorActual !== '' && valorActual !== undefined) {
           this.form.get('ubicacion')?.setValue(valorActual);
@@ -112,8 +117,6 @@ export class DialogCarruselComponent implements OnInit {
     });
   }
 
-  // Evita que el mat-select falle en marcar la opción seleccionada
-  // por mismatch de tipos (ej. "3" string vs 3 number).
   compararUbicacion(o1: any, o2: any): boolean {
     return o1 != null && o2 != null && String(o1) === String(o2);
   }
@@ -137,11 +140,46 @@ export class DialogCarruselComponent implements OnInit {
     this.previewIndex = this.imagenes.length - 1;
   }
 
-  eliminarImagen(index: number) {
+  /**
+   * Borrado con confirmación en dos pasos:
+   * 1er clic -> arma la confirmación (icono cambia a check, ~2.5s para confirmar)
+   * 2do clic (dentro de la ventana) -> elimina de verdad
+   *
+   * Si es la única imagen del carrusel, no se quita el slot (siempre debe
+   * quedar al menos uno para poder guardar); en su lugar se limpian los campos.
+   */
+  eliminarImagen(index: number, event?: Event) {
+    event?.stopPropagation();
+
+    if (this.imagenAEliminar !== index) {
+      this.imagenAEliminar = index;
+      clearTimeout(this.timeoutConfirmacion);
+      this.timeoutConfirmacion = setTimeout(() => {
+        this.imagenAEliminar = null;
+      }, 2500);
+      return;
+    }
+
+    clearTimeout(this.timeoutConfirmacion);
+    this.imagenAEliminar = null;
+
+    if (this.imagenes.length === 1) {
+      this.imagenes.at(index).reset({
+        idImagen: null,
+        orden: null,
+        titulo: '',
+        descripcion: '',
+        url: ''
+      });
+      this.notificationService.pushSuccess('Imagen eliminada. Agrega el contenido de la nueva imagen.');
+      return;
+    }
+
     this.imagenes.removeAt(index);
     if (this.previewIndex >= this.imagenes.length) {
       this.previewIndex = Math.max(0, this.imagenes.length - 1);
     }
+    this.notificationService.pushSuccess('Imagen eliminada.');
   }
 
   get imagenActualGroup(): FormGroup {
@@ -168,50 +206,52 @@ export class DialogCarruselComponent implements OnInit {
   }
 
   guardar() {
-  if (this.form.invalid) {
-    this.form.markAllAsTouched();
-    return;
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    this.errorGuardado = null;
+    const valorForm = this.form.value;
+
+    const payload = {
+      idCarrusel: valorForm.idCarrusel,
+      nombreCarrusel: valorForm.nombreCarrusel,
+      activo: true,
+      idUbicacionDeseada: valorForm.ubicacion,
+      listaImagenes: valorForm.imagenes.map((img: any, index: number) => ({
+        idImagen: img.idImagen ?? null,
+        orden: img.orden ?? (index + 1),
+        titulo: img.titulo,
+        descripcion: img.descripcion,
+        urlGCS: img.url
+      }))
+    };
+
+    this.guardando = true;
+
+    const request$ = payload.idCarrusel
+      ? this.carruselApi.actualizarCarrusel(payload.idCarrusel, payload)
+      : this.carruselApi.nuevoCarrusel(payload);
+
+    request$.subscribe({
+      next: (resp) => {
+        this.guardando = false;
+        if (resp.resultado) {
+          this.notificationService.pushSuccess(resp.mensaje || 'Carrusel guardado exitosamente.');
+          this.dialogRef.close(true);
+        } else {
+          this.errorGuardado = resp.mensaje || 'No se pudo guardar el carrusel.';
+        }
+      },
+      error: (err) => {
+        this.guardando = false;
+        this.errorGuardado =
+          err?.error?.mensaje || 'Error inesperado al guardar el carrusel.';
+      }
+    });
   }
 
-  this.errorGuardado = null;
-  const valorForm = this.form.value;
-
- const payload = {
-  idCarrusel: valorForm.idCarrusel,
-  nombreCarrusel: valorForm.nombreCarrusel,
-  activo: true,
-  idUbicacionDeseada: valorForm.ubicacion,
-  listaImagenes: valorForm.imagenes.map((img: any, index: number) => ({
-    idImagen: img.idImagen ?? null,
-    orden: img.orden ?? (index + 1),
-    titulo: img.titulo,
-    descripcion: img.descripcion,
-    urlGCS: img.url
-  }))
-};
-  this.guardando = true;
-
-  const request$ = payload.idCarrusel
-    ? this.carruselApi.actualizarCarrusel(payload.idCarrusel, payload)
-    : this.carruselApi.nuevoCarrusel(payload);
-
-  request$.subscribe({
-    next: (resp) => {
-      this.guardando = false;
-      if (resp.resultado) {
-        this.notificationService.pushSuccess(resp.mensaje || 'Carrusel guardado exitosamente.');
-        this.dialogRef.close(true);
-      } else {
-        this.errorGuardado = resp.mensaje || 'No se pudo guardar el carrusel.';
-      }
-    },
-    error: (err) => {
-      this.guardando = false;
-      this.errorGuardado =
-        err?.error?.mensaje || 'Error inesperado al guardar el carrusel.';
-    }
-  });
-}
   cancelar() {
     this.dialogRef.close();
   }

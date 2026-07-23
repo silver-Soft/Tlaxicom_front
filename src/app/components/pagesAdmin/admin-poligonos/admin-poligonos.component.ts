@@ -25,7 +25,7 @@ import { AddUpdatePoligonoRequest } from '../../../DTOs/request/addUpdatePoligon
   standalone: true,
   imports: [MatButtonModule, MatDividerModule, MatIconModule, MatCardModule, CommonModule,
     MatTooltipModule, MatTableModule, MatMenuModule, GoogleMap, GoogleMapsModule, MatSidenavModule,
-  MatToolbarModule, MatListModule],
+    MatToolbarModule, MatListModule],
   templateUrl: './admin-poligonos.component.html',
   styleUrl: './admin-poligonos.component.scss'
 })
@@ -36,6 +36,7 @@ export class AdminPoligonosComponent implements OnInit {
     lng: -97.93701
   };
   zoom = 12;
+  mapHeight = '500px';
 
   @ViewChild('googleMap', { static: false }) googleMap!: GoogleMap;
   polygonEditor?: google.maps.Polygon;
@@ -54,11 +55,11 @@ export class AdminPoligonosComponent implements OnInit {
   constructor(private poligonosService: PoligonosService,
     private notificationService: NotificationService,
     private dialog: MatDialog,
-    private observer : BreakpointObserver,
-  ) { 
+    private observer: BreakpointObserver,
+  ) {
     this.observer.observe(['(max-width : 800px)']).subscribe(res => {
-    this.esDispositivoMovil = res.matches;
-  });
+      this.esDispositivoMovil = res.matches;
+    });
   }
 
   ngOnInit(): void {
@@ -107,21 +108,21 @@ export class AdminPoligonosComponent implements OnInit {
     }));
   }
 
-  guardarPoligono(){
-    if(this.agregandoPoligono){      
+  guardarPoligono() {
+    if (this.agregandoPoligono) {
       console.log('New poligono:\n', JSON.stringify(this.poligonoModel));
       this.editarAtributos()
-    }else{
-      const nuevasCoordenadas = this.obtenerCoordenadasEditadas();    
+    } else {
+      const nuevasCoordenadas = this.obtenerCoordenadasEditadas();
       const poligonoModel = new PoligonoModel();
       poligonoModel.idPoligono = this.poligonoModel.idPoligono;
       poligonoModel.poligono = nuevasCoordenadas;
       console.log('Update poligono:\n', JSON.stringify(poligonoModel));
-      this.actualizarPoligono(poligonoModel); 
-    }     
+      this.actualizarPoligono(poligonoModel);
+    }
   }
 
-  reiniciarPoligono(){
+  reiniciarPoligono() {
     this.editarZona(this.poligonoModel);
   }
 
@@ -131,54 +132,54 @@ export class AdminPoligonosComponent implements OnInit {
       this.polygonEditor = undefined;
       this.poligonoModel = new PoligonoModel();
     }
-  }  
-
-  editarAtributos(){
-    const dialogConfig = {
-        width: this.esDispositivoMovil ? '90vw' : 'auto', 
-        height: 'auto', 
-        maxWidth: '100%', 
-        maxHeight: '100%', 
-        panelClass: 'dialog-responsive',
-        autoFocus: false, 
-        disableClose: true,
-        data: { 
-          poligonoModel: this.poligonoModel
-        }        
-      };
-
-    const dialogRef = this.dialog.open(ModAtributosPoligonoComponent, dialogConfig)
-      dialogRef.afterClosed().subscribe(dialogResponse => {
-        if (dialogResponse != undefined) {
-          if (dialogResponse.result == true) {
-            let poligonoModel = new PoligonoModel();
-            poligonoModel = { ...dialogResponse.data };
-
-            if(this.agregandoPoligono){
-              poligonoModel.poligono = this.poligonoModel.poligono.map((latLng) => ({
-                latitude: latLng.lat(),
-                longitude: latLng.lng(),
-              }));
-              console.log('Nuevo poligono:\n', JSON.stringify(poligonoModel));
-              this.registrarPoligono(poligonoModel);              
-            }else{
-              console.log('Update detalles poligono:\n', JSON.stringify(poligonoModel));            
-              this.actualizarDetallesPoligono(poligonoModel);          
-            }                        
-          }
-        } else {
-          console.log(JSON.stringify(dialogResponse))
-        }
-      });
   }
 
-  nuevoPoligono(){    
+  editarAtributos() {
+    const dialogConfig = {
+      width: this.esDispositivoMovil ? '90vw' : 'auto',
+      height: 'auto',
+      maxWidth: '100%',
+      maxHeight: '100%',
+      panelClass: 'dialog-responsive',
+      autoFocus: false,
+      disableClose: true,
+      data: {
+        poligonoModel: this.poligonoModel
+      }
+    };
+
+    const dialogRef = this.dialog.open(ModAtributosPoligonoComponent, dialogConfig)
+    dialogRef.afterClosed().subscribe(dialogResponse => {
+      if (dialogResponse != undefined) {
+        if (dialogResponse.result == true) {
+          let poligonoModel = new PoligonoModel();
+          poligonoModel = { ...dialogResponse.data };
+
+          if (this.agregandoPoligono) {
+            poligonoModel.poligono = this.poligonoModel.poligono.map((latLng) => ({
+              latitude: latLng.lat(),
+              longitude: latLng.lng(),
+            }));
+            console.log('Nuevo poligono:\n', JSON.stringify(poligonoModel));
+            this.registrarPoligono(poligonoModel);
+          } else {
+            console.log('Update detalles poligono:\n', JSON.stringify(poligonoModel));
+            this.actualizarDetallesPoligono(poligonoModel);
+          }
+        }
+      } else {
+        console.log(JSON.stringify(dialogResponse))
+      }
+    });
+  }
+
+  nuevoPoligono() {
     this.reiniciarEdicion();
     this.agregandoPoligono = true;
 
     const map = this.googleMap.googleMap!;
 
-     // Crear DrawingManager solo para polígonos
+    // Crear DrawingManager solo para polígonos
     this.drawingManager = new google.maps.drawing.DrawingManager({
       drawingMode: google.maps.drawing.OverlayType.POLYGON,
       drawingControl: true,
@@ -199,20 +200,20 @@ export class AdminPoligonosComponent implements OnInit {
 
     this.drawingManager.setMap(map);
 
-     // Evento: cuando el usuario termina de dibujar un polígono
+    // Evento: cuando el usuario termina de dibujar un polígono
     this.drawingManager.addListener('overlaycomplete', (event: google.maps.drawing.OverlayCompleteEvent) => {
-    if (event.type === google.maps.drawing.OverlayType.POLYGON) {
-      // Guardamos directamente el polígono creado
-      this.polygon = event.overlay as google.maps.Polygon;
+      if (event.type === google.maps.drawing.OverlayType.POLYGON) {
+        // Guardamos directamente el polígono creado
+        this.polygon = event.overlay as google.maps.Polygon;
 
-      // Hacemos editable y arrastrable
-      this.polygon.setEditable(true);
-      this.polygon.setDraggable(true);
+        // Hacemos editable y arrastrable
+        this.polygon.setEditable(true);
+        this.polygon.setDraggable(true);
 
-      // Actualizar tu modelo con las coordenadas      
-      this.poligonoModel.poligono = this.polygon.getPath().getArray()    
-    }
-  });
+        // Actualizar tu modelo con las coordenadas      
+        this.poligonoModel.poligono = this.polygon.getPath().getArray()
+      }
+    });
   }
 
   cerrarRegistroPoligono() {
@@ -232,10 +233,10 @@ export class AdminPoligonosComponent implements OnInit {
     this.poligonoModel = new PoligonoModel();
   }
 
-  registrarPoligono(poligonoModel: AddUpdatePoligonoRequest){
+  registrarPoligono(poligonoModel: AddUpdatePoligonoRequest) {
     this.poligonosService.nuevoPoligono(poligonoModel).subscribe((data: any) => {
       if (data.resultado === true) {
-        this.notificationService.pushSuccess(data.mensaje);        
+        this.notificationService.pushSuccess(data.mensaje);
         this.obtenerPoligonos(
           (listaPoligonos) => {
             this.poligonos.data = listaPoligonos;
@@ -243,30 +244,30 @@ export class AdminPoligonosComponent implements OnInit {
           (message: string) => {
             this.notificationService.pushError(message);
           }
-        )     
-        this.cerrarRegistroPoligono();   
+        )
+        this.cerrarRegistroPoligono();
       } else {
         this.notificationService.pushError(data.mensaje);
       }
-    })    
+    })
   }
 
-  confirmarEliminarPoligono(poligonoModel: PoligonoModel){
+  confirmarEliminarPoligono(poligonoModel: PoligonoModel) {
     this.notificationService.pedirConfirmacion(
       'Confirmar eliminación',
-      "¿Estás seguro de que deseas eliminar el polígono "+ poligonoModel.nombre+"? Esta acción no se puede deshacer.",
+      "¿Estás seguro de que deseas eliminar el polígono " + poligonoModel.nombre + "? Esta acción no se puede deshacer.",
       'question',
-      true      
-  ).then((confirmed) => {
+      true
+    ).then((confirmed) => {
       if (confirmed) {
         this.eliminarPoligono(poligonoModel);
-      } 
-  });
-}
-  eliminarPoligono(poligonoModel: PoligonoModel){
+      }
+    });
+  }
+  eliminarPoligono(poligonoModel: PoligonoModel) {
     this.poligonosService.eliminarPoligono(poligonoModel).subscribe((data: any) => {
       if (data.resultado === true) {
-        this.notificationService.pushSuccess(data.mensaje);        
+        this.notificationService.pushSuccess(data.mensaje);
         this.obtenerPoligonos(
           (listaPoligonos) => {
             this.poligonos.data = listaPoligonos;
@@ -274,17 +275,17 @@ export class AdminPoligonosComponent implements OnInit {
           (message: string) => {
             this.notificationService.pushError(message);
           }
-        )     
-        this.reiniciarEdicion(); 
+        )
+        this.reiniciarEdicion();
       } else {
         this.notificationService.pushError(data.mensaje);
       }
-    }) 
+    })
   }
-  
+
   obtenerPoligonos(onSuccess: (listaPoligonos: any) => void, onError: (message: string) => void) {
     this.poligonosService.getPoligonos().subscribe((data: any) => {
-      if (data.resultado === true) {        
+      if (data.resultado === true) {
         const poligonos = data.obj.map((p: any) => ({
           ...p,
           poligono: p.poligono.map((pt: any) => ({
@@ -292,7 +293,7 @@ export class AdminPoligonosComponent implements OnInit {
             lng: Number(pt.longitude)
           }))
         }));
-        onSuccess(poligonos);           
+        onSuccess(poligonos);
       } else {
         onError(data.mensaje);
       }
@@ -303,7 +304,7 @@ export class AdminPoligonosComponent implements OnInit {
     this.poligonosService.actualizarPoligono(poligonoModel).subscribe((data: any) => {
       if (data.resultado === true) {
         this.notificationService.pushSuccess(data.mensaje);
-        
+
         this.obtenerPoligonos(
           (listaPoligonos) => {
             this.poligonos.data = listaPoligonos;
@@ -313,7 +314,7 @@ export class AdminPoligonosComponent implements OnInit {
           (message: string) => {
             this.notificationService.pushError(message);
           }
-        )        
+        )
       } else {
         this.notificationService.pushError(data.mensaje);
       }
@@ -325,7 +326,7 @@ export class AdminPoligonosComponent implements OnInit {
       if (data.resultado === true) {
         this.notificationService.pushSuccess(data.mensaje);
         this.obtenerPoligonos(
-          (listaPoligonos:any) => {
+          (listaPoligonos: any) => {
             this.poligonos.data = listaPoligonos;
             this.poligonoModel = this.poligonos.data.find(p => p.idPoligono === poligonoModel.idPoligono);
             this.editarZona(this.poligonoModel);

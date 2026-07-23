@@ -2,8 +2,8 @@ import { HttpHeaders } from '@angular/common/http';
 
 export class AppSettings {
 
-    public static API_ENDPOINT = 'http://localhost:8080';
-    //public static API_ENDPOINT = 'https://tlaxicom-backend-718967229132.us-central1.run.app';
+    //public static API_ENDPOINT = 'http://localhost:8080';
+    public static API_ENDPOINT = 'https://tlaxicom-backend-718967229132.us-central1.run.app';
     public static TITLE = 'TLAXICOM';
     public static SLOGAN = 'Velocidad y Confianza en un solo lugar';
     public static COPYRIGHT = 'Copyright © 2025 - Todos los derechos reservados';
@@ -15,11 +15,11 @@ export class AppSettings {
 
     public static HEADERS = {
         headers: new HttpHeaders({
-            'Content-Type':  'application/json',
-            'Access-Control-Allow-Credentials' : 'true',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Credentials': 'true',
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'GET, POST, PATCH, DELETE, PUT, OPTIONS',
             'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With'
-          })
+        })
     };
 }

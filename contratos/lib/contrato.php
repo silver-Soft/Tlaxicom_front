@@ -156,7 +156,10 @@ function tlx_contrato_datos(): array
             continue;
         }
         if ($f['error'] !== UPLOAD_ERR_OK) {
-            $errores[] = "No se pudo recibir $campo (error de carga {$f['error']}).";
+            $motivo = in_array($f['error'], [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE], true)
+                ? 'pesa más de lo que permite el servidor (' . ini_get('upload_max_filesize') . ')'
+                : "no se recibió completa (error de carga {$f['error']})";
+            $errores[] = ucfirst($campo) . " $motivo. Use una foto más ligera.";
             continue;
         }
         $info = is_uploaded_file($f['tmp_name']) && $f['size'] <= TLX_MAX_FOTO_BYTES ? @getimagesize($f['tmp_name']) : false;

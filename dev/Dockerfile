@@ -9,3 +9,4 @@ RUN apt-get update && apt-get install -y --no-install-recommends libpng-dev libj
  && rm -rf /var/lib/apt/lists/*
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN echo 'mysqli.default_socket=/run/mysqld/mysqld.sock' > /usr/local/etc/php/conf.d/dev-mysql.ini
+RUN { echo 'upload_max_filesize=16M'; echo 'post_max_size=40M'; echo 'memory_limit=256M'; echo 'display_errors=Off'; } > /usr/local/etc/php/conf.d/dev-uploads.ini

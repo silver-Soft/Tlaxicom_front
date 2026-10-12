@@ -222,6 +222,16 @@ $leyenda = function (array $p): string {
             $('btnBorrarFirma').addEventListener('click', function () { pad.clear(); });
 
             $('formContrato').addEventListener('submit', function (event) {
+                var MAX_MB = 12;
+                var grandes = ['foto1', 'foto2'].filter(function (id) {
+                    var f = $(id).files[0];
+                    return f && f.size > MAX_MB * 1024 * 1024;
+                });
+                if (grandes.length) {
+                    event.preventDefault();
+                    alert('Una de las fotos pesa más de ' + MAX_MB + ' MB. Use una foto más ligera.');
+                    return;
+                }
                 if (pad.isEmpty()) {
                     event.preventDefault();
                     alert('Falta la firma del suscriptor.');

@@ -31,7 +31,7 @@ ErrorDocument 410 /404.html
 </IfModule>
 
 # Archivos y carpetas que nunca deben servirse
-<FilesMatch "(^\.(ht|git|env|DS_Store)|\.(log|sql|bak|old|orig|swp|zip|tar|gz|7z|rar|ini|sh|md)$|^error_log$|^composer\.(json|lock)$|^package(-lock)?\.json$|^MANIFEST\.sha256$)">
+<FilesMatch "(^\.(ht|git|env|user|DS_Store)|\.(log|sql|bak|old|orig|swp|zip|tar|gz|7z|rar|ini|sh|md)$|^error_log$|^composer\.(json|lock)$|^package(-lock)?\.json$|^MANIFEST\.sha256$)">
   Require all denied
 </FilesMatch>
 

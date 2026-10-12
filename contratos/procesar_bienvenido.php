@@ -6,7 +6,19 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: bienvenido.php');
     exit;
 }
+
+// Si el envio supera post_max_size, PHP descarta $_POST y $_FILES por completo.
+if (empty($_POST) && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+    http_response_code(413);
+    exit('Las fotografías pesan demasiado (límite del servidor: ' . e(ini_get('post_max_size')) . ' en total). Use fotos más ligeras e intente de nuevo. <a href="bienvenido.php">Regresar</a>');
+}
 tlx_csrf_verificar();
+
+// Las fotos de camara se decodifican en memoria (GD): damos margen para imagenes de 20+ megapixeles.
+if ((int) ini_get('memory_limit') !== -1 && (int) ini_get('memory_limit') < 384) {
+    @ini_set('memory_limit', '384M');
+}
+@set_time_limit(120);
 
 $usuario = (string) $_SESSION['usuario'];
 session_write_close(); // libera el bloqueo de sesion: generar el PDF y enviar el correo puede tardar

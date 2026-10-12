@@ -5,9 +5,9 @@
 #                                                 por SFTP en modo lectura) contra MANIFEST.sha256
 # Excluye .git, node_modules y archivos de logs; contratos/vendor-like se incluyen.
 set -u
-MODE="${1:-}"; ROOT="${2:-$(cd "$(dirname "$0")/.." && pwd)}"
+MODE="${1:-}"; ROOT="$(cd "${2:-$(dirname "$0")/..}" && pwd)"
 SCRIPT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-MANIFEST="$SCRIPT_DIR/MANIFEST.sha256"
+MANIFEST="${MANIFEST_FILE:-$SCRIPT_DIR/MANIFEST.sha256}"
 list() { (cd "$1" && find . -type f -not -path './.git/*' -not -path '*/node_modules/*' -not -name 'MANIFEST.sha256' -not -name 'error_log' -not -name '*.log' | LC_ALL=C sort); }
 hashes() { (cd "$1" && list "$1" | while read -r f; do sha256sum "$f"; done); }
 case "$MODE" in

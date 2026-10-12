@@ -46,3 +46,7 @@ dev/.init.rendered.sql
 # Dump real de la BD: nunca versionar ni subir
 *.sql
 !dev/init.sql
+
+# Salida del despliegue (se regenera con tools/build_deploy.sh)
+deploy/
+deploy.sha256

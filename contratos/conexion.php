@@ -1,16 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-$host = "localhost";
-//$usuario_db = "tlaxicom_tlaxi";  // Cambia esto con tu nombre de usuario de MySQL
-//$contrasena_db = "Test12345$#A";  // Cambia esto con tu contraseña de MySQL
-$usuario_db = "tlaxicom_tlaxi";
-$contrasena_db = "Test12345$#A";
-$base_datos = "tlaxicom_contratos";
-
-$conexion = mysqli_connect($host, $usuario_db, $contrasena_db, $base_datos);
-
-if (!$conexion) {
-    die("Error al conectar a la base de datos: " . mysqli_connect_error());
-}
-?>
+// Compatibilidad: las credenciales ya no viven aqui (ver lib/config.php y config.example.php).
+require_once __DIR__ . '/lib/bootstrap.php';
+$conexion = tlx_db();

@@ -1,6 +1,6 @@
 # Entorno local parecido a produccion (HostGator: Apache/LiteSpeed + PHP 8.2). NO se sube por FTP.
 FROM php:8.2-apache
-RUN apt-get update && apt-get install -y --no-install-recommends libpng-dev libjpeg-dev libfreetype6-dev libzip-dev unzip curl git \
+RUN apt-get update && apt-get install -y --no-install-recommends libpng-dev libjpeg-dev libfreetype6-dev libzip-dev unzip curl git poppler-utils \
  && docker-php-ext-configure gd --with-jpeg --with-freetype \
  && docker-php-ext-install gd mysqli zip \
  && a2enmod rewrite headers \

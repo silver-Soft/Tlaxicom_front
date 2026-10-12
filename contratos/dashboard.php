@@ -1,19 +1,7 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-session_start();
-echo "<!-- Sesión iniciada correctamente -->";
-include("conexion.php");
-
-if (!isset($_SESSION['usuario'])) {
-    header("Location: login.php");
-    exit;
-}
-
+require __DIR__ . '/lib/bootstrap.php';
+tlx_requiere_login();
 $usuario = $_SESSION['usuario'];
-
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -118,12 +106,14 @@ $usuario = $_SESSION['usuario'];
 
     <div class="sidebar" id="sidebar">
         <h2>Dashboard</h2>
-        <p>Bienvenido, Usuario</p>
+        <p>Bienvenido, <?= e($usuario) ?></p>
         <a href="dashboard.php">Inicio</a>
-        <a href="../contratos/bienvenido.php">Realizar Contrato</a>
+        <a href="bienvenido.php">Realizar Contrato</a>
+        <?php if (tlx_es_admin()): ?>
         <a href="registro.php">Registrar Nuevo Usuario</a>
-        <a href="../contratos/lista_usuarios.php">Lista de Usuarios</a>
-        <a href="../contratos/logout.php" class="logout-btn">Cerrar sesión</a>
+        <a href="lista_usuarios.php">Lista de Usuarios</a>
+        <?php endif; ?>
+        <a href="logout.php" class="logout-btn">Cerrar sesión</a>
     </div>
 
     <div class="main-content">

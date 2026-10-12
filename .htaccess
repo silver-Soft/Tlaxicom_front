@@ -13,11 +13,11 @@ ErrorDocument 410 /404.html
 
   # Forzar sin www y https. X-Forwarded-Proto evita bucles si hay proxy/CDN delante.
   RewriteCond %{HTTP_HOST} ^www\. [NC]
-  RewriteRule ^(.*)$ https://tlaxicom.com/$1 [R=301,L]
+  RewriteRule ^ https://tlaxicom.com%{REQUEST_URI} [R=301,L]
   RewriteCond %{HTTP_HOST} !^(localhost|127\.0\.0\.1)(:[0-9]+)?$ [NC]
   RewriteCond %{HTTPS} !=on
   RewriteCond %{HTTP:X-Forwarded-Proto} !=https
-  RewriteRule ^(.*)$ https://tlaxicom.com/$1 [R=301,L]
+  RewriteRule ^ https://tlaxicom.com%{REQUEST_URI} [R=301,L]
 
   # Rutas de spam indexadas por terceros: 410 Gone (no existen ni deben existir)
   RewriteRule ^(search|category|pcmypage|product|amp|inicio|event|unsubscribe|5xal9[a-z0-9]*)(/|$) - [G,L]

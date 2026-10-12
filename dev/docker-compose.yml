@@ -3,7 +3,13 @@ services:
   web:
     build: .
     ports: ["8080:80"]
-    volumes: ["../:/var/www/html", "sock:/run/mysqld"]
+    volumes: ["../:/var/www/html", "sock:/run/mysqld", "./config.dev.php:/var/www/dev-config.php:ro"]
+    environment:
+      TLAXICOM_CONFIG: /var/www/dev-config.php
+  mailpit:
+    # Buzon de pruebas: nada sale a Internet. Interfaz en http://localhost:8025
+    image: axllent/mailpit
+    ports: ["8025:8025"]
   db:
     image: mariadb:10.11
     # Comparte red con "web" para que conexion.php (host "localhost") funcione sin tocarlo.
@@ -13,7 +19,7 @@ services:
       MARIADB_ROOT_PASSWORD: root_dev
       MARIADB_DATABASE: tlaxicom_contratos
       MARIADB_USER: tlaxicom_tlaxi
-      MARIADB_PASSWORD: ${DB_DEV_PASSWORD:?ejecuta dev/up.sh}
+      MARIADB_PASSWORD: dev_password_local
     volumes:
       - ../tlaxicom_contratos.sql:/docker-entrypoint-initdb.d/01_dump.sql:ro
       - ./.init.rendered.sql:/docker-entrypoint-initdb.d/02_dev_users.sql:ro

@@ -1,0 +1,13 @@
+# Modulo de contratos: solo las paginas .php de la raiz son publicas.
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteOptions Inherit
+  # Codigo de apoyo y librerias: se incluyen desde PHP, nunca se piden por web
+  RewriteRule ^(lib|TCPDF|PHPMailer|vendor|node_modules)(/|$) - [F,L]
+</IfModule>
+
+<FilesMatch "(^config.*\.php$|\.example\.php$|^composer\.|^package(-lock)?\.json$|^README|\.log$|^error_log$)">
+  Require all denied
+</FilesMatch>

@@ -1,67 +1,52 @@
 <?php
-session_start();
-include("conexion.php");
+require __DIR__ . '/lib/bootstrap.php';
+tlx_requiere_admin();
 
-// 🔐 Validar sesión
-if (!isset($_SESSION['usuario'])) {
-    header("Location: login.php");
-    exit;
-}
-
-// 🔐 Validar privilegios
-if (!isset($_SESSION['privilegios']) || (int)$_SESSION['privilegios'] !== 1) {
-    echo "No tienes permisos para realizar esta acción.";
-    exit;
-}
-
-// ✅ Validar método
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header("Location: registro.php");
+    header('Location: registro.php');
+    exit;
+}
+tlx_csrf_verificar();
+
+function tlx_registro_resultado(string $mensaje, string $tipo): void
+{
+    tlx_flash($mensaje, $tipo);
+    header('Location: registro.php');
     exit;
 }
 
-// ✅ Obtener datos
-$nuevo_usuario = trim($_POST['nuevo_usuario']);
-$nueva_contrasena = $_POST['nueva_contrasena'];
-$estado = $_POST['tipo_usuario'];
-$privilegios = (int)$_POST['con_privilegios'];
+$usuario = trim((string) ($_POST['nuevo_usuario'] ?? ''));
+$contrasena = (string) ($_POST['nueva_contrasena'] ?? '');
+$estado = (string) ($_POST['tipo_usuario'] ?? '');
+$privilegios = (string) ($_POST['con_privilegios'] ?? '');
 
-// ✅ Validaciones básicas
-if (empty($nuevo_usuario) || empty($nueva_contrasena)) {
-    echo "Datos incompletos. <a href='registro.php'>Volver</a>";
-    exit;
+if ($usuario === '' || $contrasena === '') {
+    tlx_registro_resultado('Datos incompletos.', 'error');
 }
+if (!preg_match('/^[A-Za-z0-9._-]{3,50}$/', $usuario)) {
+    tlx_registro_resultado('El usuario debe tener de 3 a 50 caracteres: letras, números, punto, guion o guion bajo.', 'error');
+}
+if (strlen($contrasena) < 10 || !preg_match('/[A-Za-z]/', $contrasena) || !preg_match('/\d/', $contrasena)) {
+    tlx_registro_resultado('La contraseña debe tener al menos 10 caracteres, con letras y números.', 'error');
+}
+if (!in_array($estado, ['activo', 'inactivo'], true) || !in_array($privilegios, ['0', '1'], true)) {
+    tlx_registro_resultado('Estado o privilegios no válidos.', 'error');
+}
+$privilegios = (int) $privilegios;
 
-// 🔐 Hashear contraseña
-$contrasena_encriptada = password_hash($nueva_contrasena, PASSWORD_DEFAULT);
+$hash = password_hash($contrasena, PASSWORD_DEFAULT);
 
-// ✅ Insertar directamente (ya confiamos en UNIQUE)
-$insert = $conexion->prepare("
-    INSERT INTO usuarios (usuario, contrasena, estado, privilegios) 
-    VALUES (?, ?, ?, ?)
-");
-
-$insert->bind_param("sssi", $nuevo_usuario, $contrasena_encriptada, $estado, $privilegios);
-
-// 🚀 Ejecutar y manejar errores
-if ($insert->execute()) {
-
-    echo "<div style='text-align:center; margin-top:50px; font-family:Arial; color:green;'>
-            Usuario registrado correctamente.<br>
-            <a href='registro.php'>Registrar otro</a>
-          </div>";
-
-} else {
-
-    // 🔥 Manejo de usuario duplicado (UNIQUE)
-    if ($conexion->errno == 1062) {
-        echo "El usuario ya existe. <a href='registro.php'>Volver</a>";
-    } else {
-        echo "Error al registrar: " . $conexion->error;
+try {
+    $insert = tlx_db()->prepare('INSERT INTO usuarios (usuario, contrasena, estado, privilegios) VALUES (?, ?, ?, ?)');
+    $insert->bind_param('sssi', $usuario, $hash, $estado, $privilegios);
+    $insert->execute();
+    $insert->close();
+} catch (mysqli_sql_exception $ex) {
+    if ($ex->getCode() === 1062) { // UNIQUE (usuario)
+        tlx_registro_resultado('El usuario ya existe.', 'error');
     }
-
+    error_log('Tlaxicom: error al registrar usuario: ' . $ex->getMessage());
+    tlx_registro_resultado('No fue posible registrar al usuario.', 'error');
 }
 
-$insert->close();
-$conexion->close();
-?>
+tlx_registro_resultado('Usuario registrado correctamente.', 'ok');

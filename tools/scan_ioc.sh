@@ -19,7 +19,7 @@ for d in amp inicio duck; do
 done
 
 # 3. PHP fuera de /contratos
-php_out=$(find . -type f \( -iname '*.php' -o -iname '*.phtml' -o -iname '*.php[0-9]' -o -iname '*.phar' \) -not -path './contratos/*' -not -path './vendor/*' -not -path './.git/*')
+php_out=$(find . -type f \( -iname '*.php' -o -iname '*.phtml' -o -iname '*.php[0-9]' -o -iname '*.phar' \) -not -path './contratos/*'  -not -path './dev/*' -not -path './.git/*')
 [ -n "$php_out" ] && { echo "$php_out"; warn "PHP fuera de /contratos (arriba)"; }
 
 # 4. Archivos de verificacion de Search Console (solo deben existir los confirmados)
@@ -29,7 +29,7 @@ n=$(echo "$gv" | grep -c .)
 [ "$n" -gt 1 ] && warn "Hay $n archivos google*.html; deja solo los de propietarios confirmados"
 
 # 5. HTML sospechosamente grande (las paginas legitimas pesan < 100 KB)
-big=$(find . -maxdepth 2 -name '*.html' -size +100k -not -path './contratos/*' -not -path './.git/*')
+big=$(find . -maxdepth 2 -name '*.html' -size +100k -not -path './contratos/*'  -not -path './dev/*' -not -path './.git/*')
 [ -n "$big" ] && { echo "$big"; warn "HTML > 100 KB (arriba)"; }
 
 # 6. Funciones tipicas de webshell en PHP propio de contratos

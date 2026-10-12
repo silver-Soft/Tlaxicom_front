@@ -88,6 +88,8 @@ function tlx_contrato_datos(): array
     if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $d['fecha']) || !checkdate((int) substr($d['fecha'], 5, 2), (int) substr($d['fecha'], 8, 2), (int) substr($d['fecha'], 0, 4))) {
         $errores[] = 'La fecha de instalación no es válida.';
     }
+    // "N de cada mes": el dia de pago es el dia de la instalacion (sin cero a la izquierda)
+    $d['dia_pago'] = (int) substr($d['fecha'], 8, 2);
     if (!preg_match('/^\d{2}:\d{2}$/', $d['hora'])) {
         $errores[] = 'La hora de instalación no es válida.';
     }
@@ -245,6 +247,12 @@ function tlx_contrato_pdf(array $d): string
         [81, 212, $d['pago']['titular']], [81, 216, $d['pago']['linea1']], [81, 220, $d['pago']['linea2']],
         [20, $d['opcion'] === 'opcion2' ? 216 : 208, 'X'],
     ]);
+    // La plantilla trae impreso "10 DE CADA MES": se tapa la celda y se escribe el dia real de instalacion.
+    $pdf->Rect(182.1, 96.6, 21.4, 14.6, 'F');
+    $pdf->SetFont('helvetica', 'B', 9);
+    $pdf->Text(183.9, 99.8, $d['dia_pago'] . ' de cada');
+    $pdf->Text(183.9, 104.0, 'mes');
+    $pdf->SetFont('helvetica', '', 10);
     $pdf->Image($firma, 90, 235, 35, 25);
 
     // ---- Pagina 2 ----
@@ -271,11 +279,11 @@ function tlx_contrato_pdf(array $d): string
     // ---- Pagina 7: fotos del INE ----
     $pdf->AddPage();
     $pdf->SetFont('helvetica', '', 10);
-    if (isset($d['fotos']['foto1'])) {
-        $pdf->Image('@' . $d['fotos']['foto1'], 10, 10, 70, 80);
-    }
-    if (isset($d['fotos']['foto2'])) {
-        $pdf->Image('@' . $d['fotos']['foto2'], 10, 100, 70, 80);
+    // Cada foto se ajusta DENTRO de su recuadro (70 x 80 mm) conservando su proporcion, anclada arriba a la izquierda.
+    foreach (['foto1' => 10, 'foto2' => 100] as $campo => $y) {
+        if (isset($d['fotos'][$campo])) {
+            $pdf->Image('@' . $d['fotos'][$campo], 10, $y, 70, 80, '', '', '', false, 300, '', false, false, 0, 'LT');
+        }
     }
 
     return $pdf->Output('', 'S');

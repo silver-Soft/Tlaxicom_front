@@ -40,3 +40,9 @@ Thumbs.db
 /package-lock.json
 /pnpm-lock.yaml
 /yarn.lock
+
+dev/.init.rendered.sql
+
+# Dump real de la BD: nunca versionar ni subir
+*.sql
+!dev/init.sql

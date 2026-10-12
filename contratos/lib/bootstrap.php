@@ -5,6 +5,9 @@ require_once __DIR__ . '/config.php';
 
 date_default_timezone_set('America/Mexico_City');
 
+/** Peso maximo por foto del INE (MB). Una foto de buena calidad de una credencial pesa ~2-4 MB. */
+const TLX_MAX_FOTO_MB = 5;
+
 /** Carpeta privada de escritura (logs, bloqueos de login). Fuera de public_html si es posible. */
 function tlx_storage_dir(): ?string
 {

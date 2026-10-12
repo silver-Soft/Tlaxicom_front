@@ -10,7 +10,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 const TLX_SIN_DATO = '-------';
 const TLX_MAX_TEXTO = 120;
-const TLX_MAX_FOTO_BYTES = 12 * 1024 * 1024;
+const TLX_MAX_FOTO_BYTES = TLX_MAX_FOTO_MB * 1024 * 1024;
 const TLX_MAX_FIRMA_BYTES = 2 * 1024 * 1024;
 
 function tlx_mayus(string $texto): string
@@ -164,7 +164,7 @@ function tlx_contrato_datos(): array
         }
         $info = is_uploaded_file($f['tmp_name']) && $f['size'] <= TLX_MAX_FOTO_BYTES ? @getimagesize($f['tmp_name']) : false;
         if ($info === false || !in_array($info[2], [IMAGETYPE_JPEG, IMAGETYPE_PNG], true)) {
-            $errores[] = "$campo debe ser una imagen JPG o PNG de hasta 12 MB.";
+            $errores[] = "$campo debe ser una imagen JPG o PNG de hasta " . TLX_MAX_FOTO_MB . ' MB. Tome una nueva foto o reduzca la calidad de la cámara.';
             continue;
         }
         $d['fotos'][$campo] = tlx_foto_optimizada($f['tmp_name'], $info[2]);

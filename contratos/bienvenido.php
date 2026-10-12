@@ -190,6 +190,28 @@ $leyenda = function (array $p): string {
         (function () {
             var $ = function (id) { return document.getElementById(id); };
 
+            // Fotos del INE: se rechazan al elegirlas si pesan demasiado (el campo queda vacio)
+            var MAX_MB = <?= (int) TLX_MAX_FOTO_MB ?>;
+            function fotoValida(archivo) {
+                if (archivo.size > MAX_MB * 1024 * 1024) {
+                    alert('La imagen pesa ' + (archivo.size / 1024 / 1024).toFixed(1) + ' MB y el límite es de ' + MAX_MB + ' MB.\n\n'
+                        + 'La imagen es muy pesada: tome una nueva foto o reduzca la calidad de imagen de la cámara de su dispositivo.');
+                    return false;
+                }
+                if (!/^image\/(jpeg|png)$/.test(archivo.type)) {
+                    alert('El archivo debe ser una imagen JPG o PNG. Tome una nueva foto con la cámara.');
+                    return false;
+                }
+                return true;
+            }
+            ['foto1', 'foto2'].forEach(function (id) {
+                $(id).addEventListener('change', function () {
+                    if (this.files[0] && !fotoValida(this.files[0])) {
+                        this.value = '';
+                    }
+                });
+            });
+
             // Paquete: solo muestra los datos; el servidor vuelve a calcularlos desde su catalogo.
             $('paquete').addEventListener('change', function () {
                 var o = this.options[this.selectedIndex];
@@ -222,14 +244,12 @@ $leyenda = function (array $p): string {
             $('btnBorrarFirma').addEventListener('click', function () { pad.clear(); });
 
             $('formContrato').addEventListener('submit', function (event) {
-                var MAX_MB = 12;
-                var grandes = ['foto1', 'foto2'].filter(function (id) {
+                var invalidas = ['foto1', 'foto2'].filter(function (id) {
                     var f = $(id).files[0];
-                    return f && f.size > MAX_MB * 1024 * 1024;
+                    return f && !fotoValida(f);
                 });
-                if (grandes.length) {
+                if (invalidas.length) {
                     event.preventDefault();
-                    alert('Una de las fotos pesa más de ' + MAX_MB + ' MB. Use una foto más ligera.');
                     return;
                 }
                 if (pad.isEmpty()) {
